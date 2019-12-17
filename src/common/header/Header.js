@@ -27,7 +27,7 @@ class Header extends Component{
     render(){
         const { classes } = this.props;
         let logoToRender =(
-            <Fastfood className ={classes.props}/>
+            <Fastfood className ="temp"/>
         )
         return(
             <div>
@@ -39,3 +39,5 @@ class Header extends Component{
         );
     }
 }
+
+export default Header;

@@ -3,9 +3,8 @@ import Header from "../../common/header/Header";
 
 class Checkout extends Component {
 render(){
-return(
-);
+return(<div>Checkout page</div>);
   }
 }
 
-export default Details;
+export default Checkout;
