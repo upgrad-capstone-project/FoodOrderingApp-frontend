@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Home from './home/Home';
 import Profile from './profile/Profile';
-import Details from './profile/Details';
-import Checkout from './profile/Checkout';
+import Details from './details/Details';
+import Checkout from './checkout/Checkout';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 

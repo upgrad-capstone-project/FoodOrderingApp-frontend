@@ -3,8 +3,7 @@ import Header from '../../common/header/Header';
 
 class Home extends Component {
 render(){
-return(
-);
+return(<div><Header/></div>);
 }
 }
 export default Home;
