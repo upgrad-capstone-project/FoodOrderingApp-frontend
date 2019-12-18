@@ -11,6 +11,10 @@ flex-wrap: wrap;
   height:100% !important;
   width: 30% !important;
   }
+  .mainDiv{
+    width:100% !important;
+    height: 100% !important;
+  }
   
   #imageDisplay{
   margin-top:2%;
@@ -57,18 +61,45 @@ text-transform: uppercase;
 .cost4TwoDiv{
   font-family: Calibri (Body);
   display: flex;
-  position: relative;
   width: 30% !important;
+  position: relative;
 }
 #bottom-left
 {
 left: 0;
 bottom: 0;
-position: absolute;
+position:absolute;
 margin-bottom: 2%;
 }
 .testing{
-  width:100px;
-  height:100px;
-  background-color: black;
+  display: block;
+  width:40%;
+  margin-left:2%;
+  position: relative;
 }
+.categoriesCart{
+  color:grey;
+  text-transform: uppercase;
+}
+.price {
+  display:inline-block;
+  right:0;
+  position: absolute;
+  margin-right:10% !important;
+}
+.addIcon {
+  display:inline-block;
+  right:0;
+  position: absolute;
+}
+.itemName{
+  display:inline-block;
+  margin-left: 3%;
+}
+
+.green{
+color:green;
+}
+.red{
+  color:red;
+  }

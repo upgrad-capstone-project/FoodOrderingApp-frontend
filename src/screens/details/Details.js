@@ -2,32 +2,19 @@ import React, { Component } from "react";
 import Header from '../../common/header/Header';
 import Avatar from "@material-ui/core/Avatar";
 import { withStyles } from "@material-ui/styles";
-import Typography from "@material-ui/core/Typography";
-import Fab from "@material-ui/core/Fab";
-import Create from "@material-ui/icons/Create";
-import Favorite from "@material-ui/icons/Favorite";
-import Modal from "@material-ui/core/Modal";
-import Button from "@material-ui/core/Button";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Input from "@material-ui/core/Input";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import GridList from "@material-ui/core/GridList";
-import GridListTile from "@material-ui/core/GridListTile";
-import Grid from "@material-ui/core/Grid";
-import Container from "@material-ui/core/Container";
-import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
-import StarIcon from '@material-ui/icons/Star';
+import AddIcon from '@material-ui/icons/Add';
+import Divider from '@material-ui/core/Divider';
 import '../../assets/font-awesome-4.7.0/css/font-awesome.min.css';
 
+
 import './Details.css';
+import { IconButton } from "@material-ui/core";
 
 const styles = theme => ({
  
   paper_big: {
     height:"auto",
     width:"100%",
-    position: "absolute",
     backgroundColor: "rgb(223,223,223)",
     padding: 5,
     outline: "none",
@@ -79,7 +66,7 @@ class Details extends Component {
 */
 render(){
   const { classes } = this.props;
-return(<div>
+return(<div className="mainDiv">
 
    <Header/><div className={classes.paper_big}>
   <div  className="resMainDiv"  >
@@ -109,9 +96,29 @@ return(<div>
           <span style={{color:"grey",fontSize:20}}>TWO PEOPLE</span>
           </div>
         </div>
-       </div>
+       </div> 
 </div>
-<div className="testing"></div>
+<div className="testing">
+{(this.state.resData.categories || []).map((category, index) => 
+{
+            return (<div><div key={"span" + category.id}
+            className="categoriesCart">{category.category_name} </div>
+            <Divider/>
+            {
+              category.item_list.map(item => {
+              return(<div>
+               {item.item_type==='VEG'?
+                <div><span ><i className="fa fa-circle" style={{color:"green"}} aria-hidden="true"></i></span><span className="itemName">{item.item_name}</span><span className="price"><i className="fa fa-inr"></i> {item.price}</span><span className="addIcon"><IconButton><AddIcon/></IconButton></span></div>
+                :
+                <div><span ><i className="fa fa-circle" style={{color:"red"}} aria-hidden="true"></i></span><span className="itemName">{item.item_name}</span><span className="price"><i className="fa fa-inr"></i> {item.price}</span><span className="addIcon"><IconButton><AddIcon/></IconButton></span></div>
+               }
+                </div>)
+              })
+            }</div>
+            );
+          })}
+
+</div>
 </div>
 );
   }
