@@ -82,7 +82,7 @@ render(){
 return(<div>
 
    <Header/><div className={classes.paper_big}>
-  <div cols={3} className="resMainDiv"  container spacing={3}>
+  <div  className="resMainDiv"  >
     <div  className="divImage" >
       <div className="imageDisplay">
       <Avatar id="imageDisplay" variant="square" src={this.state.resData.photo_URL}></Avatar>
@@ -110,7 +110,10 @@ return(<div>
           </div>
         </div>
        </div>
-</div></div>);
+</div>
+<div className="testing"></div>
+</div>
+);
   }
 }
 

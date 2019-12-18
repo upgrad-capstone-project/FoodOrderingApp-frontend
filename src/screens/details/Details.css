@@ -1,21 +1,9 @@
-/*Image,like, comment modal properties*/
-.modal-heading {
-margin-bottom: 16px !important;
-}
-
-.min-height-comments-box {
-min-height: 140px;
-margin-bottom: 20px;
-word-wrap: break-word;
-}
-
-
 /*Main restaurant details div display properties*/  
 .resMainDiv{
 height:auto;
 width: auto;
 display:flex;
-flex-direction: row;
+flex-wrap: wrap;
 }
 
 /*Res. image*/
@@ -40,8 +28,6 @@ flex-direction: row;
 .resDetails{
   font-family: Calibri (Body);
 margin-right:10%;
-width:auto;
-height:auto;
 display: flex;
 flex-direction: column;
 justify-content: center;
@@ -80,4 +66,9 @@ left: 0;
 bottom: 0;
 position: absolute;
 margin-bottom: 2%;
+}
+.testing{
+  width:100px;
+  height:100px;
+  background-color: black;
 }
