@@ -128,7 +128,8 @@ return(<div className="mainDiv">
   <ShoppingCartIcon/></Badge><span style={{fontWeight:"bold",fontSize:"30px",marginLeft:"6%"}}>My Cart</span>
         <CardContent className="cardContentRoot"><div>Ordered Items</div><br/>
         <div style={{fontWeight:"bold"}}>TOTAL AMOUNT
-          <span style={{marginLeft:"60%"}}>{this.state.sum}</span></div><Button  variant="contained" color="primary">CHECKOUT</Button></CardContent>
+          <span style={{marginLeft:"60%"}}>{this.state.sum}</span></div><br/>
+          <Button style={{width:"100%",fontSize:" 20px"}} variant="contained" color="primary">CHECKOUT</Button></CardContent>
 </Card></div>
             
 
