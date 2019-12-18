@@ -95,8 +95,8 @@ return(<div>
             );
           })}<br/><br/>
           <div><span className="cusRating"><StarIcon/>{this.state.resData.customer_rating}</span>
-          <span style={{display:"block"}}>AVERAGE RATING BY</span>
-          <span><span style={{fontWeight:"bold",color:"grey",fontSize:20}}>{this.state.resData.number_customers_rated} </span>CUSTOMERS</span>
+          <span style={{display:"block",color:"grey",fontSize:20}}>AVERAGE RATING BY</span>
+          <span style={{color:"grey",fontSize:20}}><span style={{fontWeight:"bold",color:"grey",fontSize:20}}>{this.state.resData.number_customers_rated} </span>CUSTOMERS</span>
           </div>
         </Grid>
        </Grid>
