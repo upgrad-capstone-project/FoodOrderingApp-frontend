@@ -1,115 +1,83 @@
 /*Image,like, comment modal properties*/
 .modal-heading {
-    margin-bottom: 16px !important;
-  }
-
-  .min-height-comments-box {
-    min-height: 140px;
-    margin-bottom: 20px;
-    word-wrap: break-word;
-  }
-
-
-/*Main grid display properties*/  
-  .gridContainer{
-    height:100% !important;
-    display:flex;
-    flex-direction: row;
-  }
-  
-
-    .gridItemComments{
-      height:100% !important;
-    }
-  .grid-content {
-    cursor: pointer;
-  }
-  
-.gridUserDetails{
-  width:40% !important;
+margin-bottom: 16px !important;
 }
 
-.gridItemImage{
-    height:100% !important;
-    width: 40% !important;
-  }
-
-.imageDisplay{
-width:100%;
-height:100%;
-}
-.detailsPageimage{
-max-width: 100% !important;  
-max-height: 100% !important;  
+.min-height-comments-box {
+min-height: 140px;
+margin-bottom: 20px;
+word-wrap: break-word;
 }
 
-/*Add comment and display added comment box properties*/
-  .innercommentbox{
-    display: flex;
-    flex-direction: row;
-    width:100% !important;
-  }
 
-  .commentinputbox{
-    display: inline-block;
-    width:110% !important;
-    margin-right: 2% !important;
-  }
-  
-  .addcommentbutton{
-    display: inline-block;
-    width:25%;
-  }
-
-.addedComments{
-  word-break: break-all;
+/*Main restaurant details div display properties*/  
+.resMainDiv{
+height:auto;
+width: auto;
+display:flex;
+flex-direction: row;
 }
-  
-  /*Like button and text properties*/
-  .redLike {
-    color: red;
-    cursor: pointer;
-  }
-  .greyLike {
-    color: black;
-    cursor: pointer;
-  }
 
-/*User name edit option and modal properties*/
-  .userNameEdit{
-    height:20% !important;
-  }
-
-/*Manipulated the common MUI propertie to achieve desired display results*/
-  .MuiGridListTile-tile{
-    display:flex !important;
-    flex-direction:row !important;
-    margin:5px !important;
-  }
-/*
-  .MuiGridList-root{
-    width:100% !important;
-    height:100%  !important;
-    padding-left: 0% !important;
-    padding-right: 0% !important;
-  }
-  */
-  
-  .MuiGridListTile-imgFullWidth{
-    width:98% !important;
-  }
-
-  .MuiTypography-root.MuiTypography-caption.MuiTypography-displayBlock{
-    width:100% !important;
-    word-break: break-all;
+/*Res. image*/
+.divImage{
+  height:100% !important;
+  width: 30% !important;
   }
   
-  .cusRating{
-    font-size: 22px;
-    color: black;
+  #imageDisplay{
+  margin-top:2%;
+  margin-bottom:2%;
+  width:400px!important;
+  height:300px !important;
   }
 
-  #LocalityCity{
-    font-size: 22px;
-    text-transform: uppercase;
+  .detailsPageimage{
+  max-width: 100% !important;  
+  max-height: 100% !important;  
   }
+
+/*Res. name and ratings*/
+.resDetails{
+  font-family: Calibri (Body);
+margin-right:10%;
+width:auto;
+height:auto;
+display: flex;
+flex-direction: column;
+justify-content: center;
+}
+.resName{
+  font-weight: 500;
+  font-size: 40px;
+}
+
+.cusRating{
+font-size: 22px;
+color: black;
+
+}
+
+#LocalityCity{
+  font-weight: 500;
+font-size: 26px;
+text-transform: uppercase;
+}
+.categories{
+  font-weight: 500;
+  font-size:20px;
+}
+
+/*Cost for two data*/
+.cost4TwoDiv{
+  font-family: Calibri (Body);
+  display: flex;
+  position: relative;
+  width: 30% !important;
+}
+#bottom-left
+{
+left: 0;
+bottom: 0;
+position: absolute;
+margin-bottom: 2%;
+}

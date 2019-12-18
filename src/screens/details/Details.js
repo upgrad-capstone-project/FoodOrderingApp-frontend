@@ -18,18 +18,20 @@ import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import StarIcon from '@material-ui/icons/Star';
+import '../../assets/font-awesome-4.7.0/css/font-awesome.min.css';
 
 import './Details.css';
 
 const styles = theme => ({
  
   paper_big: {
-    height:"30%",
+    height:"auto",
     width:"100%",
     position: "absolute",
     backgroundColor: "rgb(223,223,223)",
     padding: 5,
     outline: "none",
+
   }
 });
 
@@ -79,28 +81,36 @@ render(){
   const { classes } = this.props;
 return(<div>
 
-   <Header/><div><div className={classes.paper_big}>
-  <Grid cols={3} className="gridContainer"  container spacing={3}>
-    <Grid  className="gridItemImage" item xs={50}>
+   <Header/><div className={classes.paper_big}>
+  <div cols={3} className="resMainDiv"  container spacing={3}>
+    <div  className="divImage" >
       <div className="imageDisplay">
-      <img className="detailsPageimage" src={this.state.resData.photo_URL} alt={this.state.resData.restaurant_name}/>
+      <Avatar id="imageDisplay" variant="square" src={this.state.resData.photo_URL}></Avatar>
       </div>
-    </Grid>
-    <Grid className="gridItemComments" item xs={6}>
-      <Typography variant="h4">{this.state.resData.restaurant_name}</Typography>  
-      <Typography id="LocalityCity"> {this.state.locality}-{this.state.city}</Typography>
+    </div>
+    <div className="resDetails" >
+      <div className="resName">{this.state.resData.restaurant_name}</div><br/> 
+      <div id="LocalityCity"> {this.state.locality}-{this.state.city}</div><br/>
+      <div>
       {(this.state.resData.categories || []).map((category, index) => {
             return (<span key={"span" + category.id}
-            className="hash-tags">{category.category_name}, </span>
+            className="categories ">{category.category_name}, </span>
             );
-          })}<br/><br/>
-          <div><span className="cusRating"><StarIcon/>{this.state.resData.customer_rating}</span>
+          })}</div>
+          <br/><br/>
+          <div><span className="cusRating"><i className="fa fa-star"></i> {this.state.resData.customer_rating}</span>
           <span style={{display:"block",color:"grey",fontSize:20}}>AVERAGE RATING BY</span>
           <span style={{color:"grey",fontSize:20}}><span style={{fontWeight:"bold",color:"grey",fontSize:20}}>{this.state.resData.number_customers_rated} </span>CUSTOMERS</span>
           </div>
-        </Grid>
-       </Grid>
-</div></div></div>);
+        </div>
+        <div className="cost4TwoDiv" >
+        <div id="bottom-left"><span className="cusRating"><i className="fa fa-inr"></i> {this.state.resData.average_price}</span>
+          <span style={{display:"block",color:"grey",fontSize:20}}>AVERAGE COST FOR</span>
+          <span style={{color:"grey",fontSize:20}}>TWO PEOPLE</span>
+          </div>
+        </div>
+       </div>
+</div></div>);
   }
 }
 
