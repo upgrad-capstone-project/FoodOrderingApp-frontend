@@ -109,3 +109,8 @@ max-height: 100% !important;
     word-break: break-all;
   }
   
+  .cusRating{
+    font-size: 22px;
+    color: black;
+
+  }

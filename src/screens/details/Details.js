@@ -17,6 +17,7 @@ import GridListTile from "@material-ui/core/GridListTile";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
+import StarIcon from '@material-ui/icons/Star';
 
 import './Details.css';
 
@@ -38,7 +39,10 @@ class Details extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        resData:[]
+        resData:[],
+        locality:"",
+        city:"",
+        stylePath: "path/to/font-awesome/css/font-awesome.min.css"
     }
     this.apiURL = "http://localhost:8080/api/";
 }
@@ -47,79 +51,52 @@ class Details extends Component {
   componentWillMount() {
     let xhr_resDetails = new XMLHttpRequest();
     let dataRes = null;
-    let resId = "1dd86f90-a296-11e8-9a3a-720006ceb890";
+    let temp = this.props.location.pathname;
+    let resId = temp.split("/")[2];
+    alert(resId);
     let that = this;
     xhr_resDetails.addEventListener("readystatechange", function () {
       if (this.readyState === 4) {
             const data = JSON.parse(this.responseText);
             that.setState({
-              resData:data
+              resData:data,
+              locality:data.address.locality,
+              city:data.address.city
             });
       }
-//      alert(that.state.resData);
+   //   alert(that.state.resData.address.locality)
   });
   xhr_resDetails.open("GET", this.apiURL+"restaurant/"+resId);
   xhr_resDetails.setRequestHeader("Cache-Control", "no-cache");
   xhr_resDetails.send(dataRes);
   }
-
+/*
   componentDidMount(){
-    
+    alert(this.props.location.pathname);
   }
-
+*/
 render(){
   const { classes } = this.props;
-return(<div><Header/><div><div className={classes.paper_big}>
-  <Grid className="gridContainer"  container spacing={3}>
+return(<div>
+
+   <Header/><div><div className={classes.paper_big}>
+  <Grid cols={3} className="gridContainer"  container spacing={3}>
     <Grid  className="gridItemImage" item xs={50}>
       <div className="imageDisplay">
       <img className="detailsPageimage" src={this.state.resData.photo_URL} alt={this.state.resData.restaurant_name}/>
       </div>
     </Grid>
     <Grid className="gridItemComments" item xs={6}>
-      <Grid container spacing={3} alignItems="center" justify="flex-start"  >
-        <Grid item><Typography variant="h6">{this.state.resData.restaurant_name}</Typography>  
-        </Grid> 
-      </Grid>
-      <hr className="modalRule"/>
-      <Grid container spacing={3} alignItems="center" justify="flex-start"  >
-      <Grid item><Typography variant="h6"> {this.state.resData.locality}</Typography>
-      <Typography variant="h6"> {this.state.resData.city}</Typography>
+      <Typography variant="h4">{this.state.resData.restaurant_name}</Typography>  
+      <Typography variant="h6"> {this.state.locality}-{this.state.city}</Typography>
+      {(this.state.resData.categories || []).map((category, index) => {
+            return (<span key={"span" + category.id}
+            className="hash-tags">{category.category_name}, </span>
+            );
+          })}<br/><br/>
+          <div><span className="cusRating"><StarIcon/>{this.state.resData.customer_rating}</span></div>
+        </Grid>
        </Grid>
-      </Grid>
-      <Grid container spacing={3} alignItems="center" justify="flex-start"  >
-        <Grid item>
-          {(this.state.resData.categories || []).map((category, index) => {
-            return (<span key={"span" + category.id}
-            className="hash-tags">{category.category_name}</span>
-            );
-          })}
-        </Grid>
-      </Grid>
-      <Grid container spacing={1} alignItems="center" justify="flex-start"  >
-      <Grid item>
-          {(this.state.resData.categories || []).map((category, index) => {
-            return (<span key={"span" + category.id}
-            className="hash-tags">{category.category_name} </span>
-            );
-          })}
-        </Grid>
-      </Grid>
-      <Grid container spacing={1} alignItems="center" justify="flex-start"  >
-      <Grid item>
-      
-        </Grid>
-      </Grid>
-      <div className="innercommentbox">
-      <Grid className="gridCommentContainer" container spacing={3} alignItems="center" justify="flex-start"  >
-      <Grid className="gridComment" item>
-
-        </Grid>
-
-      </Grid>
-      </div>
-    </Grid>
-  </Grid>
 </div></div></div>);
   }
 }
