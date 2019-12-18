@@ -18,42 +18,17 @@ import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
+import './Details.css';
+
 const styles = theme => ({
-  bigAvatar: {
-    margin: 10,
-    width: 120,
-    height:120,
-    boxShadow: '1px 2px 2px grey',
-    marginRight:80
-  },
-  profileAvatar: {
-    margin: 10,
-    width: 60,
-    height: 60,
-    boxShadow: '1px 2px 2px grey'
-},
-  fab: {
-    width:50
-  },
-  
-  paper: {
-    position: "absolute",
-    backgroundColor: "white",
-    padding: 16,
-    outline: "none",
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-  },
-  
+ 
   paper_big: {
+    height:"30%",
+    width:"100%",
     position: "absolute",
-    backgroundColor: "white",
-    padding: 16,
+    backgroundColor: "grey",
+    padding: 5,
     outline: "none",
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)'
   }
 });
 
@@ -81,7 +56,7 @@ class Details extends Component {
               resData:data
             });
       }
-      alert(that.state.resData);
+//      alert(that.state.resData);
   });
   xhr_resDetails.open("GET", this.apiURL+"restaurant/"+resId);
   xhr_resDetails.setRequestHeader("Cache-Control", "no-cache");
@@ -94,7 +69,58 @@ class Details extends Component {
 
 render(){
   const { classes } = this.props;
-return(<div><Header/><div>{this.state.resData.id}</div></div>);
+return(<div><Header/><div><div className={classes.paper_big}>
+  <Grid className="gridContainer"  container spacing={3}>
+    <Grid  className="gridItemImage" item xs={50}>
+      <div className="imageDisplay">
+      <img className="detailsPageimage" src={this.state.resData.photo_URL} alt={this.state.resData.restaurant_name}/>
+      </div>
+    </Grid>
+    <Grid className="gridItemComments" item xs={6}>
+      <Grid container spacing={3} alignItems="center" justify="flex-start"  >
+        <Grid item><Typography variant="h6">{this.state.resData.restaurant_name}</Typography>  
+        </Grid> 
+      </Grid>
+      <hr className="modalRule"/>
+      <Grid container spacing={3} alignItems="center" justify="flex-start"  >
+      <Grid item><Typography variant="h6"> {this.state.resData.locality}</Typography>
+      <Typography variant="h6"> {this.state.resData.city}</Typography>
+       </Grid>
+      </Grid>
+      <Grid container spacing={3} alignItems="center" justify="flex-start"  >
+        <Grid item>
+          {(this.state.resData.categories || []).map((category, index) => {
+            return (<span key={"span" + category.id}
+            className="hash-tags">{category.category_name}</span>
+            );
+          })}
+        </Grid>
+      </Grid>
+      <Grid container spacing={1} alignItems="center" justify="flex-start"  >
+      <Grid item>
+          {(this.state.resData.categories || []).map((category, index) => {
+            return (<span key={"span" + category.id}
+            className="hash-tags">{category.category_name} </span>
+            );
+          })}
+        </Grid>
+      </Grid>
+      <Grid container spacing={1} alignItems="center" justify="flex-start"  >
+      <Grid item>
+      
+        </Grid>
+      </Grid>
+      <div className="innercommentbox">
+      <Grid className="gridCommentContainer" container spacing={3} alignItems="center" justify="flex-start"  >
+      <Grid className="gridComment" item>
+
+        </Grid>
+
+      </Grid>
+      </div>
+    </Grid>
+  </Grid>
+</div></div></div>);
   }
 }
 
