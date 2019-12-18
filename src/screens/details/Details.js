@@ -88,13 +88,16 @@ return(<div>
     </Grid>
     <Grid className="gridItemComments" item xs={6}>
       <Typography variant="h4">{this.state.resData.restaurant_name}</Typography>  
-      <Typography variant="h6"> {this.state.locality}-{this.state.city}</Typography>
+      <Typography id="LocalityCity"> {this.state.locality}-{this.state.city}</Typography>
       {(this.state.resData.categories || []).map((category, index) => {
             return (<span key={"span" + category.id}
             className="hash-tags">{category.category_name}, </span>
             );
           })}<br/><br/>
-          <div><span className="cusRating"><StarIcon/>{this.state.resData.customer_rating}</span></div>
+          <div><span className="cusRating"><StarIcon/>{this.state.resData.customer_rating}</span>
+          <span style={{display:"block"}}>AVERAGE RATING BY</span>
+          <span><span style={{fontWeight:"bold",color:"grey",fontSize:20}}>{this.state.resData.number_customers_rated} </span>CUSTOMERS</span>
+          </div>
         </Grid>
        </Grid>
 </div></div></div>);

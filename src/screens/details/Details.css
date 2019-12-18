@@ -107,5 +107,9 @@ max-height: 100% !important;
   .cusRating{
     font-size: 22px;
     color: black;
+  }
 
+  #LocalityCity{
+    font-size: 22px;
+    text-transform: uppercase;
   }
