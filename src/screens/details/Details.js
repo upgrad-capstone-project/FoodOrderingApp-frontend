@@ -9,13 +9,10 @@ import Badge from '@material-ui/core/Badge';
 import Divider from '@material-ui/core/Divider';
 import Button from "@material-ui/core/Button";
 import '../../assets/font-awesome-4.7.0/css/font-awesome.min.css';
-
-
 import './Details.css';
 import { IconButton } from "@material-ui/core";
 
 const styles = theme => ({
- 
   paper_big: {
     height:"auto",
     width:"100%",
@@ -131,12 +128,9 @@ return(<div className="mainDiv">
           <span style={{marginLeft:"60%"}}>{this.state.sum}</span></div><br/>
           <Button style={{width:"100%",fontSize:" 20px"}} variant="contained" color="primary">CHECKOUT</Button></CardContent>
 </Card></div>
-            
-
 </div>
 </div>
 );
   }
 }
-
 export default withStyles(styles)(Details);
