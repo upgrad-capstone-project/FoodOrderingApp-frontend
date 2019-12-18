@@ -9,11 +9,6 @@
     word-wrap: break-word;
   }
 
-  .modalRule{
-    background-color: grey;
-    width:100%;
-    height:0.7px;
-  }
 
 /*Main grid display properties*/  
   .gridContainer{

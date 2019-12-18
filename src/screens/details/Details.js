@@ -27,7 +27,7 @@ const styles = theme => ({
     height:"30%",
     width:"100%",
     position: "absolute",
-    backgroundColor: "grey",
+    backgroundColor: "rgb(223,223,223)",
     padding: 5,
     outline: "none",
   }
