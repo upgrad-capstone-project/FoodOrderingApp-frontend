@@ -2,8 +2,12 @@ import React, { Component } from "react";
 import Header from '../../common/header/Header';
 import Avatar from "@material-ui/core/Avatar";
 import { withStyles } from "@material-ui/styles";
+import { Card, CardHeader, CardContent} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import Badge from '@material-ui/core/Badge';
 import Divider from '@material-ui/core/Divider';
+import Button from "@material-ui/core/Button";
 import '../../assets/font-awesome-4.7.0/css/font-awesome.min.css';
 
 
@@ -31,7 +35,8 @@ class Details extends Component {
         resData:[],
         locality:"",
         city:"",
-        stylePath: "path/to/font-awesome/css/font-awesome.min.css"
+        stylePath: "path/to/font-awesome/css/font-awesome.min.css",
+        sum:"0.00"
     }
     this.apiURL = "http://localhost:8080/api/";
 }
@@ -98,25 +103,34 @@ return(<div className="mainDiv">
         </div>
        </div> 
 </div>
-<div className="testing">
+<div className="orderFunction">
+<div className="orderMenu">
 {(this.state.resData.categories || []).map((category, index) => 
 {
-            return (<div><div key={"span" + category.id}
+            return (<div key={"div"+category.id}><div key={"sub-div" + category.id}
             className="categoriesCart">{category.category_name} </div>
             <Divider/>
             {
               category.item_list.map(item => {
-              return(<div>
+              return(<div key={item.id}>
                {item.item_type==='VEG'?
-                <div><span ><i className="fa fa-circle" style={{color:"green"}} aria-hidden="true"></i></span><span className="itemName">{item.item_name}</span><span className="price"><i className="fa fa-inr"></i> {item.price}</span><span className="addIcon"><IconButton><AddIcon/></IconButton></span></div>
+                <div className="menuList"><span ><i className="fa fa-circle" style={{color:"green",width:"1",height:"1"}} aria-hidden="true"></i></span><span className="itemName">{item.item_name}</span><span className="price"><i className="fa fa-inr"></i> {item.price}</span><span className="addIcon"><IconButton><AddIcon/></IconButton></span></div>
                 :
-                <div><span ><i className="fa fa-circle" style={{color:"red"}} aria-hidden="true"></i></span><span className="itemName">{item.item_name}</span><span className="price"><i className="fa fa-inr"></i> {item.price}</span><span className="addIcon"><IconButton><AddIcon/></IconButton></span></div>
+                <div className="menuList"><span ><i className="fa fa-circle" style={{color:"red"}} aria-hidden="true"></i></span><span className="itemName">{item.item_name}</span><span className="price"><i className="fa fa-inr"></i> {item.price}</span><span className="addIcon"><IconButton><AddIcon/></IconButton></span></div>
                }
                 </div>)
               })
             }</div>
             );
           })}
+</div>
+<div className="myCart"><Card className="cardRoot"><Badge badgeContent={4} color="primary">
+  <ShoppingCartIcon/></Badge><span style={{fontWeight:"bold",fontSize:"30px",marginLeft:"6%"}}>My Cart</span>
+        <CardContent className="cardContentRoot"><div>Ordered Items</div><br/>
+        <div style={{fontWeight:"bold"}}>TOTAL AMOUNT
+          <span style={{marginLeft:"60%"}}>{this.state.sum}</span></div><Button  variant="contained" color="primary">CHECKOUT</Button></CardContent>
+</Card></div>
+            
 
 </div>
 </div>
