@@ -8,6 +8,7 @@ import Profile from "../screens/profile/Profile";
 
 class Controller extends Component {
 
+
     constructor(){
         super();
         //will have to be replaced with the provided url
@@ -28,6 +29,7 @@ class Controller extends Component {
 
         );
     }
+
 }
 
 export default Controller;
