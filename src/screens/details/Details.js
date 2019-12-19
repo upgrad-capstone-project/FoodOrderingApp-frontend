@@ -251,11 +251,11 @@ return(<div className="mainDiv">
                           <Grid item style={{width:"18%"}}>
                               <Typography variant="caption"  gutterBottom className="capitalize">
                               {cartItem.item.item_type==="VEG"?
-                 <span><span><i className="fa fa-circle" style={{color:"green",width:"1",height:"1"}} aria-hidden="true"></i>
+                 <span><span><i className="fa fa-stop-circle-o" style={{color:"green",width:"1",height:"1"}} aria-hidden="true"></i>
                 </span><span className="itemName">{cartItem.item_name}</span></span>
                 :
                 <span><span>
-                  <i className="fa fa-circle" style={{color:"red"}} aria-hidden="true"></i>
+                  <i className="fa fa-stop-circle-o" style={{color:"red"}} aria-hidden="true"></i>
                   </span><span className="itemName">{cartItem.item_name}</span></span>
                }
                                   <span style={{marginLeft:8}} >{cartItem.item.item_name}</span>
