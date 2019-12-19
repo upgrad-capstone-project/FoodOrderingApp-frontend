@@ -4,10 +4,12 @@ import Avatar from "@material-ui/core/Avatar";
 import { withStyles } from "@material-ui/styles";
 import { Card, CardHeader, CardContent} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import CloseIcon from '@material-ui/icons/Close';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Badge from '@material-ui/core/Badge';
 import Divider from '@material-ui/core/Divider';
 import Button from "@material-ui/core/Button";
+import Snackbar from '@material-ui/core/Snackbar';
 import '../../assets/font-awesome-4.7.0/css/font-awesome.min.css';
 import './Details.css';
 import { IconButton } from "@material-ui/core";
@@ -25,7 +27,6 @@ const styles = theme => ({
 
 
 class Details extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -33,7 +34,8 @@ class Details extends Component {
         locality:"",
         city:"",
         stylePath: "path/to/font-awesome/css/font-awesome.min.css",
-        sum:"0.00"
+        sum:"0.00",
+        snackBarOpen:false
     }
     this.apiURL = "http://localhost:8080/api/";
 }
@@ -66,6 +68,20 @@ class Details extends Component {
     alert(this.props.location.pathname);
   }
 */
+
+addToCart = (item, category) => {
+  this.snackBarHandler("Item added to cart!");
+}
+
+snackBarHandler = (message) => {
+  // if any snackbar open already close that
+  this.setState({ snackBarOpen: false});
+  // updating component state snackbar message
+  this.setState({ snackBarMessage: message});
+  // Show snackbar
+  this.setState({ snackBarOpen: true});
+}
+
 render(){
   const { classes } = this.props;
 return(<div className="mainDiv">
@@ -111,9 +127,19 @@ return(<div className="mainDiv">
               category.item_list.map(item => {
               return(<div key={item.id}>
                {item.item_type==='VEG'?
-                <div className="menuList"><span ><i className="fa fa-circle" style={{color:"green",width:"1",height:"1"}} aria-hidden="true"></i></span><span className="itemName">{item.item_name}</span><span className="price"><i className="fa fa-inr"></i> {item.price}</span><span className="addIcon"><IconButton><AddIcon/></IconButton></span></div>
+                <div className="menuList"><span >
+                  <i className="fa fa-circle" style={{color:"green",width:"1",height:"1"}} aria-hidden="true"></i>
+                </span><span className="itemName">{item.item_name}</span><span className="price">
+                  <i className="fa fa-inr"></i> {item.price}</span><span className="addIcon">
+                    <IconButton onClick={this.addToCart.bind(this,item,category)}><AddIcon/></IconButton>
+                    </span></div>
                 :
-                <div className="menuList"><span ><i className="fa fa-circle" style={{color:"red"}} aria-hidden="true"></i></span><span className="itemName">{item.item_name}</span><span className="price"><i className="fa fa-inr"></i> {item.price}</span><span className="addIcon"><IconButton><AddIcon/></IconButton></span></div>
+                <div className="menuList"><span>
+                  <i className="fa fa-circle" style={{color:"red"}} aria-hidden="true"></i>
+                  </span><span className="itemName">{item.item_name}</span><span className="price">
+                    <i className="fa fa-inr"></i> {item.price}</span><span className="addIcon">
+                      <IconButton onClick={this.addToCart.bind(this,item,category)}><AddIcon/>
+                      </IconButton></span></div>
                }
                 </div>)
               })
@@ -129,6 +155,20 @@ return(<div className="mainDiv">
           <Button style={{width:"100%",fontSize:" 20px"}} variant="contained" color="primary">CHECKOUT</Button></CardContent>
 </Card></div>
 </div>
+<Snackbar 
+  anchorOrigin={{vertical: 'bottom', horizontal: 'left'}} 
+  open={this.state.snackBarOpen} 
+  onClose={() => this.setState({ snackBarOpen: false })}
+  message={<span id="message-id">{this.state.snackBarMessage}</span>}
+  action={[
+            <IconButton
+            color="inherit"
+                onClick={() => this.setState({ snackBarOpen: false })}
+                >
+                <CloseIcon/>
+            </IconButton>
+        ]}
+  />
 </div>
 );
   }
