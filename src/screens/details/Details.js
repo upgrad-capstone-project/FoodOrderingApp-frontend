@@ -247,16 +247,16 @@ return(<div className="mainDiv">
 <ShoppingCartIcon/></Badge><span style={{fontWeight:"bold",fontSize:"30px",marginLeft:"6%"}}>My Cart</span><br/>
 <div>                                            {(this.state.cartItems.itemList || []).map((cartItem, index) => (
                   <Grid item xs container key={cartItem.item.id} >
-                      <Grid container spacing={2} direction="row" justify="space-between" alignItems="center">
-                          <Grid item >
+                      <Grid container spacing={2}  direction="row" justify="space-between" alignItems="center">
+                          <Grid item style={{width:"18%"}}>
                               <Typography variant="caption"  gutterBottom className="capitalize">
                               {cartItem.item.item_type==="VEG"?
-                 <div><span><i className="fa fa-circle" style={{color:"green",width:"1",height:"1"}} aria-hidden="true"></i>
-                </span><span className="itemName">{cartItem.item_name}</span></div>
+                 <span><span><i className="fa fa-circle" style={{color:"green",width:"1",height:"1"}} aria-hidden="true"></i>
+                </span><span className="itemName">{cartItem.item_name}</span></span>
                 :
-                <div><span>
+                <span><span>
                   <i className="fa fa-circle" style={{color:"red"}} aria-hidden="true"></i>
-                  </span><span className="itemName">{cartItem.item_name}</span></div>
+                  </span><span className="itemName">{cartItem.item_name}</span></span>
                }
                                   <span style={{marginLeft:8}} >{cartItem.item.item_name}</span>
                               </Typography>
