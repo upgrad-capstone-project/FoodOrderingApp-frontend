@@ -7,7 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import { withRouter } from 'react-router-dom';
-//import '../../assets/font-awesome-4.7.0/css/font-awesome.min.css';
+import '../../assets/font-awesome-4.7.0/css/font-awesome.min.css';
 
 
 const RestaurantCard = function(props){
@@ -39,7 +39,7 @@ const RestaurantCard = function(props){
 									<span> {props.resCustRating} ({props.resNumberCustRated})</span>
 								</div>
 								<div className="avg-price">
-									<span><i className="fa fa-rupee-sign"></i> {props.avgPrice} for two</span>                            
+									<span><i className="fa fa-inr"></i> {props.avgPrice} for two</span>                            
 								</div>
 							</div>
 						</Typography>
