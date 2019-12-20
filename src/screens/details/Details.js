@@ -56,7 +56,7 @@ class Details extends Component {
     let dataRes = null;
     let temp = this.props.location.pathname;
     let resId = temp.split("/")[2];
-    alert(resId);
+ //   alert(resId);
     let that = this;
     xhr_resDetails.addEventListener("readystatechange", function () {
       if (this.readyState === 4) {
