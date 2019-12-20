@@ -41,7 +41,7 @@ const styles = muiBaseTheme => ({
 });
 
 
-function TestCard( props ) {
+function CustomerAddress( props ) {
     const classes = props.classes;
     const address = props.address;   
     const [value, setValue] = React.useState(0);
@@ -55,6 +55,7 @@ function TestCard( props ) {
     
   return (    
     <div className="App">
+
       <Card className={classes.card} key={address.id}>
         <CardContent className={classes.content}>
           <Typography
@@ -79,6 +80,6 @@ function TestCard( props ) {
   );
 }
 
-export default withStyles(styles)(TestCard);
+export default withStyles(styles)(CustomerAddress);
 
 

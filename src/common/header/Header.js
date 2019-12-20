@@ -142,7 +142,7 @@ class Header extends Component {
     let xhrLogin = new XMLHttpRequest();
     xhrLogin.addEventListener("readystatechange", function () {
       if (this.readyState === 4) {
-        let loginResponse = JSON.parse(xhrLogin.response);
+        let loginResponse = JSON.parse(xhrLogin.response);  
         if (loginResponse.code === 'ATH-001' || loginResponse.code === 'ATH-002') {
           that.setState({ loginError: "dispBlock" });
           that.setState({ loginErrorMsg: loginResponse.message });
@@ -156,7 +156,7 @@ class Header extends Component {
       }
     })
     xhrLogin.open("POST", this.props.baseUrl + "customer/login");
-    xhrLogin.setRequestHeader("Authorization", "Basic " + window.btoa(this.state.username + ":" + this.state.password));
+    xhrLogin.setRequestHeader("authentication", "Basic " + window.btoa(this.state.username + ":" + this.state.password));
     xhrLogin.setRequestHeader("Content-Type", "application/json");
     xhrLogin.setRequestHeader("Cache-Control", "no-cache");
     xhrLogin.setRequestHeader("Access-Control-Allow-Origin", "*");

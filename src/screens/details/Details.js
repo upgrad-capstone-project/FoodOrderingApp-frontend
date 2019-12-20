@@ -45,7 +45,7 @@ class Details extends Component {
           itemList: [], 
           totalPrice: 0, 
           totalItemCount: 0
-      },
+      }
     }
     this.apiURL = "http://localhost:8080/api/";
 }
@@ -167,6 +167,7 @@ addToCart = (item, category) => {
       this.setState({ cartItems: addedCartItem});    
   }
 
+
 snackBarHandler = (message) => {
   // if any snackbar open already close that
   this.setState({ snackBarOpen: false});
@@ -176,11 +177,34 @@ snackBarHandler = (message) => {
   this.setState({ snackBarOpen: true});
 }
 
+checkOutCart = (e) => {
+//  this.checkLoginUpdate();
+  const addedCartItem = this.state.cartItems;
+  // check if items not added - alert user to add item
+  if( addedCartItem.itemList.length <=0 ){
+      this.snackBarHandler("Please add an item to your cart!");
+      return;
+  }else {
+      // check if user logged in , if not - alert user to login
+      if(sessionStorage.getItem("access-token") === null){
+          this.snackBarHandler("Please login first!");
+          return;
+      }else{
+          // redirect to checkout page and passing cart items to checkout page
+          this.props.history.push({
+              pathname: "/checkout",
+              state: { chcartItems: this.state.cartItems,
+                totalCartItemsValue:this.state.cartItems.totalPrice }
+            })   
+      }
+  }
+}
+
 render(){
   const { classes } = this.props;
 return(<div className="mainDiv">
 
-   <Header/><div className={classes.paper_big}>
+   <Header baseUrl= "http://localhost:8080/api/"/><div className={classes.paper_big}>
   <div  className="resMainDiv"  >
     <div  className="divImage" >
       <div className="imageDisplay">
@@ -293,7 +317,8 @@ return(<div className="mainDiv">
             </Grid>
         </Grid>
           </CardContent>
-          <CardActions><Button style={{width:"100%",fontSize:" 20px"}} variant="contained" color="primary">
+          <CardActions><Button style={{width:"100%",fontSize:" 20px"}} variant="contained" 
+          onClick={this.checkOutCart.bind(this)} color="primary">
             CHECKOUT</Button>
             </CardActions>
 </Card></div>

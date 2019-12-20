@@ -14,8 +14,10 @@ const SummaryCard = function(props){
     const summary = props.summary;
     const index = props.index;
     const classes = props.classes;
-    let data = JSON.parse(localStorage.getItem("orders"));
-    let total = localStorage.getItem("OrderDataTotal");
+  //  let data = JSON.parse(localStorage.getItem("orders"));
+  let data = props.cartItems;
+ //   let total = localStorage.getItem("OrderDataTotal");
+ let total = props.totalCartItemsValue;
     return(
         <Card>        
             <CardHeader title="Summary" />
@@ -29,11 +31,11 @@ const SummaryCard = function(props){
                  {data.map((item, index) => 
                             <Grid container item xs={12} spacing={1} key={index}>
                             <Grid item xs={1}>
-                                {item.type === 'VEG' ?  <FiberManualRecord style={{ color: "#008000" }}/> : <FiberManualRecord style={{ color: "#b20505" }}/>}
+                                {item.item_type === 'VEG' ?  <FiberManualRecord style={{ color: "#008000" }}/> : <FiberManualRecord style={{ color: "#b20505" }}/>}
                             </Grid>
                             <Grid item xs={5}>
                                 
-                                {item.name}                            
+                                {item.item_name}                            
                             </Grid>
                             <Grid item xs={3}>
                                 {item.qty}                            

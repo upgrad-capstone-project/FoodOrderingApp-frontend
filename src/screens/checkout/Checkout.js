@@ -69,7 +69,7 @@ const styles = muiBaseTheme => ({
   } 
 });
 
-const access_token ='eyJraWQiOiIwNmJlN2YzMy02NTQ0LTQxZjktYWQyOS04MzJjYzg2YjMxMTMiLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiJmOWE5NzgwOC1iM2M5LTQ3MTItOWJkZi02MTBmYzhhNDgwZjQiLCJpc3MiOiJodHRwczovL0Zvb2RPcmRlcmluZ0FwcC5pbyIsImV4cCI6MTU3NjQyNiwiaWF0IjoxNTc2Mzk3fQ.7Rpu21LbPCYCDlM3QcFvxsJaYBw_i2AkSvTGKvxeeRB41pA18IdAyTaxtrT0aYHBkhImaK6q9TRPDzImEXPBvA';
+const access_token =sessionStorage.getItem("access_token");
 const req_header = {
   "Accept": "application/json;charset=UTF-8",
   "authorization": "Bearer " +  access_token,
@@ -77,7 +77,6 @@ const req_header = {
   "Content-Type": "application/json" 
 }
 
-const cust_address = '246162a8-a238-11e8-9077-720006ceb890';
 
 
 function TabContainer(props) {
@@ -103,7 +102,7 @@ class Checkout extends Component {
     this.state = {            
         value:0, 
         activeStep : 0,            
-        dataAddress:[],           
+        dataAddress:[], 
         selected:0,
         dataPayments:[],
         paymentMethod:"",
@@ -120,7 +119,9 @@ class Checkout extends Component {
         saveAddressError : 'dispNone',
         saveAddressErrorMsg : '',
         checkOutAddressRequired : 'dispNone',
-        selAddress : ""
+        selAddress : "",        
+        chcartItems:[],
+        totalCartItemsValue:""
     };
 }
 
@@ -139,20 +140,29 @@ getAddresses(baseURL, access_token){
 let data = null   
 let xhrAddresses = new XMLHttpRequest();
 let that = this;
+let cat = "";
 xhrAddresses.addEventListener("readystatechange", function () {  
     if (this.readyState === 4) {                                      
-          let address = JSON.parse(xhrAddresses.response); 
-          that.setState({dataAddress: address["addresses"]});
-          
+          let address = JSON.parse(xhrAddresses.response);
+          that.setState({dataAddress: address});
+          alert(address);
+          alert("state"+that.state.dataAddress);
+          if(address===that.state.dataAddress){
+             cat = "same";
+          } else {
+             cat = "dam";
+          }
+          alert(cat);
     }
 })
 xhrAddresses.open("GET", baseURL + "address/customer");
-xhrAddresses.setRequestHeader("Authorization", "Bearer " + access_token); //sessionStorage.getItem('access-token')
+xhrAddresses.setRequestHeader("authorization", "Bearer " + access_token); //sessionStorage.getItem('access-token')
 xhrAddresses.setRequestHeader("Content-Type", "application/json");
 xhrAddresses.setRequestHeader("Cache-Control", "no-cache");
 xhrAddresses.setRequestHeader("Access-Control-Allow-Origin", "*");  
 xhrAddresses.send(data);
 }
+
 getStates(){
 const url = baseURL + 'states'
 const that = this;
@@ -170,6 +180,7 @@ Utils.makeApiCall(
     }
   )
 }
+
 getPaymentMethods(){
 const url = baseURL + 'payment'
 const that = this;
@@ -187,6 +198,7 @@ Utils.makeApiCall(
     }
   )
 }
+
 onStateChange = (event) => {
   this.setState({selected:event.target.value})
 };
@@ -331,13 +343,14 @@ getStepContent= (step) => {
                     className={this.props.root}
                     >
                       <Grid container spacing={10}>
-                        {
-                          this.state.dataAddress.map((val, idx) => ( 
-                            <Grid item xs={4} key={val.id}>
-                              <CustomerAddress address={val} key={val.id + "_" + idx} changeAddress={this.addressChangeHandler}/>                                 
+                      <div>sim</div>
+                     {(this.state.dataAddress.addresses|| []).map((exisAddress, idx) => {
+                      return ( 
+                            <Grid item xs={4} key={exisAddress.id}>
+                              <div>sim</div>
+                              <CustomerAddress address={exisAddress} key={exisAddress.id + "_" + idx} changeAddress={this.addressChangeHandler}/>                                 
                             </Grid>                                       
-                        ))            
-                        }
+                            );})}
                     </Grid>
                   </Grid>
                   </TabContainer>
@@ -501,7 +514,7 @@ render(){
           </div>
         </Grid>
         <Grid item xs={12} md={4}>
-          <SummaryCard className={classes.summaryCard} checkoutHandler = {this.checkoutHandler}
+          <SummaryCard className={classes.summaryCard} totalCartItemsValue={this.state.totalCartItemsValue} cartItems={this.state.chcartItems} checkoutHandler = {this.checkoutHandler}
           key="test"
           index="1"
           classes={classes}    
