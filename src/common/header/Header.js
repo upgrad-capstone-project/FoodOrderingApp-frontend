@@ -15,7 +15,6 @@ import PropTypes from 'prop-types';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { Link } from 'react-router-dom';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
@@ -171,10 +170,7 @@ class Header extends Component {
     this.state.mobile === "" ? this.setState({ mobileRequired: "dispBlock" }) : this.setState({ mobileRequired: "dispNone" });
     this.state.passwordReg === "" ? this.setState({ passwordRegRequired: "dispBlock" }) : this.setState({ passwordRegRequired: "dispNone" });
     if (this.state.email === "" || this.state.firstname === "" || this.state.lastname === "" || this.state.mobile === "" || this.state.passwordReg === "") { return; }
-    {/*var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
-  var emailRegex = new RegExp(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-  emailRegex.test(this.state.email) === false ? this.setState({formValid:false, emailRequired: "dispBlock", emailMsg : "Invalid eMail"}) : this.setState({ emailRequired: "dispNone", formValid : true });
-strongRegex.test(this.state.passwordReg) === false ? this.setState({formValid:false , passwordRegRequired: "dispBlock", passwordMsg : "Weak Password"}) : this.setState({ passwordRegRequired: "dispNone", formValid : true });  */}
+    
   }
   signUpClickHandler = () => {
     let that = this;
