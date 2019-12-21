@@ -1,7 +1,10 @@
 .gridListMain{
     display: flex;
-    flex-wrap:nowrap;
+    flex-wrap:nowrap !important;
     transform: translateZ(0);
-    width: 600px;
+    width: 800px;
 }
 
+.gridListTile{
+    width:35% !important;
+}

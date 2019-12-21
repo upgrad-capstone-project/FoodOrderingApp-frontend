@@ -86,7 +86,8 @@ const styles = muiBaseTheme => ({
     paddingTop: "56.25%"
   },
   content: {
-    textAlign: "left"    
+    textAlign: "left",
+    width:"10%"
   },
   divider: {
     margin: `${muiBaseTheme.spacing.unit * 3}px 0`
@@ -383,10 +384,10 @@ getStepContent= (step) => {
                     alignItems="center"
                     className={this.props.root}
                     >
-                      <Grid container spacing={10}>
+                      <Grid container spacing={5}>
                       <GridList cellHeight={"auto"} className="gridListMain">
                       {(this.state.dataAddress.addresses || []).map((exisAddress,index) => {
-                      return (<GridListTile id={exisAddress.id}style={{padding: '20px'}}>
+                      return (<GridListTile className="gridListTile" id={exisAddress.id} style={{padding: '5px'}}>
                        <div className="App">
       <Card className={this.props.card} key={exisAddress.id} >
         <CardContent className={this.props.content}>
@@ -627,7 +628,7 @@ render(){
                })
                }
                  <Grid container item xs={12}>
-                 <Grid item xs={10}>                  
+                 <Grid className="tileContainer" item xs={10} >                  
                  <Divider className={this.props.divider} variant="middle" /> 
                  </Grid>                                           
                  </Grid>
