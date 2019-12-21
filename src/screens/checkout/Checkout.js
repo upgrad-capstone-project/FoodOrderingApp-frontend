@@ -110,8 +110,9 @@ const req_header = {
   "Accept": "application/json;charset=UTF-8",
   "authorization": "Bearer " +  access_token,
   "Access-Control-Allow-Origin" : "*",
-  "Content-Type": "application/json" 
+  "Cache-Control":"no-cache"
 }
+
 
 function TabContainer(props) {
   return (
@@ -173,11 +174,11 @@ renderOptions() {
   });
 }
 getAddresses(baseURL, access_token){      
-let data = null   
+let data = null;
 let xhrAddresses = new XMLHttpRequest();
 access_token = sessionStorage.getItem("access-token");
 let that = this;
-let cat = "";
+
 xhrAddresses.addEventListener("readystatechange", function () {  
     if (this.readyState === 4) {                                      
           let address = JSON.parse(xhrAddresses.response);
@@ -190,7 +191,23 @@ xhrAddresses.setRequestHeader("Cache-Control", "no-cache");
 xhrAddresses.send(data);
 }
 
+getPaymentMethods(){
+  let data = null;
+  let xhrPayments= new XMLHttpRequest();
+  let that = this;
+  xhrPayments.addEventListener("readystatechange", function () {  
+    if (this.readyState === 4) {                                      
+          let paymentMethods = JSON.parse(xhrPayments.response);
+          that.setState({dataPayments: paymentMethods});
+    }
+})
+xhrPayments.open("GET", baseURL + "payment");
+xhrPayments.setRequestHeader("Accept", "application/json;charset=UTF-8");
+xhrPayments.send(data);
+  }
+
 getStates(){
+  let data = null;
 const url = baseURL + 'states'
 const that = this;
 
@@ -208,23 +225,7 @@ Utils.makeApiCall(
   )
 }
 
-getPaymentMethods(){
-const url = baseURL + 'payment'
-const that = this;
 
-Utils.makeApiCall(
-  url, 
-  null,
-  null,
-  Constants.ApiRequestTypeEnum.GET,
-  req_header,
-  responseText => {
-    that.setState({
-      dataPayments : JSON.parse(responseText).paymentMethods
-    })
-    }
-  )
-}
 
 onStateChange = (event) => {
   this.setState({selected:event.target.value})
@@ -493,8 +494,8 @@ getStepContent= (step) => {
             value={this.state.paymentMethod}
             onChange={this.handleChange}
           >
-        {this.state.dataPayments.map((val, index) => (                
-          <FormControlLabel value={val.id} control={<Radio />} label={val.payment_name} key={index}/>                
+        {this.state.dataPayments.paymentMethods.map((payMethod,index) => (                
+          <FormControlLabel value={payMethod.id} control={<Radio />} label={payMethod.payment_name} key={index}/>                
         ))}
         </RadioGroup>
         </FormControl>
