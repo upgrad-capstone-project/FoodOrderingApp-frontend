@@ -235,10 +235,16 @@ class Header extends Component {
   }
 
 // Opening menu that contains the profile and logout link
-openMenuHandler = () => {
+openMenuHandler = (event) => {
   this.setState({
       menuIsOpen: true,
+      
   });
+  this.setState({
+    anchorEl: event.currentTarget,
+});
+
+  
 }
 
 // Opening menu that contains the profile and logout link
@@ -306,12 +312,12 @@ closeMenuHandler = () => {
               
                     
                       <Menu
+                      className="menuDrop"
                       id="simple-menu"
                       keepMounted
                       open={this.state.menuIsOpen}
                       onClose={this.closeMenuHandler}
-                      anchorReference="anchorPosition"
-                      anchorPosition={{ top: 53, left:2000}}>
+                      anchorEl={this.state.anchorEl}>
                         <MenuItem onClick={this.handleClose}><Link to="/profile" style={{ textDecoration: 'none', color: "black" }}>My Profile</Link></MenuItem><hr />
                         <MenuItem onClick={this.props.logoutHandler}>Logout</MenuItem>
                       </Menu>

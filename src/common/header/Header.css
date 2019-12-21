@@ -15,6 +15,13 @@ flex-wrap: wrap;
   flex-direction: column;
   align-items: center;
   }
+  .menuDrop{
+    margin-top: 52px !important;
+  }
+}
+
+.menuDrop{
+  margin-top: 40px;
 }
 
 .header-logo-container, .header-search-container, .header-upload-btn-container, .header-profile-btn-container {
