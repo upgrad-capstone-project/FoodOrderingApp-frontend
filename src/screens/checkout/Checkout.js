@@ -130,6 +130,7 @@ return ["Delivery", "Payment"];
 }
 const baseURL = "http://localhost:8080/api/";
 
+
 class Checkout extends Component {
   constructor(){
     super();
@@ -155,7 +156,8 @@ class Checkout extends Component {
         checkOutAddressRequired : 'dispNone',
         selAddress : "",        
         chcartItems:[],
-        totalCartItemsValue:""
+        totalCartItemsValue:"",
+        resDetails:null
     };
 }
 
@@ -236,7 +238,7 @@ this.getStates();
 componentWillMount(){
 this.setState({chcartItems:this.props.history.location.state.chcartItems});
 this.setState({totalCartItemsValue:this.props.history.location.state.totalCartItemsValue});
-alert(this.props.history.location.state.chcartItems.restaurant);
+this.setState({resDetails:JSON.parse(sessionStorage.getItem("restaurantDetails"))});
 }
 
 handleChange = (event) => {
@@ -588,9 +590,9 @@ render(){
           </div>
         </Grid>
         <Grid  item xs={8} md={3}>
-        <Card>        
+        <Card className="greyedOut">        
             <CardHeader title="Summary" titleTypographyProps={{ variant: 'h4' }} />
-            <div>{this.props.history.location.state.chcartItems.restaurant}</div>
+            <div style={{marginLeft:"3%",fontSize:"200%", color:"grey",fontWeight:"bold"}}>{this.state.resDetails.restaurant_name}</div>
             <CardContent>
             <Grid
                 container
@@ -617,7 +619,7 @@ render(){
                </Grid>
                </Grid>);
                })
-               }       
+               }
                  <Grid container item xs={12}>
                  <Grid item xs={15}>                    
                     <Divider variant="middle" className={this.props.classes.divider}/>
@@ -625,14 +627,14 @@ render(){
                  </Grid>
                     <Grid container item xs={15} >
                         <Grid item xs={5}>
-                            <Typography variant="h6">
+                            <Typography style={{marginLeft:"3%",color:"grey",fontWeight:"bold"}} variant="h5">
                             Net Amount
                             </Typography>
                         </Grid>
                         <Grid item xs={4}>                            
                         </Grid>
                         <Grid item xs={3}>
-                        <Typography  variant="h6">                                                       
+                        <Typography style={{marginLeft:"3%",color:"grey",fontWeight:"bold"}} variant="h5">                                                       
                             {this.props.history.location.state.totalCartItemsValue}
                         </Typography>
                         </Grid>

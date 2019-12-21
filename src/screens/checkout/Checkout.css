@@ -5,11 +5,6 @@
     width: 600px;
 }
 
-.test{
-    text-align: center !important;
-}
-
-.testLeft{
-    
-
+.greyedOut{
+    color:grey;
 }

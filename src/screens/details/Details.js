@@ -191,7 +191,7 @@ checkOutCart = (e) => {
       }else{
           // redirect to checkout page and passing cart items to checkout page
           
-          alert("restaurantgointocheck: " +this.state.cartItems.restaurant);
+          sessionStorage.setItem("restaurantDetails",JSON.stringify(this.state.resData));
           this.props.history.push({
               pathname: "/checkout",
               state: { chcartItems: this.state.cartItems,
