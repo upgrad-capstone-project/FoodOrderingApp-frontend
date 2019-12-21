@@ -53,6 +53,7 @@ class Home extends Component{
         this.props.history.push({
           pathname: "/"
         });
+        window.location.reload();
     }
 
     searchRestaurantsByName = event => {        
