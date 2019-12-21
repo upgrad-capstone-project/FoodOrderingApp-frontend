@@ -47,6 +47,14 @@ class Home extends Component{
         );        
     };
 
+    //Logout action from drop down menu on profile icon
+    loginredirect = () => {
+        sessionStorage.clear();
+        this.props.history.push({
+          pathname: "/"
+        });
+    }
+
     searchRestaurantsByName = event => {        
         const searchValue = event.target.value;
         const requestUrl = this.props.baseUrl + "restaurant/name/" + searchValue;
@@ -76,7 +84,7 @@ class Home extends Component{
         const { classes } = this.props;
         return(
             <div>                
-                <Header baseUrl={this.props.baseUrl} searchRestaurantsByName = {this.searchRestaurantsByName} showSearch={true} history={this.props.history} />
+                <Header logoutHandler={this.loginredirect} baseUrl={this.props.baseUrl} searchRestaurantsByName = {this.searchRestaurantsByName} showSearch={true} history={this.props.history} />
 					<Grid container spacing={3} style={{padding:"1% 2%"}}>
                     {	
                      Utils.isAnyValueOfObjectUndefinedOrNullOrEmpty(this.state.imageData) ? <span>No restaurant with the given name</span>	
