@@ -106,7 +106,7 @@ const styles = muiBaseTheme => ({
   } 
 });
 
-const access_token =sessionStorage.getItem("access_token");
+const access_token =sessionStorage.getItem("access-token");
 const req_header = {
   "Accept": "application/json;charset=UTF-8",
   "authorization": "Bearer " +  access_token,
@@ -152,6 +152,7 @@ class Checkout extends Component {
         cityRequired : 'dispNone',
         pincode:"",
         pincodeRequired : 'dispNone',
+        stateRequired:'dispNone',
         saveAddressSuccess : false,
         saveAddressError : 'dispNone',
         saveAddressErrorMsg : '',
@@ -159,7 +160,8 @@ class Checkout extends Component {
         selAddress : "",        
         chcartItems:[],
         totalCartItemsValue:"",
-        resDetails:null
+        resDetails:null,
+      
     };
 }
 
@@ -273,13 +275,12 @@ this.state.selected === 0 ? this.setState({ stateRequired: "dispBlock" }) : this
 
 if(this.state.flatBldNo === "" || this.state.locality === "" || this.state.city === "" || this.state.pincode === ""  || this.state.selected === ""){return}
 
-let dataAddress = JSON.stringify({            
-    "city": this.state.city,
-    "flat_building_name": this.state.flatBldNo,
-    "locality": this.state.locality,
-    "pincode": this.state.pincode,
-    "state_uuid": this.state.selected       
-})
+let dataAddress =             
+    "flatBuildingName="+ this.state.flatBldNo +
+    "&locality="+ this.state.locality+
+    "&city="+this.state.city+
+    "&pincode="+this.state.pincode+
+    "&stateUuid="+ this.state.selected;  
 let that = this;
 let xhrSaveAddress = new XMLHttpRequest();
 xhrSaveAddress.addEventListener("readystatechange", function () {
@@ -289,17 +290,20 @@ xhrSaveAddress.addEventListener("readystatechange", function () {
           that.setState({saveAddressError : "dispBlock"});
           that.setState({"saveAddressErrorMsg":saveAddressResponse.message});            
         }else{
-          that.setState({ saveAddressSuccess: true });                
+          that.setState({ saveAddressSuccess: true });
+          window.location.reload();                
         }
+        
     }
 })
 
-xhrSaveAddress.open("POST", this.props.baseUrl + "address");
-xhrSaveAddress.setRequestHeader("Content-Type", "application/json");
-xhrSaveAddress.setRequestHeader("Cache-Control", "no-cache");
-xhrSaveAddress.setRequestHeader("Access-Control-Allow-Origin", "*");  
-xhrSaveAddress.send(dataAddress);  
+xhrSaveAddress.open("POST", this.props.baseUrl + "address"+"?"+dataAddress);
+xhrSaveAddress.setRequestHeader("authorization", "Bearer " + access_token);
+//xhrSaveAddress.setRequestHeader("Accept", "*/*");
+xhrSaveAddress.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+xhrSaveAddress.send (null);
 }
+
 addressChangeHandler = () => {
   this.setState({selAddress: sessionStorage.getItem("selected")});
 }
@@ -474,7 +478,7 @@ getStepContent= (step) => {
                           </FormControl><br/><br/>
                           <FormControl className={this.props.formControl}>
                             <Typography variant="subtitle1" color="error" className={this.state.saveAddressError} align="left">{this.state.saveAddressErrorMsg}</Typography>                                                              
-                          </FormControl>}<br /><br />
+                          </FormControl><br /><br />
                           <Button variant="contained" fullWidth={true} color="primary" onClick={this.addressClickHandler} className={this.props.formControl}>
                             SAVE ADDRESS
                           </Button>                                                        
