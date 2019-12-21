@@ -271,7 +271,7 @@ closeMenuHandler = () => {
 
 
     return (
-      <div>
+      <div className="topMain">
         <div className="header-main-container">
           <div className="header-logo-container">{logoToRender}</div>
           {this.props.showSearch &&
