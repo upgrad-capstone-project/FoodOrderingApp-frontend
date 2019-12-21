@@ -270,10 +270,12 @@ pinCodeChangeHandler = (e) => {
 this.setState({pincode : e.target.value })
 }
 
-
-
+//Called to save new address entered by user
 addressClickHandler = () =>    
 {
+
+  //Validating that no fields are empty
+  //If empty, "required" text is displayed
 this.state.flatBldNo === "" ? this.setState({ flatBldNoRequired: "dispBlock" }) : this.setState({ flatBldNoRequired: "dispNone" });      
 this.state.locality === "" ? this.setState({ localityRequired: "dispBlock" }) : this.setState({ localityRequired: "dispNone"});
 this.state.city === "" ? this.setState({ cityRequired: "dispBlock" }) : this.setState({ cityRequired: "dispNone" });
@@ -282,6 +284,7 @@ this.state.selected === 0 ? this.setState({ stateRequired: "dispBlock" }) : this
 
 if(this.state.flatBldNo === "" || this.state.locality === "" || this.state.city === "" || this.state.pincode === ""  || this.state.selected === ""){return}
 
+//Forming parameters to pass in the API Url
 let dataAddress =             
     "flatBuildingName="+ this.state.flatBldNo +
     "&locality="+ this.state.locality+
@@ -306,14 +309,19 @@ xhrSaveAddress.addEventListener("readystatechange", function () {
 
 xhrSaveAddress.open("POST", this.props.baseUrl + "address"+"?"+dataAddress);
 xhrSaveAddress.setRequestHeader("authorization", "Bearer " + access_token);
-//xhrSaveAddress.setRequestHeader("Accept", "*/*");
 xhrSaveAddress.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 xhrSaveAddress.send (null);
 }
 
+//Called when user selects an address
+/*
 addressChangeHandler = () => {
   this.setState({selAddress: sessionStorage.getItem("selected")});
 }
+*/
+
+//Placing order after entering all required values:Delivery and Payment details
+//Triggered from "Place Order" button
 checkoutHandler = () => {      
 let dataItem = [];      
 if(this.state.selAddress == ""){
@@ -536,6 +544,8 @@ getStepContent= (step) => {
   }
 }
 
+//Called when user clicks on "Next" to go to next step
+//Also called when user clicks on "Finish" after completing payment. This displays "Change" option and text
 handleNext = () => {
   if(this.state.onNewAddress===true){
     //do nothing
@@ -553,6 +563,8 @@ handleNext = () => {
 }
 };
 
+//Called when an addres is selected in "Delivery step"
+//Also when user clicks on the same address - This deselects the address
 onAddressClick=(address)=>{
   if(address.id===sessionStorage.getItem("selected")){
     sessionStorage.setItem("selected",null);
@@ -573,22 +585,27 @@ onAddressClick=(address)=>{
 
   };
 
+//Called to back one step Payment to Delivery
 handleBack = () => {
   this.setState(state => ({
   activeStep: this.state.activeStep - 1
   }));
   };
 
+//Called when "CHANGE" button is clicked
+//Goes to Delivery step and retains all data entered by user
 handleReset = () => {
 this.setState({
 activeStep: 0
 });
 };
 
+//To toggle between "Existing Address" and "New Address" tabs
 tabChangeHandler = (event, value) => {
 this.setState({value})
 };
 
+//Search keyword value passed on from Header - Restaurant name search box
 searchRestaurantsByName = event => {        
 const searchValue = event.target.value;    
 };
