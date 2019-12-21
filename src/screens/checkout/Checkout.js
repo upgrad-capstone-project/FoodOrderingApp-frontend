@@ -75,7 +75,7 @@ const styles = muiBaseTheme => ({
     marginTop:"10px",
     marginBottom:"10px",
     marginLeft:"auto",
-    width:"10px"
+    width:"15px"
   },
   card: {
     maxWidth: 250,        
@@ -273,7 +273,7 @@ this.setState({pincode : e.target.value })
 //Called to save new address entered by user
 addressClickHandler = () =>    
 {
-
+this.setState({saveAddressError:"dispNone"})
   //Validating that no fields are empty
   //If empty, "required" text is displayed
 this.state.flatBldNo === "" ? this.setState({ flatBldNoRequired: "dispBlock" }) : this.setState({ flatBldNoRequired: "dispNone" });      
@@ -298,10 +298,10 @@ xhrSaveAddress.addEventListener("readystatechange", function () {
         let saveAddressResponse = JSON.parse(this.response);
         if(saveAddressResponse.code === 'SAR-002' || saveAddressResponse.code === 'SAR-002'){
           that.setState({saveAddressError : "dispBlock"});
-          that.setState({"saveAddressErrorMsg":saveAddressResponse.message});            
+          that.setState({saveAddressErrorMsg:saveAddressResponse.message});            
         }else{
           that.setState({ saveAddressSuccess: true });
-          window.location.reload();                
+          window.location.reload();       
         }
         
     }
@@ -436,7 +436,7 @@ getStepContent= (step) => {
             {exisAddress.pincode} <br />
           </Typography>          
           <IconButton className="selectAddresscircle" aria-label="Select Address" onClick={()=>this.onAddressClick(exisAddress)}>            
-                      {exisAddress.id===this.state.selected ? <CheckCircle style={{color:"green"}} />:<CheckCircle style={{color:"#999999"}} />}      
+                      {exisAddress.id===sessionStorage.getItem("selected") ? <CheckCircle style={{color:"green"}} />:<CheckCircle style={{color:"#999999"}} />}      
           </IconButton>          
         </CardContent>
         
@@ -661,7 +661,7 @@ render(){
         </Grid>
         <Grid  item xs={8} md={3}>
         <Card >        
-            <CardHeader title="Summary" titleTypographyProps={{ variant: 'h4' }} />
+            <CardHeader style={{fontWeight:"bolder"}} title="Summary" titleTypographyProps={{ variant: 'h4' }} />
             <div style={{marginLeft:"3%",fontSize:"200%", color:"grey",fontWeight:"bold"}}>{this.state.resDetails.restaurant_name}</div>
             <CardContent>
             <Grid
@@ -672,7 +672,7 @@ render(){
     >
       {this.props.history.location.state.chcartItems.itemList.map((item, index) => {
         return(
-               <Grid container item xs={12} spacing={1} key={index}>
+               <Grid style={{marginLeft:"3%", fontSize:"18px"}}container item xs={12} spacing={1} key={index}>
                <Grid item xs={1}>
                    {item.item.item_type === 'VEG' ?  <FiberManualRecord style={{ color: "#008000" }}/> : <FiberManualRecord style={{ color: "#b20505" }}/>}
                </Grid>
@@ -691,13 +691,14 @@ render(){
                })
                }
                  <Grid container item xs={12}>
-                 <Grid className="tileContainer" item xs={10} >                  
+                 <Grid className="tileContainer" item xs={11} >                  
                  <Divider className={this.props.divider} variant="middle" /> 
+                 <br/>
                  </Grid>                                           
                  </Grid>
                     <Grid container item xs={15} >
                         <Grid item xs={5}>
-                            <Typography style={{marginLeft:"3%",color:"grey",fontWeight:"bold"}} variant="h5">
+                            <Typography style={{marginLeft:"14%",color:"grey",fontWeight:"bold"}} variant="h5">
                             Net Amount
                             </Typography>
                         </Grid>
@@ -712,7 +713,7 @@ render(){
                 </Grid>                
             </CardContent>
             <CardActions >
-                <Button variant="contained" color="primary" className={this.props.classes.orderButton} onClick={this.props.checkoutHandler}>
+                <Button style={{marginLeft:"7%"}} variant="contained" color="primary" className={this.props.classes.orderButton} onClick={this.props.checkoutHandler}>
                     Place Order
                 </Button>
             </CardActions>
