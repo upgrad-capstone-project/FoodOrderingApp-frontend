@@ -396,18 +396,18 @@ getStepContent= (step) => {
                       return (<GridListTile className={exisAddress.id===sessionStorage.getItem("selected")?"selectedAddress":"gridListTile"} id={exisAddress.id} style={{padding: '5px'}}>
                        <div className="App">
       <Card className={this.props.card} key={exisAddress.id} >
-        <CardContent className={this.props.content}>
+        <CardContent className="addressCard">
           <Typography
             className={"MuiTypography--heading"}
             variant={"h6"}
             gutterBottom
           >
-            {exisAddress.flat_building_name} {exisAddress.locality} <br />
+            {exisAddress.flat_building_name} <br /> {exisAddress.locality} <br />
             {exisAddress.city} <br />
             {exisAddress.state.state_name} <br />
             {exisAddress.pincode} <br />
           </Typography>          
-          <Divider className={this.props.divider} light /> <IconButton aria-label="Select Address" onClick={()=>this.onAddressClick(exisAddress)}>            
+          <IconButton className="selectAddresscircle" aria-label="Select Address" onClick={()=>this.onAddressClick(exisAddress)}>            
                       {exisAddress.id===this.state.selected ? <CheckCircle style={{color:"green"}} />:<CheckCircle style={{color:"#999999"}} />}      
           </IconButton>          
         </CardContent>

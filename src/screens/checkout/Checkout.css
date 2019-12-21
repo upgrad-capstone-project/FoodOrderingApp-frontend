@@ -2,19 +2,30 @@
     display: flex;
     flex-wrap:nowrap !important;
     transform: translateZ(0);
-    height:300px;
+    height:400px;
     width: 890px !important;
+    
 }
 
 .gridListTile{
     margin-top: 1%;
     width:35% !important;
     height:90% !important;
+    margin-left: 1%;
+    box-shadow:2px -3px 6px 3px grey;
 }
 
 .selectedAddress{
     margin-top: 1%;
     width:35% !important;
-    box-shadow:3px -3px 6px 1px #f50057;
     height:90% !important;
+    margin-left: 1%;
+    box-shadow:2px -3px 6px 3px #f50057;
+}
+.selectAddresscircle{
+margin-left: 90% !important;
+}
+.addressCard{
+    height:290px !important;
+    width:40%;
 }
