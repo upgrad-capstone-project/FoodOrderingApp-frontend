@@ -439,7 +439,6 @@ getStepContent= (step) => {
                       {exisAddress.id===sessionStorage.getItem("selected") ? <CheckCircle style={{color:"green"}} />:<CheckCircle style={{color:"#999999"}} />}      
           </IconButton>          
         </CardContent>
-        
       </Card>
     </div>
                       </GridListTile>
