@@ -13,7 +13,13 @@ import StepContent from "@material-ui/core/StepContent";
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Button from "@material-ui/core/Button";
+import GridList from '@material-ui/core/GridList';
+import {GridListTile} from '@material-ui/core';
 import Typography from "@material-ui/core/Typography";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Divider from "@material-ui/core/Divider";
+import { CardActions } from "@material-ui/core";
 import { FormControl, InputLabel, Input, Select, AppBar } from "@material-ui/core";
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Radio from '@material-ui/core/Radio';
@@ -21,11 +27,11 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import CustomerAddress from './CustomerAddress';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import SummaryCard from './SummaryCard';
+import CheckCircle from '@material-ui/icons/CheckCircle'
 
 const styles = muiBaseTheme => ({
   root: {
@@ -66,6 +72,33 @@ const styles = muiBaseTheme => ({
     marginTop:"10px",
     marginBottom:"10px",
     marginLeft:"auto"
+  },
+  card: {
+    maxWidth: 250,        
+    boxShadow: "3px -3px 0px 6px rgba(255,0,102,1)",    
+  },
+  media: {
+    height:0,
+    paddingTop: "56.25%"
+  },
+  content: {
+    textAlign: "left"    
+  },
+  divider: {
+    margin: `${muiBaseTheme.spacing.unit * 3}px 0`
+  },
+  heading: {
+    fontWeight: "bold"
+  },
+  subheading: {
+    lineHeight: 1.8
+  },
+  CardAction:{
+    marginLeft : "auto",
+    flex:1
+  },
+  IconButton:{
+    color:"#009999"
   } 
 });
 
@@ -76,8 +109,6 @@ const req_header = {
   "Access-Control-Allow-Origin" : "*",
   "Content-Type": "application/json" 
 }
-
-
 
 function TabContainer(props) {
   return (
@@ -139,27 +170,18 @@ renderOptions() {
 getAddresses(baseURL, access_token){      
 let data = null   
 let xhrAddresses = new XMLHttpRequest();
+access_token = sessionStorage.getItem("access-token");
 let that = this;
 let cat = "";
 xhrAddresses.addEventListener("readystatechange", function () {  
     if (this.readyState === 4) {                                      
           let address = JSON.parse(xhrAddresses.response);
           that.setState({dataAddress: address});
-          alert(address);
-          alert("state"+that.state.dataAddress);
-          if(address===that.state.dataAddress){
-             cat = "same";
-          } else {
-             cat = "dam";
-          }
-          alert(cat);
     }
 })
 xhrAddresses.open("GET", baseURL + "address/customer");
 xhrAddresses.setRequestHeader("authorization", "Bearer " + access_token); //sessionStorage.getItem('access-token')
-xhrAddresses.setRequestHeader("Content-Type", "application/json");
 xhrAddresses.setRequestHeader("Cache-Control", "no-cache");
-xhrAddresses.setRequestHeader("Access-Control-Allow-Origin", "*");  
 xhrAddresses.send(data);
 }
 
@@ -203,6 +225,8 @@ onStateChange = (event) => {
   this.setState({selected:event.target.value})
 };
 
+
+
 componentDidMount(){
 this.getAddresses(baseURL, access_token);
 this.getPaymentMethods();
@@ -226,6 +250,9 @@ this.setState({city : e.target.value })
 pinCodeChangeHandler = (e) => {
 this.setState({pincode : e.target.value })
 }
+
+
+
 addressClickHandler = () =>    
 {
 this.state.flatBldNo === "" ? this.setState({ flatBldNoRequired: "dispBlock" }) : this.setState({ flatBldNoRequired: "dispNone" });      
@@ -343,14 +370,35 @@ getStepContent= (step) => {
                     className={this.props.root}
                     >
                       <Grid container spacing={10}>
-                      <div>sim</div>
-                     {(this.state.dataAddress.addresses|| []).map((exisAddress, idx) => {
-                      return ( 
-                            <Grid item xs={4} key={exisAddress.id}>
-                              <div>sim</div>
-                              <CustomerAddress address={exisAddress} key={exisAddress.id + "_" + idx} changeAddress={this.addressChangeHandler}/>                                 
-                            </Grid>                                       
-                            );})}
+                      <GridList cellHeight={"auto"} className="gridListMain">
+                      {(this.state.dataAddress.addresses || []).map((exisAddress,index) => {
+                      return (<GridListTile id={exisAddress.id}style={{padding: '20px'}}>
+                       <div className="App">
+      <Card className={this.props.card} key={exisAddress.id} >
+        <CardContent className={this.props.content}>
+          <Typography
+            className={"MuiTypography--heading"}
+            variant={"h6"}
+            gutterBottom
+          >
+            {exisAddress.flat_building_name} {exisAddress.locality} <br />
+            {exisAddress.city} <br />
+            {exisAddress.state.state_name} <br />
+            {exisAddress.pincode} <br />
+          </Typography>          
+          <Divider className={this.props.divider} light />          
+        </CardContent>
+        <CardActions disableSpacing className={this.props.CardAction}>
+          <IconButton aria-label="Select Address" onClick={()=>this.onAddressClick(exisAddress)}>            
+                      {exisAddress.id===this.state.selected ? <CheckCircle style={{color:"green"}} />:<CheckCircle style={{color:"#999999"}} />}      
+          </IconButton>
+        </CardActions>
+      </Card>
+    </div>
+                      </GridListTile>
+            );
+          })}
+                      </GridList>  
                     </Grid>
                   </Grid>
                   </TabContainer>
@@ -455,11 +503,31 @@ activeStep: this.state.activeStep + 1
 }));
 };
 
+onAddressClick=(address)=>{
+  if(address.id===sessionStorage.getItem("selected")){
+    sessionStorage.setItem("selected",null);
+    sessionStorage.setItem("selAddress",null);
+    this.setState(state=>({
+      selected:null,
+      selAddress:null
+    }));
+  } else {
+    sessionStorage.setItem("selected",address.id);
+    sessionStorage.setItem("selAddress",JSON.stringify(address));
+    this.setState(state=>({
+      selected:address.id,
+      selAddress:address
+    }));
+
+  }
+
+  };
+
 handleBack = () => {
-this.setState(state => ({
-activeStep: this.state.activeStep - 1
-}));
-};
+  this.setState(state => ({
+  activeStep: this.state.activeStep - 1
+  }));
+  };
 
 handleReset = () => {
 this.setState({
@@ -514,7 +582,7 @@ render(){
           </div>
         </Grid>
         <Grid item xs={12} md={4}>
-          <SummaryCard className={classes.summaryCard} totalCartItemsValue={this.state.totalCartItemsValue} cartItems={this.state.chcartItems} checkoutHandler = {this.checkoutHandler}
+          <SummaryCard className={classes.summaryCard} totalCartItemsValue={this.state.totalCartItemsValue} cartItems={this.state.chcartItems} onClick = {this.checkoutHandler}
           key="test"
           index="1"
           classes={classes}    

@@ -1,0 +1,6 @@
+.gridListMain{
+    display: flex;
+    flex-wrap:nowrap;
+    transform: translateZ(0);
+    width: 600px;
+}
