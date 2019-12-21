@@ -176,15 +176,24 @@ class Header extends Component {
     
   }
   signUpClickHandler = () => {
-    let that = this;
-    let dataSignUp = JSON.stringify({
-      "contact_number": this.state.mobile,
-      "email_address": this.state.email,
-      "first_name": this.state.firstname,
-      "last_name": this.state.lastname,
-      "password": this.state.passwordReg
-    })
 
+    this.state.email === "" ? this.setState({ emailRequired: "dispBlock" }) : this.setState({ emailRequired: "dispNone" });
+    this.state.firstname === "" ? this.setState({ firstnameRequired: "dispBlock" }) : this.setState({ firstnameRequired: "dispNone" });
+   // this.state.lastname === "" ? this.setState({ lastnameRequired: "dispBlock" }) : this.setState({ lastnameRequired: "dispNone" });
+    this.state.mobile === "" ? this.setState({ mobileRequired: "dispBlock" }) : this.setState({ mobileRequired: "dispNone" });
+    this.state.passwordReg === "" ? this.setState({ passwordRegRequired: "dispBlock" }) : this.setState({ passwordRegRequired: "dispNone" });
+    if (this.state.email === "" || this.state.firstname === "" || this.state.mobile === "" || this.state.passwordReg === "") 
+    { return; }
+    
+  
+    let that = this;
+    let dataSignUp = 
+    "firstName="+ this.state.firstname+
+    "&lastName="+ this.state.lastname+
+    "&emailAddress="+ this.state.email+
+      "&contactNumber="+ this.state.mobile+
+      "&password="+ this.state.passwordReg;
+    
     let xhrSignup = new XMLHttpRequest();
     xhrSignup.addEventListener("readystatechange", function () {
       if (this.readyState === 4) {
@@ -203,11 +212,11 @@ class Header extends Component {
       }
     })
 
-    xhrSignup.open("POST", this.props.baseUrl + "customer/signup");
+    xhrSignup.open("POST", this.props.baseUrl + "customer/signup"+"?"+dataSignUp);
     xhrSignup.setRequestHeader("Content-Type", "application/json");
     xhrSignup.setRequestHeader("Cache-Control", "no-cache");
     xhrSignup.setRequestHeader("Access-Control-Allow-Origin", "*");
-    xhrSignup.send(dataSignUp);
+    xhrSignup.send(null);
   }
 
   openModalHandler = () => {
@@ -343,7 +352,7 @@ closeMenuHandler = () => {
                 <Input id="firstname" type="text" onChange={this.inputFirstnameChangeHandler} value={this.state.firstname} />
                 <FormHelperText className={this.state.firstnameRequired}><span className="red">required</span></FormHelperText>
               </FormControl><br /><br />
-              <FormControl required className={classes.formControl}>
+              <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="lastname">Last Name</InputLabel>
                 <Input id="lastname" type="text" onChange={this.inputLastnameChangeHandler} value={this.state.lastname} />
                 <FormHelperText className={this.state.lastnameRequired}><span className="red">required</span></FormHelperText>
