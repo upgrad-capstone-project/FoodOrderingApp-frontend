@@ -162,7 +162,8 @@ class Checkout extends Component {
         chcartItems:[],
         totalCartItemsValue:"",
         resDetails:null,
-        onNewAddress:false
+        onNewAddress:false,
+        changeOption:"dispNone"
     };
 }
 
@@ -173,7 +174,6 @@ renderOptions() {
           label="Select a country"
           value={dt.country_code}
          key={i} name={dt.country_name}>{dt.country_name}</MenuItem>
-      
     );
   });
 }
@@ -382,7 +382,27 @@ getStepContent= (step) => {
               </Tabs>
               </AppBar>
               {this.state.value === 0 && 
+              
                   <TabContainer>
+                    {this.state.dataAddress.addresses===null?
+                    <Grid
+                    container
+                    direction="row"
+                    justify="space-between"
+                    alignItems="center"
+                    className={this.props.root}
+                    >
+                      <Grid container spacing={5}>
+                      <GridList cellHeight={"auto"} className="gridListMain">
+                  <GridListTile style={{width:"100%",marginTop:"4%"}} >
+                    <span style={{fontSize:"20px"}}>There are no saved addresses! You can save an address using the "New Address" tab or using your "Profile" Menu</span>
+                      </GridListTile>
+           
+                      </GridList>  
+                    </Grid>
+                  </Grid>
+                    
+                    :
                   <Grid
                     container
                     direction="row"
@@ -398,8 +418,8 @@ getStepContent= (step) => {
       <Card className={this.props.card} key={exisAddress.id} >
         <CardContent className="addressCard">
           <Typography
-            className={"MuiTypography--heading"}
-            variant={"h6"}
+          style={{width:"100%"}}
+                       variant={"h6"}
             gutterBottom
           >
             {exisAddress.flat_building_name} <br /> {exisAddress.locality} <br />
@@ -419,7 +439,7 @@ getStepContent= (step) => {
           })}
                       </GridList>  
                     </Grid>
-                  </Grid>
+                  </Grid>}
                   </TabContainer>
               },
               {this.state.value === 1 && 
@@ -520,9 +540,16 @@ handleNext = () => {
   if(this.state.onNewAddress===true){
     //do nothing
   } else {
-this.setState(state => ({
-activeStep: this.state.activeStep + 1
-}));
+    if(this.state.activeStep===1){
+      this.setState(state => ({
+        activeStep: this.state.activeStep + 1,
+        changeOption:"dispText"
+        }));
+    } else {
+  this.setState(state => ({
+    activeStep: this.state.activeStep + 1,
+    changeOption:"dispNone"
+    }));}
 }
 };
 
@@ -589,7 +616,7 @@ render(){
                       <Typography component={'div'}>{this.getStepContent(activeStep)}</Typography>
                       <div>
                           <div>
-                          <Button disabled={activeStep === 0} onClick={this.handleBack} className={classes.button}>
+                          <Button style={{fontSize:"20px"}}disabled={activeStep === 0} onClick={this.handleBack} className={classes.button}>
                               Back
                           </Button>
                           <Button variant="contained" color="primary" onClick={this.handleNext} className={classes.button}>
@@ -601,7 +628,10 @@ render(){
                   </Step>
                 );
               })}
-            </Stepper>                                    
+            </Stepper><div className={this.state.changeOption}>View the summary and place your order now!<br/>
+            <div ><Button style={{fontSize:"20px",marginLeft:"2%"}} onClick={this.handleReset} className={classes.button}>
+                              CHANGE
+                          </Button></div></div>                           
           </div>
         </Grid>
         <Grid  item xs={8} md={3}>
