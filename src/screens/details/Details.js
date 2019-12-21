@@ -13,20 +13,14 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Badge from '@material-ui/core/Badge';
 import Divider from '@material-ui/core/Divider';
 import Button from "@material-ui/core/Button";
+import ButtonBase from '@material-ui/core/ButtonBase';
 import Snackbar from '@material-ui/core/Snackbar';
 import '../../assets/font-awesome-4.7.0/css/font-awesome.min.css';
 import './Details.css';
 import { IconButton } from "@material-ui/core";
 
 const styles = theme => ({
-  paper_big: {
-    height:"auto",
-    width:"100%",
-    backgroundColor: "rgb(223,223,223)",
-    padding: 5,
-    outline: "none",
 
-  }
 });
 
 
@@ -214,33 +208,43 @@ render(){
 return(<div className="mainDiv">
 
    <Header logoutHandler={this.loginredirect} baseUrl= "http://localhost:8080/api/"/><div className={classes.paper_big}>
-  <div  className="resMainDiv"  >
-    <div  className="divImage" >
-      <div className="imageDisplay">
-      <Avatar id="imageDisplay" variant="square" src={this.state.resData.photo_URL}></Avatar>
+   <div className="resMainDiv">
+  <div style={{marginLeft:"7%"}}>
+  <Grid item xs={3} sm={5} >
+      <div >
+      <ButtonBase className="image"disableRipple={true}> 
+      <img id="imageDisplay" src={this.state.resData.photo_URL}/>
+      </ButtonBase>
       </div>
+    </Grid>
     </div>
-    <div className="resDetails" >
-      <div className="resName">{this.state.resData.restaurant_name}</div><br/> 
-      <div id="LocalityCity"> {this.state.locality}-{this.state.city}</div><br/>
-      <div>
+    <Grid item xs={8} container >
+    <Grid item xs container direction="column" className="screenSize" spacing={2} >
+    <Grid item xs>
+      <Typography className="resName">{this.state.resData.restaurant_name}</Typography>
+      <Typography id="LocalityCity"> {this.state.locality}-{this.state.city}</Typography><br/>
+     
       {(this.state.resData.categories || []).map((category, index) => {
-            return (<span key={"span" + category.id}
-            className="categories ">{category.category_name}, </span>
+            return (<Typography key={"span" + category.id} display="inline" 
+            className="categories " variant="h6">{category.category_name}, </Typography>
             );
-          })}</div>
-          <br/><br/>
-          <div><span className="cusRating"><i className="fa fa-star"></i> {this.state.resData.customer_rating}</span>
-          <span style={{display:"block",color:"grey",fontSize:20}}>AVERAGE RATING BY</span>
-          <span style={{color:"grey",fontSize:20}}><span style={{fontWeight:"bold",color:"grey",fontSize:20}}>{this.state.resData.number_customers_rated} </span>CUSTOMERS</span>
-          </div>
-        </div>
-        <div className="cost4TwoDiv" >
-        <div id="bottom-left"><span className="cusRating"><i className="fa fa-inr"></i> {this.state.resData.average_price}</span>
-          <span style={{display:"block",color:"grey",fontSize:20}}>AVERAGE COST FOR</span>
-          <span style={{color:"grey",fontSize:20}}>TWO PEOPLE</span>
-          </div>
-        </div>
+          })}</Grid>
+          <Grid item container spacing={4}>
+              <Grid item xs={5}  >
+              <span style={{fontWeight:"bolder"}} className="cusRating"><i className="fa fa-star"></i> {this.state.resData.customer_rating}</span>
+              <span style={{display:"block",color:"grey",fontSize:20}}>AVERAGE RATING BY</span>
+              <span style={{color:"grey",fontSize:20}}><span style={{fontWeight:"bolder",color:"grey",fontSize:20}}>{this.state.resData.number_customers_rated} </span>CUSTOMERS</span>
+            
+              </Grid>
+              <Grid item xs={5}>
+            <span style={{fontWeight:"bolder"}} className="cusRating"><i className="fa fa-inr"></i> {this.state.resData.average_price}</span>
+              <span style={{display:"block",color:"grey",fontSize:20}}>AVERAGE COST FOR</span>
+              <span style={{color:"grey",fontSize:20}}>TWO PEOPLE</span>
+        
+            </Grid>
+        </Grid>
+        </Grid>
+        </Grid>
        </div> 
 </div>
 <div className="orderFunction">
