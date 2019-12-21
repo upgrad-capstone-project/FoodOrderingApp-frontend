@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ReactDOM from 'react-dom'
 import Header from "../../common/header/Header";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from 'prop-types';
@@ -231,6 +232,8 @@ componentDidMount(){
 this.getAddresses(baseURL, access_token);
 this.getPaymentMethods();
 this.getStates();
+alert(this.state.totalCartItemsValue);
+alert(this.state.chcartItems);
 }
 
 handleChange = (event) => {
@@ -581,12 +584,10 @@ render(){
             </Stepper>                                    
           </div>
         </Grid>
-        <Grid item xs={12} md={4}>
-          <SummaryCard className={classes.summaryCard} totalCartItemsValue={this.state.totalCartItemsValue} cartItems={this.state.chcartItems} onClick = {this.checkoutHandler}
-          key="test"
-          index="1"
-          classes={classes}    
-          />
+        <Grid  item xs={12} md={4}>
+        <div id="summaryDisplay">
+         <SummaryCard classes={classes} totalCartItemsValue={this.state.totalCartItemsValue} cartItems={this.state.chcartItems} />
+          </div>
         </Grid>
       </Grid>
       <Snackbar
@@ -617,7 +618,6 @@ render(){
   );
 }
 }
-
 
 Checkout.propTypes = {
   classes: PropTypes.object,
