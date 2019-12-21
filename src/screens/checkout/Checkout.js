@@ -35,6 +35,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import SummaryCard from './SummaryCard';
 import CheckCircle from '@material-ui/icons/CheckCircle'
+import './Checkout.css';
 
 const styles = muiBaseTheme => ({
   root: {
@@ -236,6 +237,7 @@ this.getStates();
 componentWillMount(){
 this.setState({chcartItems:this.props.history.location.state.chcartItems});
 this.setState({totalCartItemsValue:this.props.history.location.state.totalCartItemsValue});
+alert(this.props.history.location.state.chcartItems.restaurant);
 }
 
 handleChange = (event) => {
@@ -555,7 +557,7 @@ render(){
   return (
     <div>
       <Header showSearch = {false} searchRestaurantsByName = {this.searchRestaurantsByName}/>
-      <Grid container spacing={3}>
+      <Grid container spacing={1}>
         <Grid item xs={12} md={8}>
           <div className={classes.root}>
             <Stepper activeStep={activeStep} orientation="vertical">
@@ -586,58 +588,59 @@ render(){
             </Stepper>                                    
           </div>
         </Grid>
-        <Grid  item xs={12} md={4}>
+        <Grid  item xs={8} md={3}>
         <Card>        
-            <CardHeader title="Summary" />
+            <CardHeader title="Summary" titleTypographyProps={{ variant: 'h4' }} />
+            <div>{this.props.history.location.state.chcartItems.restaurant}</div>
             <CardContent>
             <Grid
                 container
                 direction="row"
                 justify="space-between"
                 alignItems="center"
-    ><div>{this.props.history.location.state.chcartItems.itemList.map((item, index) => {
+    >
+      {this.props.history.location.state.chcartItems.itemList.map((item, index) => {
         return(
                <Grid container item xs={12} spacing={1} key={index}>
                <Grid item xs={1}>
                    {item.item.item_type === 'VEG' ?  <FiberManualRecord style={{ color: "#008000" }}/> : <FiberManualRecord style={{ color: "#b20505" }}/>}
                </Grid>
-               <Grid item xs={5}>
-                   
+               <Grid item xs={6}>
                    {item.item.item_name}                        
                </Grid>
-               <Grid item xs={3}>
-                   {item.qty}                            
+               <Grid item xs={1}>
+                   {item.quantity}                      
                </Grid>
-               <Grid item xs={3}>
+               <Grid item xs={1}>               
+               </Grid>
+               <Grid  item xs={2}>
                    {item.item.price}                            
                </Grid>
                </Grid>);
                })
-               }     </div>   
+               }       
                  <Grid container item xs={12}>
-                 <Grid item xs={12}>                    
+                 <Grid item xs={15}>                    
                     <Divider variant="middle" className={this.props.classes.divider}/>
                  </Grid>                                           
                  </Grid>
-                    
-                    <Grid container item xs={12} spacing={3}>
-                        <Grid item xs={1}></Grid>
+                    <Grid container item xs={15} >
                         <Grid item xs={5}>
                             <Typography variant="h6">
                             Net Amount
                             </Typography>
                         </Grid>
-                        <Grid item xs={3}>                            
+                        <Grid item xs={4}>                            
                         </Grid>
                         <Grid item xs={3}>
-                        <Typography variant="h6">                                                       
+                        <Typography  variant="h6">                                                       
                             {this.props.history.location.state.totalCartItemsValue}
                         </Typography>
                         </Grid>
                     </Grid>
                 </Grid>                
             </CardContent>
-            <CardActions>
+            <CardActions >
                 <Button variant="contained" color="primary" className={this.props.classes.orderButton} onClick={this.props.checkoutHandler}>
                     Place Order
                 </Button>

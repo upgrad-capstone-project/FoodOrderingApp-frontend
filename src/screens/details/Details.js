@@ -81,9 +81,8 @@ class Details extends Component {
 
 addToCart = (item, category) => {
   this.snackBarHandler("Item added to cart!");
-  const addedCartItem = this.state.cartItems || { restaurant : this.state.restaurant, itemList: [], totalPrice: 0, totalItemCount: 0};
+  const addedCartItem = this.state.cartItems || { restaurant : this.state.resData, itemList: [], totalPrice: 0, totalItemCount: 0};
   let findIndex = null;
-
   // Finding item from List which already added
    let findItem = addedCartItem.itemList.find((cartItem, index) => {
        if(cartItem.item.id === item.id) {
@@ -191,6 +190,8 @@ checkOutCart = (e) => {
           return;
       }else{
           // redirect to checkout page and passing cart items to checkout page
+          
+          alert("restaurantgointocheck: " +this.state.cartItems.restaurant);
           this.props.history.push({
               pathname: "/checkout",
               state: { chcartItems: this.state.cartItems,
