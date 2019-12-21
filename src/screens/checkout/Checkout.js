@@ -162,7 +162,7 @@ class Checkout extends Component {
         chcartItems:[],
         totalCartItemsValue:"",
         resDetails:null,
-      
+        onNewAddress:false
     };
 }
 
@@ -194,6 +194,7 @@ xhrAddresses.setRequestHeader("authorization", "Bearer " + access_token); //sess
 xhrAddresses.setRequestHeader("Cache-Control", "no-cache");
 xhrAddresses.send(data);
 }
+
 
 getPaymentMethods(){
   let data = null;
@@ -245,7 +246,12 @@ this.setState({chcartItems:this.props.history.location.state.chcartItems});
 this.setState({totalCartItemsValue:this.props.history.location.state.totalCartItemsValue});
 this.setState({resDetails:JSON.parse(sessionStorage.getItem("restaurantDetails"))});
 }
-
+onExistingAddressTab=()=>{
+  this.setState({onNewAddress:false});
+}
+onNewAddressTab=()=>{
+this.setState({onNewAddress:true});
+}
 handleChange = (event) => {
 this.setState({paymentMethod:event.target.value})
 sessionStorage.setItem("paymentMethod", event.target.value);
@@ -371,8 +377,8 @@ getStepContent= (step) => {
           <div>
               <AppBar position={"static"}>
               <Tabs className={this.props.tabs} value={this.state.value} onChange={this.tabChangeHandler}>
-                  <Tab label="Existing Address" />
-                  <Tab label="New Address" />
+                  <Tab onClick={this.onExistingAddressTab} label="Existing Address" />
+                  <Tab onClick={this.onNewAddressTab} label="New Address" />
               </Tabs>
               </AppBar>
               {this.state.value === 0 && 
@@ -480,7 +486,7 @@ getStepContent= (step) => {
                           <FormControl className={this.props.formControl}>
                             <Typography variant="subtitle1" color="error" className={this.state.saveAddressError} align="left">{this.state.saveAddressErrorMsg}</Typography>                                                              
                           </FormControl><br /><br />
-                          <Button variant="contained" fullWidth={true} color="primary" onClick={this.addressClickHandler} className={this.props.formControl}>
+                          <Button variant="contained" style={{width:"20%",height:"40px"}} color="secondary" onClick={this.addressClickHandler} className={this.props.formControl}>
                             SAVE ADDRESS
                           </Button>                                                        
                       </div>
@@ -513,9 +519,13 @@ getStepContent= (step) => {
 }
 
 handleNext = () => {
+  if(this.state.onNewAddress===true){
+    //do nothing
+  } else {
 this.setState(state => ({
 activeStep: this.state.activeStep + 1
 }));
+}
 };
 
 onAddressClick=(address)=>{
