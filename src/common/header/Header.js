@@ -23,6 +23,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import Menu from '@material-ui/core/Menu';
 
 
 const customStyles = {
@@ -92,7 +93,8 @@ class Header extends Component {
       showUserProfileDropDown: false,
       open: false,
       anchorEl: null,
-      snackBarOpen: false
+      snackBarOpen: false,
+      menuIsOpen:false
     }
   }
 
@@ -222,12 +224,19 @@ class Header extends Component {
     this.setState({ snackBarOpen: true })
   }
 
-  profileIconClickHandler = (e) => {
-    this.setState({
-      showUserProfileDropDown: !this.state.showUserProfileDropDown,
-      anchorEl: e.currentTarget
-    });
-  };
+// Opening menu that contains the profile and logout link
+openMenuHandler = () => {
+  this.setState({
+      menuIsOpen: true,
+  });
+}
+
+// Opening menu that contains the profile and logout link
+closeMenuHandler = () => {
+  this.setState({
+      menuIsOpen: false
+  });
+}
 
   handleClose = () => {
     this.setState({
@@ -282,19 +291,22 @@ class Header extends Component {
             </div>
             :
             <div className="login-button">
-              <Button variant="contained" color="default" onClick={this.profileIconClickHandler}><AccountCircle/> {this.state.firstname}</Button>
-              {this.state.showUserProfileDropDown ? (
-                <Popper open={this.state.open} anchorEl={this.state.anchorEl} keepMounted >
-                  <Paper className={classes.paper}>
-                    <ClickAwayListener onClickAway={this.handleClose}>
-                      <MenuList>
-                        <MenuItem onClick={this.handleClose}><Link to="/profile" style={{ textDecoration: 'none', color: "black" }}>My Profile</Link></MenuItem>
+              <Button variant="contained" color="default" onClick={this.openMenuHandler}><AccountCircle/> {this.state.firstname}</Button>
+              <div>
+              
+                    
+                      <Menu
+                      id="simple-menu"
+                      keepMounted
+                      open={this.state.menuIsOpen}
+                      onClose={this.closeMenuHandler}
+                      anchorReference="anchorPosition"
+                      anchorPosition={{ top: 53, left:2000}}>
+                        <MenuItem onClick={this.handleClose}><Link to="/profile" style={{ textDecoration: 'none', color: "black" }}>My Profile</Link></MenuItem><hr />
                         <MenuItem onClick={this.logoutClickHandler}>Logout</MenuItem>
-                      </MenuList>
-                    </ClickAwayListener>
-                  </Paper>
-                </Popper>
-              ) : null}
+                      </Menu>
+      
+            </div>
             </div>}
         </div>
         <Modal
