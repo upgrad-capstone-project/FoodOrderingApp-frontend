@@ -282,7 +282,7 @@ return(<div className="mainDiv">
 </div>
 <div className="myCart"><Card className="cardRoot">
         <CardContent className="cardContentRoot">
-        <Badge badgeContent={4} color="primary">
+        <Badge badgeContent={this.state.cartItems.totalItemCount===0?'0':this.state.cartItems.totalItemCount} color="primary">
 <ShoppingCartIcon/></Badge><span style={{fontWeight:"bold",fontSize:"30px",marginLeft:"6%"}}>My Cart</span><br/>
 <div>                                            {(this.state.cartItems.itemList || []).map((cartItem, index) => (
                   <Grid item xs container key={cartItem.item.id} >
