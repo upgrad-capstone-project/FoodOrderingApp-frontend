@@ -81,7 +81,7 @@ class Home extends Component{
                     {	
                      Utils.isAnyValueOfObjectUndefinedOrNullOrEmpty(this.state.imageData) ? <span>No restaurant with the given name</span>	
                      :	(		
-                        this.state.imageData.map((resItem,index) =>
+                        (this.state.imageData || []).map((resItem,index) =>
                             <Grid item xs={12} sm={3} key={index}>
                                 <RestaurantCard
                                     resId = {resItem.id}
