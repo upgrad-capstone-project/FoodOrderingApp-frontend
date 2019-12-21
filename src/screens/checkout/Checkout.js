@@ -74,7 +74,8 @@ const styles = muiBaseTheme => ({
   divider:{
     marginTop:"10px",
     marginBottom:"10px",
-    marginLeft:"auto"
+    marginLeft:"auto",
+    width:"10px"
   },
   card: {
     maxWidth: 250,        
@@ -591,7 +592,7 @@ render(){
           </div>
         </Grid>
         <Grid  item xs={8} md={3}>
-        <Card className="greyedOut">        
+        <Card >        
             <CardHeader title="Summary" titleTypographyProps={{ variant: 'h4' }} />
             <div style={{marginLeft:"3%",fontSize:"200%", color:"grey",fontWeight:"bold"}}>{this.state.resDetails.restaurant_name}</div>
             <CardContent>
@@ -622,8 +623,8 @@ render(){
                })
                }
                  <Grid container item xs={12}>
-                 <Grid item xs={15}>                    
-                    <Divider variant="middle" className={this.props.classes.divider}/>
+                 <Grid item xs={10}>                  
+                 <Divider className={this.props.divider} variant="middle" /> 
                  </Grid>                                           
                  </Grid>
                     <Grid container item xs={15} >
