@@ -393,7 +393,7 @@ getStepContent= (step) => {
                       <Grid container spacing={5}>
                       <GridList cellHeight={"auto"} className="gridListMain">
                       {(this.state.dataAddress.addresses || []).map((exisAddress,index) => {
-                      return (<GridListTile className="gridListTile" id={exisAddress.id} style={{padding: '5px'}}>
+                      return (<GridListTile className={exisAddress.id===sessionStorage.getItem("selected")?"selectedAddress":"gridListTile"} id={exisAddress.id} style={{padding: '5px'}}>
                        <div className="App">
       <Card className={this.props.card} key={exisAddress.id} >
         <CardContent className={this.props.content}>
@@ -407,13 +407,11 @@ getStepContent= (step) => {
             {exisAddress.state.state_name} <br />
             {exisAddress.pincode} <br />
           </Typography>          
-          <Divider className={this.props.divider} light />          
-        </CardContent>
-        <CardActions disableSpacing className={this.props.CardAction}>
-          <IconButton aria-label="Select Address" onClick={()=>this.onAddressClick(exisAddress)}>            
+          <Divider className={this.props.divider} light /> <IconButton aria-label="Select Address" onClick={()=>this.onAddressClick(exisAddress)}>            
                       {exisAddress.id===this.state.selected ? <CheckCircle style={{color:"green"}} />:<CheckCircle style={{color:"#999999"}} />}      
-          </IconButton>
-        </CardActions>
+          </IconButton>          
+        </CardContent>
+        
       </Card>
     </div>
                       </GridListTile>
