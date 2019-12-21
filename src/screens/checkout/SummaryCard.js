@@ -18,9 +18,17 @@ class SummaryCard extends Component{
     constructor(){
         super();
         this.state = {            
-            cartItems:[]
+            cartItems:[],
+            totalCartItemsValue:0
         };
     }
+
+    componentWillMount(){
+        this.setState({cartItems:this.props.cartItems});
+        this.setState({totalCartItemsValue:this.props.totalCartItemsValue});
+        alert(this.props.totalCartItemsValue);
+        alert(this.props.cartItems);
+        }
 
   //  let data = JSON.parse(localStorage.getItem("orders"));
  // let data = props.cartItems;
@@ -38,7 +46,24 @@ class SummaryCard extends Component{
                 direction="row"
                 justify="space-between"
                 alignItems="center"
-    ><div>{this.props.cartItems}</div>   
+    ><div>{this.props.cartItems.itemList.map((item, index) => {
+        return(
+               <Grid container item xs={12} spacing={1} key={index}>
+               <Grid item xs={1}>
+                   {item.item_type === 'VEG' ?  <FiberManualRecord style={{ color: "#008000" }}/> : <FiberManualRecord style={{ color: "#b20505" }}/>}
+               </Grid>
+               <Grid item xs={5}>
+                   {item.item.item_name}                            
+               </Grid>
+               <Grid item xs={3}>
+                   {item.qty}                            
+               </Grid>
+               <Grid item xs={3}>
+                   {item.price}                            
+               </Grid>
+               </Grid>);
+               })
+               }     </div>   
                  <Grid container item xs={12}>
                  <Grid item xs={12}>                    
                     <Divider variant="middle" className={this.props.classes.divider}/>

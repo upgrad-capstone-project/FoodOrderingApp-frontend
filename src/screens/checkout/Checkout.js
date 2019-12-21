@@ -14,11 +14,13 @@ import StepContent from "@material-ui/core/StepContent";
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Button from "@material-ui/core/Button";
+import FiberManualRecord from '@material-ui/icons/FiberManualRecord';
 import GridList from '@material-ui/core/GridList';
 import {GridListTile} from '@material-ui/core';
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import CardHeader from '@material-ui/core/CardHeader';
 import Divider from "@material-ui/core/Divider";
 import { CardActions } from "@material-ui/core";
 import { FormControl, InputLabel, Input, Select, AppBar } from "@material-ui/core";
@@ -226,14 +228,14 @@ onStateChange = (event) => {
   this.setState({selected:event.target.value})
 };
 
-
-
 componentDidMount(){
 this.getAddresses(baseURL, access_token);
 this.getPaymentMethods();
 this.getStates();
-alert(this.state.totalCartItemsValue);
-alert(this.state.chcartItems);
+}
+componentWillMount(){
+this.setState({chcartItems:this.props.history.location.state.chcartItems});
+this.setState({totalCartItemsValue:this.props.history.location.state.totalCartItemsValue});
 }
 
 handleChange = (event) => {
@@ -585,9 +587,62 @@ render(){
           </div>
         </Grid>
         <Grid  item xs={12} md={4}>
-        <div id="summaryDisplay">
-         <SummaryCard classes={classes} totalCartItemsValue={this.state.totalCartItemsValue} cartItems={this.state.chcartItems} />
-          </div>
+        <Card>        
+            <CardHeader title="Summary" />
+            <CardContent>
+            <Grid
+                container
+                direction="row"
+                justify="space-between"
+                alignItems="center"
+    ><div>{this.props.history.location.state.chcartItems.itemList.map((item, index) => {
+        return(
+               <Grid container item xs={12} spacing={1} key={index}>
+               <Grid item xs={1}>
+                   {item.item.item_type === 'VEG' ?  <FiberManualRecord style={{ color: "#008000" }}/> : <FiberManualRecord style={{ color: "#b20505" }}/>}
+               </Grid>
+               <Grid item xs={5}>
+                   
+                   {item.item.item_name}                        
+               </Grid>
+               <Grid item xs={3}>
+                   {item.qty}                            
+               </Grid>
+               <Grid item xs={3}>
+                   {item.item.price}                            
+               </Grid>
+               </Grid>);
+               })
+               }     </div>   
+                 <Grid container item xs={12}>
+                 <Grid item xs={12}>                    
+                    <Divider variant="middle" className={this.props.classes.divider}/>
+                 </Grid>                                           
+                 </Grid>
+                    
+                    <Grid container item xs={12} spacing={3}>
+                        <Grid item xs={1}></Grid>
+                        <Grid item xs={5}>
+                            <Typography variant="h6">
+                            Net Amount
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={3}>                            
+                        </Grid>
+                        <Grid item xs={3}>
+                        <Typography variant="h6">                                                       
+                            {this.props.history.location.state.totalCartItemsValue}
+                        </Typography>
+                        </Grid>
+                    </Grid>
+                </Grid>                
+            </CardContent>
+            <CardActions>
+                <Button variant="contained" color="primary" className={this.props.classes.orderButton} onClick={this.props.checkoutHandler}>
+                    Place Order
+                </Button>
+            </CardActions>
+        </Card>
         </Grid>
       </Grid>
       <Snackbar
