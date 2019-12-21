@@ -600,6 +600,14 @@ activeStep: 0
 });
 };
 
+    //Logout action from drop down menu on profile icon
+    loginredirect = () => {
+      sessionStorage.clear();
+      this.props.history.push({
+        pathname: "/"
+      });
+  }
+
 //To toggle between "Existing Address" and "New Address" tabs
 tabChangeHandler = (event, value) => {
 this.setState({value})
@@ -616,7 +624,7 @@ render(){
   const { activeStep } = this.state;        
   return (
     <div>
-      <Header showSearch = {false} searchRestaurantsByName = {this.searchRestaurantsByName}/>
+      <Header logoutHandler={this.loginredirect} showSearch = {false} searchRestaurantsByName = {this.searchRestaurantsByName}/>
       <Grid container spacing={1}>
         <Grid item xs={12} md={8}>
           <div className={classes.root}>

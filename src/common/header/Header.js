@@ -151,7 +151,8 @@ class Header extends Component {
         } else {
           sessionStorage.setItem('uuid', JSON.parse(this.responseText).id);
           sessionStorage.setItem('access-token', xhrLogin.getResponseHeader('access-token'));
-
+          sessionStorage.setItem('firstName', JSON.parse(this.responseText).first_name);
+          that.setState({ firstname: JSON.parse(this.responseText).first_name });
           that.setState({ loggedIn: true });
           that.closeModalHandler();
         }
@@ -291,7 +292,7 @@ closeMenuHandler = () => {
             </div>
             :
             <div className="login-button">
-              <Button variant="contained" color="default" onClick={this.openMenuHandler}><AccountCircle/> {this.state.firstname}</Button>
+              <Button variant="contained" color="default" onClick={this.openMenuHandler}><AccountCircle/>{sessionStorage.getItem("firstName")}</Button>
               <div>
               
                     
@@ -303,7 +304,7 @@ closeMenuHandler = () => {
                       anchorReference="anchorPosition"
                       anchorPosition={{ top: 53, left:2000}}>
                         <MenuItem onClick={this.handleClose}><Link to="/profile" style={{ textDecoration: 'none', color: "black" }}>My Profile</Link></MenuItem><hr />
-                        <MenuItem onClick={this.logoutClickHandler}>Logout</MenuItem>
+                        <MenuItem onClick={this.props.logoutHandler}>Logout</MenuItem>
                       </Menu>
       
             </div>

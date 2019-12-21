@@ -166,6 +166,14 @@ addToCart = (item, category) => {
       this.setState({ cartItems: addedCartItem});    
   }
 
+  
+    //Logout action from drop down menu on profile icon
+    loginredirect = () => {
+      sessionStorage.clear();
+      this.props.history.push({
+        pathname: "/"
+      });
+  }
 
 snackBarHandler = (message) => {
   // if any snackbar open already close that
@@ -205,7 +213,7 @@ render(){
   const { classes } = this.props;
 return(<div className="mainDiv">
 
-   <Header baseUrl= "http://localhost:8080/api/"/><div className={classes.paper_big}>
+   <Header logoutHandler={this.loginredirect} baseUrl= "http://localhost:8080/api/"/><div className={classes.paper_big}>
   <div  className="resMainDiv"  >
     <div  className="divImage" >
       <div className="imageDisplay">
