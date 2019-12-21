@@ -209,16 +209,18 @@ return(<div className="mainDiv">
 
    <Header logoutHandler={this.loginredirect} baseUrl= "http://localhost:8080/api/"/><div className={classes.paper_big}>
    <div className="resMainDiv">
-  <div style={{marginLeft:"7%"}}>
-  <Grid item xs={3} sm={5} >
+  <div style={{marginLeft:"2.5%",marginRight:"2.5%"}}>
+  <Grid item container>
+  <Grid item xs={10} >
       <div >
       <ButtonBase className="image"disableRipple={true}> 
       <img id="imageDisplay" src={this.state.resData.photo_URL}/>
       </ButtonBase>
       </div>
+      </Grid>
     </Grid>
     </div>
-    <Grid item xs={8} container >
+    <Grid item xs={6} container >
     <Grid item xs container direction="column" className="screenSize" spacing={2} >
     <Grid item xs>
       <Typography className="resName">{this.state.resData.restaurant_name}</Typography>
@@ -229,8 +231,8 @@ return(<div className="mainDiv">
             className="categories " variant="h6">{category.category_name}, </Typography>
             );
           })}</Grid>
-          <Grid item container spacing={4}>
-              <Grid item xs={5}  >
+          <Grid item container spacing={5}>
+              <Grid item xs={7}  >
               <span style={{fontWeight:"bolder"}} className="cusRating"><i className="fa fa-star"></i> {this.state.resData.customer_rating}</span>
               <span style={{display:"block",color:"grey",fontSize:20}}>AVERAGE RATING BY</span>
               <span style={{color:"grey",fontSize:20}}><span style={{fontWeight:"bolder",color:"grey",fontSize:20}}>{this.state.resData.number_customers_rated} </span>CUSTOMERS</span>
