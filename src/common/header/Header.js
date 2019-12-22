@@ -99,42 +99,35 @@ class Header extends Component {
     }
   }
 
+  // Storing signup input field values in state for processing
   inputUsernameChangeHandler = (e) => {
     this.setState({ username: e.target.value })
   }
-
   inputPasswordChangeHandler = (e) => {
     this.setState({ password: e.target.value })
   }
-
   inputEmailChangeHandler = (e) => {
     this.setState({ email: e.target.value })
   }
-
   inputFirstnameChangeHandler = (e) => {
     this.setState({ firstname: e.target.value })
-
   }
-
   inputLastnameChangeHandler = (e) => {
     this.setState({ lastname: e.target.value })
-
   }
-
   inputMobileChangeHandler = (e) => {
     this.setState({ mobile: e.target.value })
-
   }
-
   inputPasswordRegChangeHandler = (e) => {
     this.setState({ passwordReg: e.target.value })
-
   }
 
   componentDidMount() {
-
   }
+
+  //Login function
   loginClickHandler = () => {
+    //Checking if any input fields are empty
     this.state.username === "" ? this.setState({ usernameRequired: "dispBlock" }) : this.setState({ usernameRequired: "dispNone" });
     this.state.password === "" ? this.setState({ passwordRequired: "dispBlock" }) : this.setState({ passwordRequired: "dispNone" });
     this.state.loginErrorMsg === "" ? this.setState({ loginError: "dispBlock" }) : this.setState({ loginError: "dispNone" });
@@ -169,6 +162,7 @@ class Header extends Component {
     xhrLogin.send(dataLogin);
 
   }
+  /*
   checkForm = () => {
     this.state.email === "" ? this.setState({ emailRequired: "dispBlock" }) : this.setState({ emailRequired: "dispNone" });
     this.state.firstname === "" ? this.setState({ firstnameRequired: "dispBlock" }) : this.setState({ firstnameRequired: "dispNone" });
@@ -176,18 +170,18 @@ class Header extends Component {
     this.state.mobile === "" ? this.setState({ mobileRequired: "dispBlock" }) : this.setState({ mobileRequired: "dispNone" });
     this.state.passwordReg === "" ? this.setState({ passwordRegRequired: "dispBlock" }) : this.setState({ passwordRegRequired: "dispNone" });
     if (this.state.email === "" || this.state.firstname === "" || this.state.lastname === "" || this.state.mobile === "" || this.state.passwordReg === "") { return; }
-    
-  }
+  }*/
+
+  //Sign up function
   signUpClickHandler = () => {
+    //Checking if any input fields are empty
     this.state.email === "" ? this.setState({ emailRequired: "dispBlock" }) : this.setState({ emailRequired: "dispNone" });
     this.state.firstname === "" ? this.setState({ firstnameRequired: "dispBlock" }) : this.setState({ firstnameRequired: "dispNone" });
-   // this.state.lastname === "" ? this.setState({ lastnameRequired: "dispBlock" }) : this.setState({ lastnameRequired: "dispNone" });
-    this.state.mobile === "" ? this.setState({ mobileRequired: "dispBlock" }) : this.setState({ mobileRequired: "dispNone" });
+     this.state.mobile === "" ? this.setState({ mobileRequired: "dispBlock" }) : this.setState({ mobileRequired: "dispNone" });
     this.state.passwordReg === "" ? this.setState({ passwordRegRequired: "dispBlock" }) : this.setState({ passwordRegRequired: "dispNone" });
     if (this.state.email === "" || this.state.firstname === "" || this.state.mobile === "" || this.state.passwordReg === "") 
     { return; }
     
-  
     let that = this;
     let dataSignUp = 
     "firstName="+ this.state.firstname+
@@ -225,6 +219,7 @@ class Header extends Component {
     xhrSignup.send(null);
   }
 
+  //Clearing input field values when freshly opening the modal
   openModalHandler = () => {
     this.setState({ modalIsOpen: true });
     this.setState({ value: 0 });
@@ -235,25 +230,33 @@ this.setState({ mobile:"" });
 this.setState({ passwordReg:"" });
   }
 
+  // Closing modal afer login
+  // Opening snack bar with message
   closeModalHandler = () => {
     this.setState({ modalIsOpen: false });
     this.setState({snackBarOpen:true});
   }
 
+  // Closing modal due to click away
+  // This does trigger a snack bar
   closeModalHandlerClickAway = () => {
     this.setState({ modalIsOpen: false });
     this.setState({snackBarOpen:false});
   }
 
+  // For toggling between Login and Signup tab in the modal
   tabChangeHandler = (event, value) => {
     this.setState({ value });
   }
+
+  // Opening of snack bar and toggling to Login tab after successfull signup
   openMessageHandler = () => {
     this.setState({ snackBarOpen: true});
     this.setState({modalIsOpen: true});
     this.setState({value: 0});
   }
 
+  // Opening snack bar and closing modal after successful login
   openMessageHandlerPostLogin= () => {
     this.setState({ snackBarOpen: true});
     this.setState({modalIsOpen: false});
@@ -272,7 +275,7 @@ openMenuHandler = (event) => {
   
 }
 
-// Opening menu that contains the profile and logout link
+// Closing menu that contains the profile and logout link
 closeMenuHandler = () => {
   this.setState({
       menuIsOpen: false
@@ -286,6 +289,7 @@ closeMenuHandler = () => {
     })
   }
 
+  //Snack bar close common handler
   handleSnackBarClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -293,6 +297,7 @@ closeMenuHandler = () => {
     this.setState({ snackBarOpen: false })
   }
 
+  // Logout function, redirects to Home page
   logoutClickHandler = () => {
     sessionStorage.clear();
     this.props.history.push({
