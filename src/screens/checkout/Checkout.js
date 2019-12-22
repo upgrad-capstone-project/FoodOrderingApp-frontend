@@ -158,7 +158,8 @@ class Checkout extends Component {
         saveAddressError : 'dispNone',
         saveAddressErrorMsg : '',
         checkOutAddressRequired : 'dispNone',
-        selAddress : "",        
+        selAddress : "",
+        paymentMethod:"",  
         chcartItems:[],
         totalCartItemsValue:"",
         resDetails:null,
@@ -321,9 +322,9 @@ addressChangeHandler = () => {
 
 //Placing order after entering all required values:Delivery and Payment details
 //Triggered from "Place Order" button
-checkoutHandler = () => {      
+checkoutHandler = () => {   
 let dataItem = [];      
-if(this.state.selAddress == ""){
+if(this.state.selAddress ===""){
   this.setState({saveOrderResponse : "Please select Address"})        
   this.openMessageHandler();   
   return;                        
@@ -367,6 +368,7 @@ xhrCheckout.setRequestHeader("Cache-Control", "no-cache");
 xhrCheckout.setRequestHeader("Access-Control-Allow-Origin", "*");  
 xhrCheckout.send(dataCheckout);
 }
+
 openMessageHandler = () => {
 this.setState({snackBarOpen:true})  
 }
@@ -711,7 +713,7 @@ render(){
                 </Grid>                
             </CardContent>
             <CardActions >
-                <Button style={{marginLeft:"7%"}} variant="contained" color="primary" className={this.props.classes.orderButton} onClick={this.props.checkoutHandler}>
+                <Button style={{marginLeft:"7%"}} variant="contained" color="primary" className={this.props.classes.orderButton} onClick={this.checkoutHandler}>
                     Place Order
                 </Button>
             </CardActions>
