@@ -87,3 +87,8 @@ flex-wrap: wrap;
 .dispBlock {
   display: block;
 }
+
+.MuiInputBase-root.MuiInput-root.MuiInput-underline:after{
+border-bottom: white !important;
+width:8px !important;
+}

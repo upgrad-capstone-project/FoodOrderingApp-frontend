@@ -297,7 +297,7 @@ closeMenuHandler = () => {
               <Input
                 onChange={this.props.searchRestaurantsByName.bind(this)}
                 className={classes.searchInput}
-                color='inherit'
+                color='white'
                 placeholder="Search by Restaurant Name"
               />
             </div>
