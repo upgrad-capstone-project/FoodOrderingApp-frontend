@@ -195,7 +195,6 @@ xhrAddresses.setRequestHeader("Cache-Control", "no-cache");
 xhrAddresses.send(data);
 }
 
-
 getPaymentMethods(){
   let data = null;
   let xhrPayments= new XMLHttpRequest();
