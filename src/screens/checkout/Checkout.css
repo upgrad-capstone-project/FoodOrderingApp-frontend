@@ -20,6 +20,7 @@
     box-shadow:2px -3px 6px 3px grey;
 }
 
+/*Higlighting selected address and check circle format*/
 .selectedAddress{
     margin-top: 1%;
     width:33% !important;
@@ -30,14 +31,19 @@
 .selectAddresscircle{
 margin-left: 90% !important;
 }
+
+/*Individual address card height*/
 .addressCard{
     height:290px !important;
 }
-.dispNone{
-    display: none;
-}
-.dispText{
-    display: block;
-    font-size: 30px;
-    margin-left:4%;
-}
+
+/*Below display props to toggle "View Summary and "Change" button*/
+    .dispNone{
+        display: none;
+    }
+
+    .dispText{
+        display: block;
+        font-size: 30px;
+        margin-left:4%;
+    }
