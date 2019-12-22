@@ -512,7 +512,7 @@ getStepContent= (step) => {
                           <FormControl className={this.props.formControl}>
                             <Typography variant="subtitle1" color="error" className={this.state.saveAddressError} align="left">{this.state.saveAddressErrorMsg}</Typography>                                                              
                           </FormControl><br /><br />
-                          <Button variant="contained" style={{width:"20%",height:"40px"}} color="secondary" onClick={this.addressClickHandler} className={this.props.formControl}>
+                          <Button variant="contained" style={{width:"20%",height:"40px"}} color="secondary" onClick={this.addressClickHandler} className="saveAddressButton">
                             SAVE ADDRESS
                           </Button>                                                        
                       </div>

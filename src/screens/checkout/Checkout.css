@@ -6,6 +6,11 @@
     width: 1000px !important;
     
 }
+@media only screen and (max-width: 1400px) {
+    .saveAddressButton{
+        width:140px !important;
+    }
+}
 
 .gridListTile{
     margin-top: 1%;
