@@ -324,7 +324,7 @@ addressChangeHandler = () => {
 //Triggered from "Place Order" button
 checkoutHandler = () => {   
 let dataItem = [];      
-if(this.state.selAddress ===""  || sessionStorage.getItem("selAddress")==="null"){
+if(sessionStorage.getItem("selAddress")==="null"){
   this.setState({saveOrderResponse : "Please select Address"})        
   this.openMessageHandler();   
   return;                        
@@ -334,30 +334,31 @@ if(this.state.selAddress ===""  || sessionStorage.getItem("selAddress")==="null"
   return;
 }
 
-let orders = JSON.parse(localStorage.getItem("orders"));            
-let dataCheckout = JSON.stringify({                    
-    "address_id": this.state.selAddress,
-    "bill": localStorage.getItem("OrderDataTotal"),
+let orders = this.state.chcartItems.itemList;      
+let dataCheckout = JSON.stringify({                  
+    "address_id": sessionStorage.getItem("selected"),
+    "bill": this.state.totalCartItemsValue,
     "coupon_id": "",
     "discount": 0,
-    "item_quantities": 
+    "item_quantities":
       orders.map(item => (
         {
-        "item_id":  item.id,
-        "price" : item.price,
-        "quantity" : item.qty
+        "item_id":  item.item.id,
+        "price" : item.item.price,
+        "quantity" : item.quantity
         }))
     ,
-    "payment_id": this.state.paymentMethod,
-    "restaurant_id": sessionStorage.getItem("selRestaurant")        
+    "payment_id": sessionStorage.getItem("paymentMethod"),
+    "restaurant_id": JSON.parse(sessionStorage.getItem("restaurantDetails")).id     
 })       
 let that = this;
 let xhrCheckout = new XMLHttpRequest();
 xhrCheckout.addEventListener("readystatechange", function () {
     if (this.readyState === 4) {              
-        let checkoutResponse = JSON.parse(this.response);              
-          that.setState({saveOrderResponse : checkoutResponse.message});
-          that.openMessageHandler();                              
+        let checkoutResponse = JSON.parse(this.response);  
+        let response =   checkoutResponse.status + "! Your order ID is " + checkoutResponse.id;
+          that.setState({saveOrderResponse : response});
+          that.openMessageHandler();                      
     }
 })
 
