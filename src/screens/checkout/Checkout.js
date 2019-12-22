@@ -324,7 +324,7 @@ addressChangeHandler = () => {
 //Triggered from "Place Order" button
 checkoutHandler = () => {   
 let dataItem = [];      
-if(this.state.selAddress ===""){
+if(this.state.selAddress ===""  || sessionStorage.getItem("selAddress")==="null"){
   this.setState({saveOrderResponse : "Please select Address"})        
   this.openMessageHandler();   
   return;                        
