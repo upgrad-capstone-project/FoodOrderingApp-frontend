@@ -176,7 +176,7 @@ class Header extends Component {
     
   }
   signUpClickHandler = () => {
-
+  //   this.setState({ "signUpErrorMsg": "" });
     this.state.email === "" ? this.setState({ emailRequired: "dispBlock" }) : this.setState({ emailRequired: "dispNone" });
     this.state.firstname === "" ? this.setState({ firstnameRequired: "dispBlock" }) : this.setState({ firstnameRequired: "dispNone" });
    // this.state.lastname === "" ? this.setState({ lastnameRequired: "dispBlock" }) : this.setState({ lastnameRequired: "dispNone" });
@@ -203,7 +203,11 @@ class Header extends Component {
           || signupResponse.code === 'SGR-003'
           || signupResponse.code === 'SGR-004') {
           that.setState({ signupError: "dispBlock" });
-          that.setState({ "signUpErrorMsg": signupResponse.message });
+          if(signupResponse.code === 'SGR-004'){
+          that.setState({ "signUpErrorMsg": "Password must contain at least one capital letter, one small letter, one number, and one special character" });
+          } else {
+            that.setState({ "signUpErrorMsg": signupResponse.message });
+          }
         } else {
           that.setState({ registrationSuccess: true });
           that.openMessageHandler();
@@ -220,7 +224,13 @@ class Header extends Component {
   }
 
   openModalHandler = () => {
-    this.setState({ modalIsOpen: true })
+    this.setState({ modalIsOpen: true });
+    this.setState({ value: 0 });
+    this.setState({ email:"" });
+this.setState({ firstname:"" });
+this.setState({ lastname:"" });
+this.setState({ mobile:"" });
+this.setState({ passwordReg:"" });
   }
 
   closeModalHandler = () => {
