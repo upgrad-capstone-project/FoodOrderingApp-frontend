@@ -94,6 +94,7 @@ class Header extends Component {
       open: false,
       anchorEl: null,
       snackBarOpen: false,
+      snackBarText:"",
       menuIsOpen:false
     }
   }
@@ -155,6 +156,8 @@ class Header extends Component {
           that.setState({ firstname: JSON.parse(this.responseText).first_name });
           that.setState({ loggedIn: true });
           that.closeModalHandler();
+          that.setState({snackBarText:"Logged in successfully!"});
+          that.openMessageHandlerPostLogin();
         }
       }
     })
@@ -209,8 +212,8 @@ class Header extends Component {
           }
         } else {
           that.setState({ registrationSuccess: true });
+          that.setState({snackBarText:"Registered successfully! Please login now!"});
           that.openMessageHandler();
-          that.closeModalHandler();
         }
       }
     })
@@ -233,21 +236,29 @@ this.setState({ passwordReg:"" });
   }
 
   closeModalHandler = () => {
-    this.setState({ modalIsOpen: false })
+    this.setState({ modalIsOpen: false });
+    this.setState({snackBarOpen:true})
   }
 
   tabChangeHandler = (event, value) => {
     this.setState({ value });
   }
   openMessageHandler = () => {
-    this.setState({ snackBarOpen: true })
+    this.setState({ snackBarOpen: true});
+    this.setState({modalIsOpen: true});
+    this.setState({value: 0});
+  }
+
+  openMessageHandlerPostLogin= () => {
+    this.setState({ snackBarOpen: true});
+    this.setState({modalIsOpen: false});
+    this.setState({value: 0});
   }
 
 // Opening menu that contains the profile and logout link
 openMenuHandler = (event) => {
   this.setState({
       menuIsOpen: true,
-      
   });
   this.setState({
     anchorEl: event.currentTarget,
@@ -413,7 +424,7 @@ closeMenuHandler = () => {
           ContentProps={{
             'aria-describedby': 'message-id',
           }}
-          message={<span id="message-id">Registration Successful. Please Login!</span>}
+        message={<span id="message-id">{this.state.snackBarText}</span>}
           action={[
             <IconButton
               key="close"
