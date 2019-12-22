@@ -367,7 +367,7 @@ xhrCheckout.addEventListener("readystatechange", function () {
           that.setState({saveOrderResponse : response});
           that.openMessageHandler();                      
     }
-})
+})  
 
 xhrCheckout.open("POST", this.props.baseUrl + "order");
 xhrCheckout.setRequestHeader("Authorization", "Bearer " + access_token); //sessionStorage.getItem('access-token')
