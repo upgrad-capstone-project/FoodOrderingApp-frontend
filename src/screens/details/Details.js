@@ -67,18 +67,15 @@ class Details extends Component {
   xhr_resDetails.setRequestHeader("Cache-Control", "no-cache");
   xhr_resDetails.send(dataRes);
   }
-/*
-  componentDidMount(){
-    alert(this.props.location.pathname);
-  }
-*/
+
+//Add items to cart from the Category wise list
 
 addToCart = (item, category) => {
   this.snackBarHandler("Item added to cart!");
-  const addedCartItem = this.state.cartItems || { restaurant : this.state.resData, itemList: [], totalPrice: 0, totalItemCount: 0};
+  const myCartItem = this.state.cartItems || { restaurant : this.state.resData, itemList: [], totalPrice: 0, totalItemCount: 0};
   let findIndex = null;
-  // Finding item from List which already added
-   let findItem = addedCartItem.itemList.find((cartItem, index) => {
+  //If the item is new, not already added into the list, then insert newly
+   let findItem = myCartItem.itemList.find((cartItem, index) => {
        if(cartItem.item.id === item.id) {
            findIndex = index;
            return cartItem;
@@ -86,14 +83,14 @@ addToCart = (item, category) => {
        return undefined;
    });
 
-   // if Already added then adding quantity and price (total)
+   // If item already exists, only increment item quantiyt and price
    if(findItem !== undefined){
       findItem.quantity =  findItem.quantity + 1;
       findItem.totalItemPrice = findItem.totalItemPrice + item.price;
-      addedCartItem.itemList[findIndex] = findItem;
+      myCartItem.itemList[findIndex] = findItem;
       findIndex = null;
-      addedCartItem.totalPrice = addedCartItem.totalPrice + item.price;
-      addedCartItem.totalItemCount = addedCartItem.totalItemCount + 1;
+      myCartItem.totalPrice = myCartItem.totalPrice + item.price;
+      myCartItem.totalItemCount = myCartItem.totalItemCount + 1;
    } else {
        // If not already added then creating temp object and doing other calculations
       const cartItem = {
@@ -103,14 +100,14 @@ addToCart = (item, category) => {
           item: item,
           totalItemPrice: item.price
       }
-      addedCartItem.totalPrice = addedCartItem.totalPrice + item.price;
-      addedCartItem.totalItemCount = addedCartItem.totalItemCount + 1;
+      myCartItem.totalPrice = myCartItem.totalPrice + item.price;
+      myCartItem.totalItemCount = myCartItem.totalItemCount + 1;
       // Push items to cart
-      addedCartItem.itemList.push(cartItem);
+      myCartItem.itemList.push(cartItem);
   }       
   
-  // Finally updating our addedcartitem state 
-  this.setState({ cartItems: addedCartItem});      
+  // Finally updating our myCartItem state 
+  this.setState({ cartItems: myCartItem});      
 }
 
 /**
@@ -118,25 +115,25 @@ addToCart = (item, category) => {
      */
     removeAnItemFromCart = (removeCartItem, index) => {
        
-      const addedCartItem = this.state.cartItems;
+      const myCartItem = this.state.cartItems;
       // Finding item based on index
-      let findItem = addedCartItem.itemList[index];
+      let findItem = myCartItem.itemList[index];
       // Updating finded item based on index
       findItem.quantity =  findItem.quantity - 1;
       findItem.totalItemPrice = findItem.totalItemPrice - findItem.item.price;
-      addedCartItem.totalPrice = addedCartItem.totalPrice - findItem.item.price;
-      addedCartItem.totalItemCount = addedCartItem.totalItemCount - 1; 
+      myCartItem.totalPrice = myCartItem.totalPrice - findItem.item.price;
+      myCartItem.totalItemCount = myCartItem.totalItemCount - 1; 
       
       // if quantity is goes less than or equal to zero - remove that item from cart
       if( findItem.quantity <= 0)  {
-          addedCartItem.itemList.splice(index, 1);
+          myCartItem.itemList.splice(index, 1);
           this.snackBarHandler("Item removed from cart!");
       }else{
-          addedCartItem.itemList[index] = findItem;
+          myCartItem.itemList[index] = findItem;
           this.snackBarHandler("Item quantity descreased by 1!");
       }      
       // Updating cartitem in component state  
-      this.setState({ cartItems: addedCartItem});  
+      this.setState({ cartItems: myCartItem});  
 
   }
 
@@ -145,19 +142,19 @@ addToCart = (item, category) => {
    */
   addAnItemFromCart = (addCartItem, index) => {
       this.snackBarHandler("Item quantity increased by 1!");
-      const addedCartItem = this.state.cartItems;
+      const myCartItem = this.state.cartItems;
       // Find item based on selected item index
-      let findItem = addedCartItem.itemList[index];
+      let findItem = myCartItem.itemList[index];
       // Item found update properties 
        if(findItem !== undefined){
           findItem.quantity =  findItem.quantity + 1;
           findItem.totalItemPrice = findItem.totalItemPrice + findItem.item.price;
-          addedCartItem.totalPrice = addedCartItem.totalPrice + findItem.item.price;
-          addedCartItem.totalItemCount = addedCartItem.totalItemCount + 1;
+          myCartItem.totalPrice = myCartItem.totalPrice + findItem.item.price;
+          myCartItem.totalItemCount = myCartItem.totalItemCount + 1;
        }     
-       addedCartItem.itemList[index] = findItem;
+       myCartItem.itemList[index] = findItem;
        // Update cartItems in component state
-      this.setState({ cartItems: addedCartItem});    
+      this.setState({ cartItems: myCartItem});    
   }
 
   
@@ -180,9 +177,9 @@ snackBarHandler = (message) => {
 
 checkOutCart = (e) => {
 //  this.checkLoginUpdate();
-  const addedCartItem = this.state.cartItems;
+  const myCartItem = this.state.cartItems;
   // check if items not added - alert user to add item
-  if( addedCartItem.itemList.length <=0 ){
+  if( myCartItem.itemList.length <=0 ){
       this.snackBarHandler("Please add an item to your cart!");
       return;
   }else {
