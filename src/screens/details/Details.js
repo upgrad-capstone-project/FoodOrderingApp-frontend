@@ -283,49 +283,49 @@ return(<div className="mainDiv">
 <div className="myCart"><Card className="cardRoot">
         <CardContent className="cardContentRoot">
         <Badge badgeContent={this.state.cartItems.totalItemCount===0?'0':this.state.cartItems.totalItemCount} color="primary">
-<ShoppingCartIcon/></Badge><span style={{fontWeight:"bold",fontSize:"30px",marginLeft:"6%"}}>My Cart</span><br/>
+<ShoppingCartIcon/></Badge><span style={{fontWeight:"bold",fontSize:"30px",marginLeft:"6%"}}>My Cart</span><br/><br/>
 <div>                                            {(this.state.cartItems.itemList || []).map((cartItem, index) => (
-                  <Grid item xs container key={cartItem.item.id} >
-                      <Grid container spacing={2}  direction="row" justify="space-between" alignItems="center">
-                          <Grid item style={{width:"18%"}}>
-                              <Typography variant="caption"  gutterBottom className="capitalize">
+                  <div className="myCartItemList" key={cartItem.item.id} >
+                   
+                          <div className="itemNameinCart" >
+                              <span >
                               {cartItem.item.item_type==="VEG"?
                  <span><span><i className="fa fa-stop-circle-o" style={{color:"green",width:"1",height:"1"}} aria-hidden="true"></i>
-                </span><span className="itemName">{cartItem.item_name}</span></span>
+                </span><span >{cartItem.item_name}</span></span>
                 :
                 <span><span>
                   <i className="fa fa-stop-circle-o" style={{color:"red"}} aria-hidden="true"></i>
-                  </span><span className="itemName">{cartItem.item_name}</span></span>
+                  </span><span >{cartItem.item_name}</span></span>
                }
                                   <span style={{marginLeft:8}} >{cartItem.item.item_name}</span>
-                              </Typography>
-                          </Grid> 
-                          <Grid item >
-                              <Typography variant="caption"  gutterBottom>
-                                  <IconButton aria-label="Remove Item" className="padding-4 bold m-r-4" onClick={this.removeAnItemFromCart.bind(this, cartItem, index)}>
-                                      <RemoveIcon  style={{fontSize: 16, fill: 'black'}} />
+                              </span>
+                          </div> 
+                              <div >
+                                <div  >
+                                  <IconButton aria-label="Remove Item" onClick={this.removeAnItemFromCart.bind(this, cartItem, index)}>
+                                      <RemoveIcon  style={{fontSize: 20, fill: 'black'}} />
                                   </IconButton>
-                                  <Typography variant="body" className="bold">{cartItem.quantity}</Typography> 
-                                  <IconButton aria-label="Add Item" className="padding-4 bold m-l-4" onClick={this.addAnItemFromCart.bind(this, cartItem, index)}>
-                                      <AddIcon style={{fontSize: 16, fill: 'black'}}/>
-                                  </IconButton>                                                                    
-                              </Typography>
-                              <Typography variant="caption"  gutterBottom className="margin-l-30">
-                                  <i className="fa fa-inr"></i>
-                                  <span>{cartItem.totalItemPrice}</span>                                                                    
-                              </Typography>
-                          </Grid>                                                            
-                      </Grid>
-                  </Grid>
+                                  <Typography variant="body" style={{fontSize: 20, fill: 'black'}}>{cartItem.quantity}</Typography> 
+                                  <IconButton aria-label="Add Item"  onClick={this.addAnItemFromCart.bind(this, cartItem, index)}>
+                                      <AddIcon style={{fontSize: 20, fill: 'black'}}/>
+                                  </IconButton>     
+                                  </div>                                                              
+                              </div>
+                              <div >
+                                  <span style={{fontWeight:"bold",fontSize:"120%"}}><i className="fa fa-inr"></i>
+                                  <span>{cartItem.totalItemPrice}</span>     </span>                                                               
+                              </div>                                                        
+                      
+                  </div>
               ))}</div>
                 <Grid item xs container justify="space-between" style={{marginTop: 16}}>
             <Grid item >
-                <Typography variant="caption"  gutterBottom className="bold">
+                <Typography style={{fontSize:"170%",fontWeight:"bold"}} stylegutterBottom className="bold">
                     Total Amount                                                                  
                 </Typography>
             </Grid>
             <Grid item >
-                <Typography variant="caption"  gutterBottom className="bold">
+                <Typography style={{fontSize:"170%",fontWeight:"bold"}}  gutterBottom className="bold">
                       <i className="fa fa-inr"></i>
                     {this.state.cartItems.totalPrice}                                                                  
                 </Typography>

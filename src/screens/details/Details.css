@@ -11,6 +11,14 @@
 
 }
 
+.itemNameinCart{
+  text-transform:capitalize;
+  width:40%;
+  vertical-align:middle;
+  margin-top: 2%;
+}
+
+/*Redefining style for all elements that need adjustment for smaller screen size*/
 @media  (max-width: 1000px){
 .resMainDiv{
   padding: 1%;
@@ -26,9 +34,25 @@
   align-items: center;
   justify-items: center;
 }
+
+.itemNameinCart{
+  text-transform:capitalize;
+  width:40%;
+  vertical-align:middle;
+  margin-top: 2%;
+  }
+
 .screenSize {
   text-align: center;
 }
+}
+
+.myCartItemList{
+  display:flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  flex-grow: 1;
+  justify-content: space-between;
 }
 
 .image{
@@ -117,10 +141,11 @@ display: flex;
   right:0;
   position: absolute;
 }
+
 .itemName{
-  display:inline-block;
   margin-left: 3%;
   margin-top:2%;
+  text-transform:capitalize;
 }
 
 .green{
