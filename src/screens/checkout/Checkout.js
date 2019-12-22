@@ -1,12 +1,10 @@
 import React, { Component } from "react";
-import ReactDOM from 'react-dom'
 import Header from "../../common/header/Header";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from 'prop-types';
 import * as Utils from '../../common/Utils';
 import * as Constants from '../../common/Constants';
 import { withStyles } from "@material-ui/core/styles";
-import { border } from '@material-ui/system';
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
@@ -107,7 +105,11 @@ const styles = muiBaseTheme => ({
   } 
 });
 
+//Storing access token to a constant to use throughout the class
 const access_token =sessionStorage.getItem("access-token");
+//Declaring base API url
+const baseURL = "http://localhost:8080/api/";
+//Declaring constants to use as xhrHttpRequest headers
 const req_header = {
   "Accept": "application/json;charset=UTF-8",
   "authorization": "Bearer " +  access_token,
@@ -115,7 +117,7 @@ const req_header = {
   "Cache-Control":"no-cache"
 }
 
-
+//Applying Tab display style
 function TabContainer(props) {
   return (
       <Typography component={'div'} variant={'body2'} style={{ padding: 8 * 3 }}>
@@ -128,10 +130,10 @@ TabContainer.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
+//To toggle between steps: Delivery and Payment
 function getSteps() {
 return ["Delivery", "Payment"];
 }
-const baseURL = "http://localhost:8080/api/";
 
 
 class Checkout extends Component {
@@ -168,16 +170,7 @@ class Checkout extends Component {
     };
 }
 
-renderOptions() {
-  return this.state.data.map((dt, i) => {         
-    return (
-        <MenuItem
-          label="Select a country"
-          value={dt.country_code}
-         key={i} name={dt.country_name}>{dt.country_name}</MenuItem>
-    );
-  });
-}
+//Getting all saved addresses for a customer
 getAddresses(baseURL, access_token){      
 let data = null;
 let xhrAddresses = new XMLHttpRequest();
@@ -196,6 +189,7 @@ xhrAddresses.setRequestHeader("Cache-Control", "no-cache");
 xhrAddresses.send(data);
 }
 
+//Get all available payment methods
 getPaymentMethods(){
   let data = null;
   let xhrPayments= new XMLHttpRequest();
@@ -211,11 +205,13 @@ xhrPayments.setRequestHeader("Accept", "application/json;charset=UTF-8");
 xhrPayments.send(data);
   }
 
+//Get all available state values for the dropdown
 getStates(){
   let data = null;
 const url = baseURL + 'states'
 const that = this;
 
+//API call function invoked from Utils.js
 Utils.makeApiCall(
   url, 
   null,
@@ -236,27 +232,38 @@ onStateChange = (event) => {
   this.setState({selected:event.target.value})
 };
 
+//Invoke the follow GET calls once the component successfully loads
 componentDidMount(){
 this.getAddresses(baseURL, access_token);
 this.getPaymentMethods();
 this.getStates();
 }
+
+//Set component state values from props passed from Details page
 componentWillMount(){
 this.setState({chcartItems:this.props.history.location.state.chcartItems});
 this.setState({totalCartItemsValue:this.props.history.location.state.totalCartItemsValue});
 this.setState({resDetails:JSON.parse(sessionStorage.getItem("restaurantDetails"))});
 }
+
+/*
+Using this value of State to disable any action on "Next" buttong
+when the control is on the "New Address" tab
+*/
 onExistingAddressTab=()=>{
   this.setState({onNewAddress:false});
 }
 onNewAddressTab=()=>{
 this.setState({onNewAddress:true});
 }
+
+//Handling and storing change of payment method value
 handleChange = (event) => {
 this.setState({paymentMethod:event.target.value})
 sessionStorage.setItem("paymentMethod", event.target.value);
 }
 
+//Capturing input field values in state for processing
 flatBldNoChangeHandler = (e) => {
 this.setState({ flatBldNo: e.target.value })    
 }
@@ -370,9 +377,11 @@ xhrCheckout.setRequestHeader("Access-Control-Allow-Origin", "*");
 xhrCheckout.send(dataCheckout);
 }
 
+//Opening snack bar
 openMessageHandler = () => {
 this.setState({snackBarOpen:true})  
 }
+//Closing snack bar
 handleClose = (event, reason) => {
 if (reason === 'clickaway') {
   return;

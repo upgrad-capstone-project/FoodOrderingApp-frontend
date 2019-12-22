@@ -1,10 +1,7 @@
 import React, { Component } from "react";
 import Header from '../../common/header/Header';
-import Avatar from "@material-ui/core/Avatar";
-import { withStyles } from "@material-ui/styles";
-import { Card, CardHeader, CardContent,CardActions} from '@material-ui/core';
+import { Card, CardContent,CardActions} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
@@ -19,11 +16,6 @@ import '../../assets/font-awesome-4.7.0/css/font-awesome.min.css';
 import './Details.css';
 import { IconButton } from "@material-ui/core";
 
-const styles = theme => ({
-
-});
-
-
 class Details extends Component {
   constructor(props) {
     super(props);
@@ -31,7 +23,6 @@ class Details extends Component {
         resData:[],
         locality:"",
         city:"",
-        stylePath: "path/to/font-awesome/css/font-awesome.min.css",
         sum:"0.00",
         snackBarOpen:false,
         cartItems: { 
@@ -110,42 +101,34 @@ addToCart = (item, category) => {
   this.setState({ cartItems: myCartItem});      
 }
 
-/**
-     * @description - Remove item from cart when user click (-) button
-     */
+// Removing item from cart
     removeAnItemFromCart = (removeCartItem, index) => {
-       
       const myCartItem = this.state.cartItems;
-      // Finding item based on index
+      // Match item based on index
       let findItem = myCartItem.itemList[index];
-      // Updating finded item based on index
+      // Update matched item based on index
       findItem.quantity =  findItem.quantity - 1;
       findItem.totalItemPrice = findItem.totalItemPrice - findItem.item.price;
       myCartItem.totalPrice = myCartItem.totalPrice - findItem.item.price;
       myCartItem.totalItemCount = myCartItem.totalItemCount - 1; 
       
-      // if quantity is goes less than or equal to zero - remove that item from cart
+      // Remove that item from cart - if the  quantity goes to or less than 0
       if( findItem.quantity <= 0)  {
           myCartItem.itemList.splice(index, 1);
           this.snackBarHandler("Item removed from cart!");
       }else{
           myCartItem.itemList[index] = findItem;
           this.snackBarHandler("Item quantity descreased by 1!");
-      }      
-      // Updating cartitem in component state  
+      }
       this.setState({ cartItems: myCartItem});  
 
   }
 
-  /**
-   * @description - add item from Mycart part - on (+) button click
-   */
+//Adding item from My Cart
   addAnItemFromCart = (addCartItem, index) => {
       this.snackBarHandler("Item quantity increased by 1!");
       const myCartItem = this.state.cartItems;
-      // Find item based on selected item index
       let findItem = myCartItem.itemList[index];
-      // Item found update properties 
        if(findItem !== undefined){
           findItem.quantity =  findItem.quantity + 1;
           findItem.totalItemPrice = findItem.totalItemPrice + findItem.item.price;
@@ -153,7 +136,6 @@ addToCart = (item, category) => {
           myCartItem.totalItemCount = myCartItem.totalItemCount + 1;
        }     
        myCartItem.itemList[index] = findItem;
-       // Update cartItems in component state
       this.setState({ cartItems: myCartItem});    
   }
 
@@ -166,31 +148,27 @@ addToCart = (item, category) => {
       });
   }
 
+//SnackBar handler both open and close function
 snackBarHandler = (message) => {
-  // if any snackbar open already close that
   this.setState({ snackBarOpen: false});
-  // updating component state snackbar message
   this.setState({ snackBarMessage: message});
-  // Show snackbar
   this.setState({ snackBarOpen: true});
 }
 
+//Checkout button
+//Passess the selected items and restaurant details to Checkout page
 checkOutCart = (e) => {
-//  this.checkLoginUpdate();
   const myCartItem = this.state.cartItems;
-  // check if items not added - alert user to add item
   if( myCartItem.itemList.length <=0 ){
       this.snackBarHandler("Please add an item to your cart!");
       return;
   }else {
-      // check if user logged in , if not - alert user to login
       if(sessionStorage.getItem("access-token") === null){
           this.snackBarHandler("Please login first!");
           return;
       }else{
-          // redirect to checkout page and passing cart items to checkout page
-          
           sessionStorage.setItem("restaurantDetails",JSON.stringify(this.state.resData));
+          //Redirecting to Checkout page
           this.props.history.push({
               pathname: "/checkout",
               state: { chcartItems: this.state.cartItems,
@@ -204,7 +182,7 @@ render(){
   const { classes } = this.props;
 return(<div className="mainDiv">
 
-   <Header logoutHandler={this.loginredirect} baseUrl= "http://localhost:8080/api/"/><div className={classes.paper_big}>
+   <Header logoutHandler={this.loginredirect} baseUrl= "http://localhost:8080/api/"/><div>
    <div className="resMainDiv">
   <div style={{marginLeft:"2.5%",marginRight:"2.5%"}}>
   <Grid item container>
@@ -353,4 +331,4 @@ return(<div className="mainDiv">
 );
   }
 }
-export default withStyles(styles)(Details);
+export default (Details);
