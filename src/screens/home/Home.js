@@ -88,7 +88,7 @@ class Home extends Component{
                 <Header logoutHandler={this.loginredirect} baseUrl={this.props.baseUrl} searchRestaurantsByName = {this.searchRestaurantsByName} showSearch={true} history={this.props.history} />
 					<Grid container spacing={3} style={{padding:"1% 2%"}}>
                     {	
-                     Utils.isAnyValueOfObjectUndefinedOrNullOrEmpty(this.state.imageData) ? <span>No restaurant with the given name</span>	
+                     this.state.imageData===null ? <span style={{fontSize:"20px"}}>No restaurant with the given name</span>	
                      :	(		
                         (this.state.imageData || []).map((resItem,index) =>
                             <Grid item xs={12} sm={3} key={index}>
