@@ -423,7 +423,7 @@ getStepContent= (step) => {
                       <Grid container spacing={5}>
                       <GridList cellHeight={"auto"} className="gridListMain">
                       {(this.state.dataAddress.addresses || []).map((exisAddress,index) => {
-                      return (<GridListTile className={exisAddress.id===sessionStorage.getItem("selected")?"selectedAddress":"gridListTile"} id={exisAddress.id} style={{padding: '5px'}}>
+                      return (<GridListTile className={exisAddress.id===this.state.selected?"selectedAddress":"gridListTile"} id={exisAddress.id} style={{padding: '5px'}}>
                        <div className="App">
       <Card className={this.props.card} key={exisAddress.id} >
         <CardContent className="addressCard">
@@ -438,7 +438,7 @@ getStepContent= (step) => {
             {exisAddress.pincode} <br />
           </Typography>          
           <IconButton className="selectAddresscircle" aria-label="Select Address" onClick={()=>this.onAddressClick(exisAddress)}>            
-                      {exisAddress.id===sessionStorage.getItem("selected") ? <CheckCircle style={{color:"green"}} />:<CheckCircle style={{color:"#999999"}} />}      
+                      {exisAddress.id===this.state.selected ? <CheckCircle style={{color:"green"}} />:<CheckCircle style={{color:"#999999"}} />}      
           </IconButton>          
         </CardContent>
       </Card>
@@ -567,7 +567,7 @@ handleNext = () => {
 //Called when an addres is selected in "Delivery step"
 //Also when user clicks on the same address - This deselects the address
 onAddressClick=(address)=>{
-  if(address.id===sessionStorage.getItem("selected")){
+  if(address.id===this.state.selected){
     sessionStorage.setItem("selected",null);
     sessionStorage.setItem("selAddress",null);
     this.setState(state=>({
