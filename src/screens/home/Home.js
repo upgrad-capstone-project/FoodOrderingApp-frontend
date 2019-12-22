@@ -27,6 +27,7 @@ class Home extends Component{
         this.getAllImageData();				
     }
 
+    // Get all restuarants data
     getAllImageData = () => {        
         const requestUrl = this.props.baseUrl + "restaurant";		
         const that = this;		
@@ -56,6 +57,7 @@ class Home extends Component{
         window.location.reload();
     }
 
+    // Restaurant search by name
     searchRestaurantsByName = event => {        
         const searchValue = event.target.value;
         const requestUrl = this.props.baseUrl + "restaurant/name/" + searchValue;
