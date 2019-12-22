@@ -13,20 +13,14 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Badge from '@material-ui/core/Badge';
 import Divider from '@material-ui/core/Divider';
 import Button from "@material-ui/core/Button";
+import ButtonBase from '@material-ui/core/ButtonBase';
 import Snackbar from '@material-ui/core/Snackbar';
 import '../../assets/font-awesome-4.7.0/css/font-awesome.min.css';
 import './Details.css';
 import { IconButton } from "@material-ui/core";
 
 const styles = theme => ({
-  paper_big: {
-    height:"auto",
-    width:"100%",
-    backgroundColor: "rgb(223,223,223)",
-    padding: 5,
-    outline: "none",
 
-  }
 });
 
 
@@ -45,7 +39,7 @@ class Details extends Component {
           itemList: [], 
           totalPrice: 0, 
           totalItemCount: 0
-      },
+      }
     }
     this.apiURL = "http://localhost:8080/api/";
 }
@@ -56,7 +50,7 @@ class Details extends Component {
     let dataRes = null;
     let temp = this.props.location.pathname;
     let resId = temp.split("/")[2];
-    alert(resId);
+ //   alert(resId);
     let that = this;
     xhr_resDetails.addEventListener("readystatechange", function () {
       if (this.readyState === 4) {
@@ -81,9 +75,8 @@ class Details extends Component {
 
 addToCart = (item, category) => {
   this.snackBarHandler("Item added to cart!");
-  const addedCartItem = this.state.cartItems || { restaurant : this.state.restaurant, itemList: [], totalPrice: 0, totalItemCount: 0};
+  const addedCartItem = this.state.cartItems || { restaurant : this.state.resData, itemList: [], totalPrice: 0, totalItemCount: 0};
   let findIndex = null;
-
   // Finding item from List which already added
    let findItem = addedCartItem.itemList.find((cartItem, index) => {
        if(cartItem.item.id === item.id) {
@@ -167,6 +160,15 @@ addToCart = (item, category) => {
       this.setState({ cartItems: addedCartItem});    
   }
 
+  
+    //Logout action from drop down menu on profile icon
+    loginredirect = () => {
+      sessionStorage.clear();
+      this.props.history.push({
+        pathname: "/"
+      });
+  }
+
 snackBarHandler = (message) => {
   // if any snackbar open already close that
   this.setState({ snackBarOpen: false});
@@ -176,38 +178,75 @@ snackBarHandler = (message) => {
   this.setState({ snackBarOpen: true});
 }
 
+checkOutCart = (e) => {
+//  this.checkLoginUpdate();
+  const addedCartItem = this.state.cartItems;
+  // check if items not added - alert user to add item
+  if( addedCartItem.itemList.length <=0 ){
+      this.snackBarHandler("Please add an item to your cart!");
+      return;
+  }else {
+      // check if user logged in , if not - alert user to login
+      if(sessionStorage.getItem("access-token") === null){
+          this.snackBarHandler("Please login first!");
+          return;
+      }else{
+          // redirect to checkout page and passing cart items to checkout page
+          
+          sessionStorage.setItem("restaurantDetails",JSON.stringify(this.state.resData));
+          this.props.history.push({
+              pathname: "/checkout",
+              state: { chcartItems: this.state.cartItems,
+                totalCartItemsValue:this.state.cartItems.totalPrice }
+            })   
+      }
+  }
+}
+
 render(){
   const { classes } = this.props;
 return(<div className="mainDiv">
 
-   <Header/><div className={classes.paper_big}>
-  <div  className="resMainDiv"  >
-    <div  className="divImage" >
-      <div className="imageDisplay">
-      <Avatar id="imageDisplay" variant="square" src={this.state.resData.photo_URL}></Avatar>
+   <Header logoutHandler={this.loginredirect} baseUrl= "http://localhost:8080/api/"/><div className={classes.paper_big}>
+   <div className="resMainDiv">
+  <div style={{marginLeft:"2.5%",marginRight:"2.5%"}}>
+  <Grid item container>
+  <Grid item xs={10} >
+      <div >
+      <ButtonBase className="image"disableRipple={true}> 
+      <img id="imageDisplay" src={this.state.resData.photo_URL}/>
+      </ButtonBase>
       </div>
+      </Grid>
+    </Grid>
     </div>
-    <div className="resDetails" >
-      <div className="resName">{this.state.resData.restaurant_name}</div><br/> 
-      <div id="LocalityCity"> {this.state.locality}-{this.state.city}</div><br/>
-      <div>
+    <Grid item xs={6} container >
+    <Grid item xs container direction="column" className="screenSize" spacing={2} >
+    <Grid item xs>
+      <Typography className="resName">{this.state.resData.restaurant_name}</Typography>
+      <Typography id="LocalityCity"> {this.state.locality}-{this.state.city}</Typography><br/>
+     
       {(this.state.resData.categories || []).map((category, index) => {
-            return (<span key={"span" + category.id}
-            className="categories ">{category.category_name}, </span>
+            return (<Typography key={"span" + category.id} display="inline" 
+            className="categories " variant="h6">{category.category_name}, </Typography>
             );
-          })}</div>
-          <br/><br/>
-          <div><span className="cusRating"><i className="fa fa-star"></i> {this.state.resData.customer_rating}</span>
-          <span style={{display:"block",color:"grey",fontSize:20}}>AVERAGE RATING BY</span>
-          <span style={{color:"grey",fontSize:20}}><span style={{fontWeight:"bold",color:"grey",fontSize:20}}>{this.state.resData.number_customers_rated} </span>CUSTOMERS</span>
-          </div>
-        </div>
-        <div className="cost4TwoDiv" >
-        <div id="bottom-left"><span className="cusRating"><i className="fa fa-inr"></i> {this.state.resData.average_price}</span>
-          <span style={{display:"block",color:"grey",fontSize:20}}>AVERAGE COST FOR</span>
-          <span style={{color:"grey",fontSize:20}}>TWO PEOPLE</span>
-          </div>
-        </div>
+          })}</Grid>
+          <Grid item container spacing={5}>
+              <Grid item xs={7}  >
+              <span style={{fontWeight:"bolder"}} className="cusRating"><i className="fa fa-star"></i> {this.state.resData.customer_rating}</span>
+              <span style={{display:"block",color:"grey",fontSize:20}}>AVERAGE RATING BY</span>
+              <span style={{color:"grey",fontSize:20}}><span style={{fontWeight:"bolder",color:"grey",fontSize:20}}>{this.state.resData.number_customers_rated} </span>CUSTOMERS</span>
+            
+              </Grid>
+              <Grid item xs={5}>
+            <span style={{fontWeight:"bolder"}} className="cusRating"><i className="fa fa-inr"></i> {this.state.resData.average_price}</span>
+              <span style={{display:"block",color:"grey",fontSize:20}}>AVERAGE COST FOR</span>
+              <span style={{color:"grey",fontSize:20}}>TWO PEOPLE</span>
+        
+            </Grid>
+        </Grid>
+        </Grid>
+        </Grid>
        </div> 
 </div>
 <div className="orderFunction">
@@ -243,57 +282,58 @@ return(<div className="mainDiv">
 </div>
 <div className="myCart"><Card className="cardRoot">
         <CardContent className="cardContentRoot">
-        <Badge badgeContent={4} color="primary">
-<ShoppingCartIcon/></Badge><span style={{fontWeight:"bold",fontSize:"30px",marginLeft:"6%"}}>My Cart</span><br/>
+        <Badge badgeContent={this.state.cartItems.totalItemCount===0?'0':this.state.cartItems.totalItemCount} color="primary">
+<ShoppingCartIcon/></Badge><span style={{fontWeight:"bold",fontSize:"30px",marginLeft:"6%"}}>My Cart</span><br/><br/>
 <div>                                            {(this.state.cartItems.itemList || []).map((cartItem, index) => (
-                  <Grid item xs container key={cartItem.item.id} >
-                      <Grid container spacing={2}  direction="row" justify="space-between" alignItems="center">
-                          <Grid item style={{width:"18%"}}>
-                              <Typography variant="caption"  gutterBottom className="capitalize">
+                  <div className="myCartItemList" key={cartItem.item.id} >
+                   
+                          <div className="itemNameinCart" >
+                              <span >
                               {cartItem.item.item_type==="VEG"?
                  <span><span><i className="fa fa-stop-circle-o" style={{color:"green",width:"1",height:"1"}} aria-hidden="true"></i>
-                </span><span className="itemName">{cartItem.item_name}</span></span>
+                </span><span >{cartItem.item_name}</span></span>
                 :
                 <span><span>
                   <i className="fa fa-stop-circle-o" style={{color:"red"}} aria-hidden="true"></i>
-                  </span><span className="itemName">{cartItem.item_name}</span></span>
+                  </span><span >{cartItem.item_name}</span></span>
                }
                                   <span style={{marginLeft:8}} >{cartItem.item.item_name}</span>
-                              </Typography>
-                          </Grid> 
-                          <Grid item >
-                              <Typography variant="caption"  gutterBottom>
-                                  <IconButton aria-label="Remove Item" className="padding-4 bold m-r-4" onClick={this.removeAnItemFromCart.bind(this, cartItem, index)}>
-                                      <RemoveIcon  style={{fontSize: 16, fill: 'black'}} />
+                              </span>
+                          </div> 
+                              <div >
+                                <div  >
+                                  <IconButton aria-label="Remove Item" onClick={this.removeAnItemFromCart.bind(this, cartItem, index)}>
+                                      <RemoveIcon  style={{fontSize: 20, fill: 'black'}} />
                                   </IconButton>
-                                  <Typography variant="body" className="bold">{cartItem.quantity}</Typography> 
-                                  <IconButton aria-label="Add Item" className="padding-4 bold m-l-4" onClick={this.addAnItemFromCart.bind(this, cartItem, index)}>
-                                      <AddIcon style={{fontSize: 16, fill: 'black'}}/>
-                                  </IconButton>                                                                    
-                              </Typography>
-                              <Typography variant="caption"  gutterBottom className="margin-l-30">
-                                  <i className="fa fa-inr"></i>
-                                  <span>{cartItem.totalItemPrice}</span>                                                                    
-                              </Typography>
-                          </Grid>                                                            
-                      </Grid>
-                  </Grid>
+                                  <Typography variant="body" style={{fontSize: 20, fill: 'black'}}>{cartItem.quantity}</Typography> 
+                                  <IconButton aria-label="Add Item"  onClick={this.addAnItemFromCart.bind(this, cartItem, index)}>
+                                      <AddIcon style={{fontSize: 20, fill: 'black'}}/>
+                                  </IconButton>     
+                                  </div>                                                              
+                              </div>
+                              <div >
+                                  <span style={{fontWeight:"bold",fontSize:"120%"}}><i className="fa fa-inr"></i>
+                                  <span>{cartItem.totalItemPrice}</span>     </span>                                                               
+                              </div>                                                        
+                      
+                  </div>
               ))}</div>
                 <Grid item xs container justify="space-between" style={{marginTop: 16}}>
             <Grid item >
-                <Typography variant="caption"  gutterBottom className="bold">
+                <Typography style={{fontSize:"170%",fontWeight:"bold"}} stylegutterBottom className="bold">
                     Total Amount                                                                  
                 </Typography>
             </Grid>
             <Grid item >
-                <Typography variant="caption"  gutterBottom className="bold">
+                <Typography style={{fontSize:"170%",fontWeight:"bold"}}  gutterBottom className="bold">
                       <i className="fa fa-inr"></i>
                     {this.state.cartItems.totalPrice}                                                                  
                 </Typography>
             </Grid>
         </Grid>
           </CardContent>
-          <CardActions><Button style={{width:"100%",fontSize:" 20px"}} variant="contained" color="primary">
+          <CardActions><Button style={{width:"100%",fontSize:" 20px"}} variant="contained" 
+          onClick={this.checkOutCart.bind(this)} color="primary">
             CHECKOUT</Button>
             </CardActions>
 </Card></div>

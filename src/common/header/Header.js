@@ -15,7 +15,6 @@ import PropTypes from 'prop-types';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { Link } from 'react-router-dom';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
@@ -24,6 +23,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import Menu from '@material-ui/core/Menu';
 
 
 const customStyles = {
@@ -93,7 +93,9 @@ class Header extends Component {
       showUserProfileDropDown: false,
       open: false,
       anchorEl: null,
-      snackBarOpen: false
+      snackBarOpen: false,
+      snackBarText:"",
+      menuIsOpen:false
     }
   }
 
@@ -143,21 +145,24 @@ class Header extends Component {
     let xhrLogin = new XMLHttpRequest();
     xhrLogin.addEventListener("readystatechange", function () {
       if (this.readyState === 4) {
-        let loginResponse = JSON.parse(xhrLogin.response);
+        let loginResponse = JSON.parse(xhrLogin.response);  
         if (loginResponse.code === 'ATH-001' || loginResponse.code === 'ATH-002') {
           that.setState({ loginError: "dispBlock" });
           that.setState({ loginErrorMsg: loginResponse.message });
         } else {
           sessionStorage.setItem('uuid', JSON.parse(this.responseText).id);
           sessionStorage.setItem('access-token', xhrLogin.getResponseHeader('access-token'));
-
+          sessionStorage.setItem('firstName', JSON.parse(this.responseText).first_name);
+          that.setState({ firstname: JSON.parse(this.responseText).first_name });
           that.setState({ loggedIn: true });
           that.closeModalHandler();
+          that.setState({snackBarText:"Logged in successfully!"});
+          that.openMessageHandlerPostLogin();
         }
       }
     })
     xhrLogin.open("POST", this.props.baseUrl + "customer/login");
-    xhrLogin.setRequestHeader("Authorization", "Basic " + window.btoa(this.state.username + ":" + this.state.password));
+    xhrLogin.setRequestHeader("authentication", "Basic " + window.btoa(this.state.username + ":" + this.state.password));
     xhrLogin.setRequestHeader("Content-Type", "application/json");
     xhrLogin.setRequestHeader("Cache-Control", "no-cache");
     xhrLogin.setRequestHeader("Access-Control-Allow-Origin", "*");
@@ -171,21 +176,26 @@ class Header extends Component {
     this.state.mobile === "" ? this.setState({ mobileRequired: "dispBlock" }) : this.setState({ mobileRequired: "dispNone" });
     this.state.passwordReg === "" ? this.setState({ passwordRegRequired: "dispBlock" }) : this.setState({ passwordRegRequired: "dispNone" });
     if (this.state.email === "" || this.state.firstname === "" || this.state.lastname === "" || this.state.mobile === "" || this.state.passwordReg === "") { return; }
-    {/*var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
-  var emailRegex = new RegExp(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-  emailRegex.test(this.state.email) === false ? this.setState({formValid:false, emailRequired: "dispBlock", emailMsg : "Invalid eMail"}) : this.setState({ emailRequired: "dispNone", formValid : true });
-strongRegex.test(this.state.passwordReg) === false ? this.setState({formValid:false , passwordRegRequired: "dispBlock", passwordMsg : "Weak Password"}) : this.setState({ passwordRegRequired: "dispNone", formValid : true });  */}
+    
   }
   signUpClickHandler = () => {
+    this.state.email === "" ? this.setState({ emailRequired: "dispBlock" }) : this.setState({ emailRequired: "dispNone" });
+    this.state.firstname === "" ? this.setState({ firstnameRequired: "dispBlock" }) : this.setState({ firstnameRequired: "dispNone" });
+   // this.state.lastname === "" ? this.setState({ lastnameRequired: "dispBlock" }) : this.setState({ lastnameRequired: "dispNone" });
+    this.state.mobile === "" ? this.setState({ mobileRequired: "dispBlock" }) : this.setState({ mobileRequired: "dispNone" });
+    this.state.passwordReg === "" ? this.setState({ passwordRegRequired: "dispBlock" }) : this.setState({ passwordRegRequired: "dispNone" });
+    if (this.state.email === "" || this.state.firstname === "" || this.state.mobile === "" || this.state.passwordReg === "") 
+    { return; }
+    
+  
     let that = this;
-    let dataSignUp = JSON.stringify({
-      "contact_number": this.state.mobile,
-      "email_address": this.state.email,
-      "first_name": this.state.firstname,
-      "last_name": this.state.lastname,
-      "password": this.state.passwordReg
-    })
-
+    let dataSignUp = 
+    "firstName="+ this.state.firstname+
+    "&lastName="+ this.state.lastname+
+    "&emailAddress="+ this.state.email+
+      "&contactNumber="+ this.state.mobile+
+      "&password="+ this.state.passwordReg;
+    
     let xhrSignup = new XMLHttpRequest();
     xhrSignup.addEventListener("readystatechange", function () {
       if (this.readyState === 4) {
@@ -195,43 +205,79 @@ strongRegex.test(this.state.passwordReg) === false ? this.setState({formValid:fa
           || signupResponse.code === 'SGR-003'
           || signupResponse.code === 'SGR-004') {
           that.setState({ signupError: "dispBlock" });
-          that.setState({ "signUpErrorMsg": signupResponse.message });
+          if(signupResponse.code === 'SGR-004'){
+          that.setState({ "signUpErrorMsg": "Password must contain at least one capital letter, one small letter, one number, and one special character" });
+          } else {
+            that.setState({ "signUpErrorMsg": signupResponse.message });
+          }
         } else {
           that.setState({ registrationSuccess: true });
+          that.setState({snackBarText:"Registered successfully! Please login now!"});
           that.openMessageHandler();
-          that.closeModalHandler();
         }
       }
     })
 
-    xhrSignup.open("POST", this.props.baseUrl + "customer/signup");
+    xhrSignup.open("POST", this.props.baseUrl + "customer/signup"+"?"+dataSignUp);
     xhrSignup.setRequestHeader("Content-Type", "application/json");
     xhrSignup.setRequestHeader("Cache-Control", "no-cache");
     xhrSignup.setRequestHeader("Access-Control-Allow-Origin", "*");
-    xhrSignup.send(dataSignUp);
+    xhrSignup.send(null);
   }
 
   openModalHandler = () => {
-    this.setState({ modalIsOpen: true })
+    this.setState({ modalIsOpen: true });
+    this.setState({ value: 0 });
+    this.setState({ email:"" });
+this.setState({ firstname:"" });
+this.setState({ lastname:"" });
+this.setState({ mobile:"" });
+this.setState({ passwordReg:"" });
   }
 
   closeModalHandler = () => {
-    this.setState({ modalIsOpen: false })
+    this.setState({ modalIsOpen: false });
+    this.setState({snackBarOpen:true});
+  }
+
+  closeModalHandlerClickAway = () => {
+    this.setState({ modalIsOpen: false });
+    this.setState({snackBarOpen:false});
   }
 
   tabChangeHandler = (event, value) => {
     this.setState({ value });
   }
   openMessageHandler = () => {
-    this.setState({ snackBarOpen: true })
+    this.setState({ snackBarOpen: true});
+    this.setState({modalIsOpen: true});
+    this.setState({value: 0});
   }
 
-  profileIconClickHandler = (e) => {
-    this.setState({
-      showUserProfileDropDown: !this.state.showUserProfileDropDown,
-      anchorEl: e.currentTarget
-    });
-  };
+  openMessageHandlerPostLogin= () => {
+    this.setState({ snackBarOpen: true});
+    this.setState({modalIsOpen: false});
+    this.setState({value: 0});
+  }
+
+// Opening menu that contains the profile and logout link
+openMenuHandler = (event) => {
+  this.setState({
+      menuIsOpen: true,
+  });
+  this.setState({
+    anchorEl: event.currentTarget,
+});
+
+  
+}
+
+// Opening menu that contains the profile and logout link
+closeMenuHandler = () => {
+  this.setState({
+      menuIsOpen: false
+  });
+}
 
   handleClose = () => {
     this.setState({
@@ -265,7 +311,7 @@ strongRegex.test(this.state.passwordReg) === false ? this.setState({formValid:fa
 
 
     return (
-      <div>
+      <div className="topMain">
         <div className="header-main-container">
           <div className="header-logo-container">{logoToRender}</div>
           {this.props.showSearch &&
@@ -276,6 +322,7 @@ strongRegex.test(this.state.passwordReg) === false ? this.setState({formValid:fa
               <Input
                 onChange={this.props.searchRestaurantsByName.bind(this)}
                 className={classes.searchInput}
+                color='white'
                 placeholder="Search by Restaurant Name"
               />
             </div>
@@ -286,26 +333,29 @@ strongRegex.test(this.state.passwordReg) === false ? this.setState({formValid:fa
             </div>
             :
             <div className="login-button">
-              <Button variant="contained" color="default" onClick={this.profileIconClickHandler}><AccountCircle/> {this.state.firstname}</Button>
-              {this.state.showUserProfileDropDown ? (
-                <Popper open={this.state.open} anchorEl={this.state.anchorEl} keepMounted >
-                  <Paper className={classes.paper}>
-                    <ClickAwayListener onClickAway={this.handleClose}>
-                      <MenuList>
-                        <MenuItem onClick={this.handleClose}><Link to="/profile" style={{ textDecoration: 'none', color: "black" }}>My Profile</Link></MenuItem>
-                        <MenuItem onClick={this.logoutClickHandler}>Logout</MenuItem>
-                      </MenuList>
-                    </ClickAwayListener>
-                  </Paper>
-                </Popper>
-              ) : null}
+              <Button  style={{background:" #263238",color:"white"}} onClick={this.openMenuHandler}><AccountCircle/><span style={{paddingLeft:"3%"}}>  {sessionStorage.getItem("firstName")}</span></Button>
+              <div>
+              
+                    
+                      <Menu
+                      className="menuDrop"
+                      id="simple-menu"
+                      keepMounted
+                      open={this.state.menuIsOpen}
+                      onClose={this.closeMenuHandler}
+                      anchorEl={this.state.anchorEl}>
+                        <MenuItem onClick={this.handleClose}><Link to="/profile" style={{ textDecoration: 'none', color: "black" }}>My Profile</Link></MenuItem><hr />
+                        <MenuItem onClick={this.props.logoutHandler}>Logout</MenuItem>
+                      </Menu>
+      
+            </div>
             </div>}
         </div>
         <Modal
           ariaHideApp={false}
           isOpen={this.state.modalIsOpen}
           contentLabel="Login"
-          onRequestClose={this.closeModalHandler}
+          onRequestClose={this.closeModalHandlerClickAway}
           style={customStyles}>
           <Tabs className="tabs" value={this.state.value} onChange={this.tabChangeHandler}>
             <Tab label="LOGIN" />
@@ -334,7 +384,7 @@ strongRegex.test(this.state.passwordReg) === false ? this.setState({formValid:fa
                 <Input id="firstname" type="text" onChange={this.inputFirstnameChangeHandler} value={this.state.firstname} />
                 <FormHelperText className={this.state.firstnameRequired}><span className="red">required</span></FormHelperText>
               </FormControl><br /><br />
-              <FormControl required className={classes.formControl}>
+              <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="lastname">Last Name</InputLabel>
                 <Input id="lastname" type="text" onChange={this.inputLastnameChangeHandler} value={this.state.lastname} />
                 <FormHelperText className={this.state.lastnameRequired}><span className="red">required</span></FormHelperText>
@@ -379,7 +429,7 @@ strongRegex.test(this.state.passwordReg) === false ? this.setState({formValid:fa
           ContentProps={{
             'aria-describedby': 'message-id',
           }}
-          message={<span id="message-id">Registration Successful. Please Login!</span>}
+        message={<span id="message-id">{this.state.snackBarText}</span>}
           action={[
             <IconButton
               key="close"
