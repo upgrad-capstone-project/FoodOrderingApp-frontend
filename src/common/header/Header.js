@@ -237,7 +237,12 @@ this.setState({ passwordReg:"" });
 
   closeModalHandler = () => {
     this.setState({ modalIsOpen: false });
-    this.setState({snackBarOpen:true})
+    this.setState({snackBarOpen:true});
+  }
+
+  closeModalHandlerClickAway = () => {
+    this.setState({ modalIsOpen: false });
+    this.setState({snackBarOpen:false});
   }
 
   tabChangeHandler = (event, value) => {
@@ -328,7 +333,7 @@ closeMenuHandler = () => {
             </div>
             :
             <div className="login-button">
-              <Button variant="contained" color="default" onClick={this.openMenuHandler}><AccountCircle/>{sessionStorage.getItem("firstName")}</Button>
+              <Button  style={{background:" #263238",color:"white"}} onClick={this.openMenuHandler}><AccountCircle/><span style={{paddingLeft:"3%"}}>  {sessionStorage.getItem("firstName")}</span></Button>
               <div>
               
                     
@@ -350,7 +355,7 @@ closeMenuHandler = () => {
           ariaHideApp={false}
           isOpen={this.state.modalIsOpen}
           contentLabel="Login"
-          onRequestClose={this.closeModalHandler}
+          onRequestClose={this.closeModalHandlerClickAway}
           style={customStyles}>
           <Tabs className="tabs" value={this.state.value} onChange={this.tabChangeHandler}>
             <Tab label="LOGIN" />
