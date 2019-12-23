@@ -1,44 +1,86 @@
 /*Main restaurant details div display properties*/  
 .resMainDiv{
-height:auto;
-width: auto;
-display:flex;
-flex-wrap: wrap;
+  padding: 1%;
+  margin: 'auto';
+  background-color: lightgrey;
+  border-radius: 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
 }
 
-/*Res. image*/
-.divImage{
-  height:100% !important;
-  width: 30% !important;
+.itemNameinCart{
+  text-transform:capitalize;
+  width:40%;
+  vertical-align:middle;
+  margin-top: 2%;
+}
+
+/*Redefining style for all elements that need adjustment for smaller screen size*/
+@media  (max-width: 1000px){
+.resMainDiv{
+  padding: 1%;
+  margin: 'auto';
+  background-color: lightgrey;
+  border-radius: 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  justify-items: center;
+}
+
+.itemNameinCart{
+  text-transform:capitalize;
+  width:40%;
+  vertical-align:middle;
+  margin-top: 2%;
   }
-  .mainDiv{
-    width:100% !important;
-    height: 100% !important;
-  }
-  
+
+.screenSize {
+  text-align: center;
+}
+}
+
+.myCartItemList{
+  display:flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  flex-grow: 1;
+  justify-content: space-between;
+}
+
+.image{
+  width: 100%;
+  height: 100%;
+}
+
   #imageDisplay{
   margin-top:2%;
   margin-bottom:2%;
-  width:400px!important;
+  width:400px !important;
   height:300px !important;
-  }
-
-  .detailsPageimage{
-  max-width: 100% !important;  
-  max-height: 100% !important;  
   }
 
 /*Res. name and ratings*/
 .resDetails{
-  font-family: Calibri (Body);
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri;
 margin-right:10%;
 display: flex;
 flex-direction: column;
 justify-content: center;
 }
+
+
+
 .resName{
-  font-weight: 500;
-  font-size: 40px;
+  font-weight: 500 !important;
+  font-size: 40px !important;
 }
 
 .cusRating{
@@ -48,9 +90,9 @@ color: black;
 }
 
 #LocalityCity{
-  font-weight: 500;
-font-size: 26px;
-text-transform: uppercase;
+  font-weight: 500 !important;
+font-size: 26px !important;
+text-transform: uppercase !important;
 }
 .categories{
   font-weight: 500;
@@ -99,10 +141,11 @@ display: flex;
   right:0;
   position: absolute;
 }
+
 .itemName{
-  display:inline-block;
   margin-left: 3%;
   margin-top:2%;
+  text-transform:capitalize;
 }
 
 .green{
