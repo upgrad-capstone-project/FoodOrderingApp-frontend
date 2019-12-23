@@ -133,7 +133,7 @@ addToCart = (item, category) => {
           this.snackBarHandler("Item removed from cart!");
       }else{
           addedCartItem.itemList[index] = findItem;
-          this.snackBarHandler("Item quantity descreased by 1!");
+          this.snackBarHandler("Item quantity decreased by 1!");
       }      
       // Updating cartitem in component state  
       this.setState({ cartItems: addedCartItem});  

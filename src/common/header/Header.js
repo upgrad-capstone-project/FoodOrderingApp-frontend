@@ -50,6 +50,9 @@ const styles = {
   },
   formControl: {
     width: "90%"
+  },
+  buttonControl: {
+    width: "40%"
   }
 }
 const TabContainer = function (props) {
@@ -79,6 +82,7 @@ class Header extends Component {
       passwordReg: "",
       usernameRequired: "dispNone",
       passwordRequired: "dispNone",
+      formValid: true,
       loginError: "dispNone",
       signupError: "dispNone",
       emailRequired: "dispNone",
@@ -108,7 +112,9 @@ class Header extends Component {
   }
 
   inputEmailChangeHandler = (e) => {
+    
     this.setState({ email: e.target.value })
+    
   }
 
   inputFirstnameChangeHandler = (e) => {
@@ -176,16 +182,23 @@ class Header extends Component {
     this.state.mobile === "" ? this.setState({ mobileRequired: "dispBlock" }) : this.setState({ mobileRequired: "dispNone" });
     this.state.passwordReg === "" ? this.setState({ passwordRegRequired: "dispBlock" }) : this.setState({ passwordRegRequired: "dispNone" });
     if (this.state.email === "" || this.state.firstname === "" || this.state.lastname === "" || this.state.mobile === "" || this.state.passwordReg === "") { return; }
+    {var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+     var emailRegex = new RegExp(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+     emailRegex.test(this.state.email) === false ? this.setState({formValid:false, emailRequired: "dispBlock", emailMsg : "Invalid eMail"}) : this.setState({ emailRequired: "dispNone", formValid : true });
+     strongRegex.test(this.state.passwordReg) === false ? this.setState({formValid:false , passwordRegRequired: "dispBlock", passwordMsg : "Weak Password"}) : this.setState({ passwordRegRequired: "dispNone", formValid : true });  
+    }
     
   }
   signUpClickHandler = () => {
-    this.state.email === "" ? this.setState({ emailRequired: "dispBlock" }) : this.setState({ emailRequired: "dispNone" });
+    /*this.state.email === "" ? this.setState({ emailRequired: "dispBlock" }) : this.setState({ emailRequired: "dispNone" });
     this.state.firstname === "" ? this.setState({ firstnameRequired: "dispBlock" }) : this.setState({ firstnameRequired: "dispNone" });
    // this.state.lastname === "" ? this.setState({ lastnameRequired: "dispBlock" }) : this.setState({ lastnameRequired: "dispNone" });
     this.state.mobile === "" ? this.setState({ mobileRequired: "dispBlock" }) : this.setState({ mobileRequired: "dispNone" });
     this.state.passwordReg === "" ? this.setState({ passwordRegRequired: "dispBlock" }) : this.setState({ passwordRegRequired: "dispNone" });
     if (this.state.email === "" || this.state.firstname === "" || this.state.mobile === "" || this.state.passwordReg === "") 
-    { return; }
+    { return; }*/
+    this.checkForm();
+  
     
   
     let that = this;
@@ -227,12 +240,24 @@ class Header extends Component {
 
   openModalHandler = () => {
     this.setState({ modalIsOpen: true });
-    this.setState({ value: 0 });
-    this.setState({ email:"" });
-this.setState({ firstname:"" });
-this.setState({ lastname:"" });
-this.setState({ mobile:"" });
-this.setState({ passwordReg:"" });
+    this.setState({
+      modalIsOpen: true,
+      value: 0,
+      usernameRequired: "dispNone",
+      username: "",
+      passwordRequired: "dispNone",
+      password: "",
+      email: "",
+      emailRequired: "dispNone",
+      firstname: "",
+      firstnameRequired: "dispNone",
+      lastname: "",
+      lastnameRequired: "dispNone",
+      mobile: "",
+      mobileRequired: "dispNone",
+      passwordReg: "",
+      passwordRegRequired: "dispNone"
+  });
   }
 
   closeModalHandler = () => {
@@ -272,7 +297,7 @@ openMenuHandler = (event) => {
   
 }
 
-// Opening menu that contains the profile and logout link
+// Closing menu that contains the profile and logout link
 closeMenuHandler = () => {
   this.setState({
       menuIsOpen: false
@@ -375,7 +400,7 @@ closeMenuHandler = () => {
                 <FormHelperText className={this.state.passwordRequired}><span className="red">required</span></FormHelperText>
                 <Typography variant="subtitle1" color="error" className={this.state.loginError} align="left">{this.state.loginErrorMsg}</Typography>
               </FormControl><br /><br />
-              <Button variant="contained" color="primary" onClick={this.loginClickHandler} className={classes.formControl}>LOGIN</Button>
+              <Button variant="contained" color="primary" onClick={this.loginClickHandler} className={classes.buttonControl}>LOGIN</Button>
             </TabContainer>}
           {this.state.value === 1 && <TabContainer>
             <form>
@@ -412,7 +437,7 @@ closeMenuHandler = () => {
                             <FormControl className={classes.formControl}>
                                 <span className="successText"> Registration Successful. Please Login!</span>
                             </FormControl><br /><br />*/}
-              <Button variant="contained" color="primary" onClick={this.signUpClickHandler} className={classes.formControl}>
+              <Button variant="contained" color="primary" onClick={this.signUpClickHandler} className={classes.buttonControl}>
                 SIGNUP
                         </Button>
             </form>
