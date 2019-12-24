@@ -305,7 +305,7 @@ xhrSaveAddress.addEventListener("readystatechange", function () {
         let saveAddressResponse = JSON.parse(this.response);
         if(saveAddressResponse.code === 'SAR-002' || saveAddressResponse.code === 'SAR-002'){
           that.setState({saveAddressError : "dispBlock"});
-          that.setState({saveAddressErrorMsg:saveAddressResponse.message});            
+          that.setState({saveAddressErrorMsg:"Pincode must contain only numbers and must be 6 digits long"});            
         }else{
           that.setState({ saveAddressSuccess: true });
           window.location.reload();       
