@@ -330,11 +330,12 @@ addressChangeHandler = () => {
 //Placing order after entering all required values:Delivery and Payment details
 //Triggered from "Place Order" button
 checkoutHandler = () => {   
-let dataItem = [];      
-if(sessionStorage.getItem("selAddress")==="null"){
+let dataItem = [];
+alert(sessionStorage.getItem("selAddress"));
+if(sessionStorage.getItem("selAddress")==="null" || sessionStorage.getItem("selAddress")===null){
   this.setState({saveOrderResponse : "Please select Address"})        
   this.openMessageHandler();   
-  return;                        
+  return;
 }else if(this.state.paymentMethod === ""){
   this.setState({saveOrderResponse : "Please select payment method"})        
   this.openMessageHandler();                   
