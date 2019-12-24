@@ -234,30 +234,32 @@ class Header extends Component {
     xhrSignup.send(null);
   }
 
-  //Clearing input field values when freshly opening the modal
+  
   openModalHandler = () => {
+
+//Clearing input field values and all error texts when freshly opening the modal
     this.setState({ modalIsOpen: true });
     this.setState({ value: 0 });
     this.setState({ email:"" });
-this.setState({ firstname:"" });
-this.setState({ lastname:"" });
-this.setState({ mobile:"" });
-this.setState({ signUpErrorMsg:"" });
-this.setState({ signUpErrCode:"" });
-this.setState({ passwordReg:"" });
-this.setState({ loginInvalidContactNo:"" });
-this.setState({ loginErrCode:"" });
-this.setState({ loginErrorMsg:"" });
-this.setState({ usernameRequired: "dispNone" });
-this.setState({ passwordRequired: "dispNone" });
-this.setState({ loginError: "dispNone"});
-this.setState({ signupError: "dispNone" });
-this.setState({ emailRequired: "dispNone"});
-this.setState({ firstnameRequired: "dispNone"});
-this.setState({ lastnameRequired: "dispNone" });
-this.setState({ mobileRequired: "dispNone"});
-this.setState({ passwordRegRequired: "dispNone" });
-this.setState({ loginErrorMsg:"" });
+    this.setState({ firstname:"" });
+    this.setState({ lastname:"" });
+    this.setState({ mobile:"" });
+    this.setState({ signUpErrorMsg:"" });
+    this.setState({ signUpErrCode:"" });
+    this.setState({ passwordReg:"" });
+    this.setState({ loginInvalidContactNo:"" });
+    this.setState({ loginErrCode:"" });
+    this.setState({ loginErrorMsg:"" });
+    this.setState({ usernameRequired: "dispNone" });
+    this.setState({ passwordRequired: "dispNone" });
+    this.setState({ loginError: "dispNone"});
+    this.setState({ signupError: "dispNone" });
+    this.setState({ emailRequired: "dispNone"});
+    this.setState({ firstnameRequired: "dispNone"});
+    this.setState({ lastnameRequired: "dispNone" });
+    this.setState({ mobileRequired: "dispNone"});
+    this.setState({ passwordRegRequired: "dispNone" });
+    this.setState({ loginErrorMsg:"" });
   }
 
   // Closing modal afer login
