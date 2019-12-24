@@ -357,15 +357,13 @@ closeMenuHandler = () => {
             </div>
           }
           {!this.state.loggedIn ?
-            <div className="login-button">
+            <div>
               <Button variant="contained" color="default" onClick={this.openModalHandler}><AccountCircle />Login</Button>
             </div>
             :
-            <div className="login-button">
-              <Button  style={{background:" #263238",color:"white"}} onClick={this.openMenuHandler}><AccountCircle/><span style={{paddingLeft:"3%"}}>  {sessionStorage.getItem("firstName")}</span></Button>
+            <div>
+              <Button  style={{textTransform:"capitalize", fontSize:"120%",background:" #263238",color:"lightgrey"}} onClick={this.openMenuHandler}><AccountCircle/><span style={{paddingLeft:"3%"}}>  {sessionStorage.getItem("firstName")}</span></Button>
               <div>
-              
-                    
                       <Menu
                       className="menuDrop"
                       id="simple-menu"
@@ -373,7 +371,7 @@ closeMenuHandler = () => {
                       open={this.state.menuIsOpen}
                       onClose={this.closeMenuHandler}
                       anchorEl={this.state.anchorEl}>
-                        <MenuItem onClick={this.handleClose}><Link to="/profile" style={{ textDecoration: 'none', color: "black" }}>My Profile</Link></MenuItem><hr />
+                        <MenuItem onClick={this.handleClose}><Link to="/profile" style={{ textDecoration: 'none', color: "black" }}>My Profile</Link></MenuItem>
                         <MenuItem onClick={this.props.logoutHandler}>Logout</MenuItem>
                       </Menu>
       
