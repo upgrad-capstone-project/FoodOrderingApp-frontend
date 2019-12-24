@@ -15,11 +15,7 @@ import PropTypes from 'prop-types';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { Link } from 'react-router-dom';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
-import Popper from '@material-ui/core/Popper';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
@@ -140,7 +136,7 @@ class Header extends Component {
 
     if (this.state.username === "" || this.state.password === "") { return }
     let tempContactNo = this.state.username;
-    if(tempContactNo.length!=10){
+    if(tempContactNo.length!==10){
       this.setState({loginInvalidContactNo:"Invalid Contact"})
       return;
     }
@@ -227,7 +223,7 @@ class Header extends Component {
       }
     })
 
-    xhrSignup.open("POST", this.props.baseUrl + "customer/signup"+"?"+dataSignUp);
+    xhrSignup.open("POST",this.props.baseUrl+"customer/signup?"+dataSignUp);
     xhrSignup.setRequestHeader("Content-Type", "application/json");
     xhrSignup.setRequestHeader("Cache-Control", "no-cache");
     xhrSignup.setRequestHeader("Access-Control-Allow-Origin", "*");
@@ -344,10 +340,7 @@ closeMenuHandler = () => {
       <Fastfood className={classes.icon} />
     )
 
-    let logoutBtnToRender = null;
-
-
-    return (
+     return (
       <div className="topMain">
         <div className="header-main-container">
           <div className="header-logo-container">{logoToRender}</div>
@@ -359,7 +352,6 @@ closeMenuHandler = () => {
               <Input
                 onChange={this.props.searchRestaurantsByName.bind(this)}
                 className={classes.searchInput}
-                color='white'
                 placeholder="Search by Restaurant Name"
               />
             </div>

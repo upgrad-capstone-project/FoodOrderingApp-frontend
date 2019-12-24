@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import Header from '../../common/header/Header';
 //import { Route, Link } from 'react-router-dom';
-import Details from '../details/Details';
 import * as Utils from "../../common/Utils";
 import * as Constants from "../../common/Constants";
 import RestaurantCard from './RestaurantCard';

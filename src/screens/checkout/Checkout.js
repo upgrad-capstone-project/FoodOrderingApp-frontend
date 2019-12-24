@@ -73,7 +73,8 @@ const styles = muiBaseTheme => ({
     marginTop:"10px",
     marginBottom:"10px",
     marginLeft:"auto",
-    width:"15px"
+    width:"15px",
+    margin: `${muiBaseTheme.spacing(3)}px 0`
   },
   card: {
     maxWidth: 250,        
@@ -86,9 +87,6 @@ const styles = muiBaseTheme => ({
   content: {
     textAlign: "left",
     width:"10%"
-  },
-  divider: {
-    margin: `${muiBaseTheme.spacing.unit * 3}px 0`
   },
   heading: {
     fontWeight: "bold"
@@ -109,13 +107,6 @@ const styles = muiBaseTheme => ({
 const access_token =sessionStorage.getItem("access-token");
 //Declaring base API url
 const baseURL = "http://localhost:8080/api/";
-//Declaring constants to use as xhrHttpRequest headers
-const req_header = {
-  "Accept": "application/json;charset=UTF-8",
-  "authorization": "Bearer " +  access_token,
-  "Access-Control-Allow-Origin" : "*",
-  "Cache-Control":"no-cache"
-}
 
 //Applying Tab display style
 function TabContainer(props) {
@@ -161,7 +152,6 @@ class Checkout extends Component {
         saveAddressErrorMsg : '',
         checkOutAddressRequired : 'dispNone',
         selAddress : "",
-        paymentMethod:"",  
         chcartItems:[],
         totalCartItemsValue:"",
         resDetails:null,
@@ -207,7 +197,6 @@ xhrPayments.send(data);
 
 //Get all available state values for the dropdown
 getStates(){
-  let data = null;
 const url = baseURL + 'states'
 const that = this;
 
@@ -324,7 +313,7 @@ xhrSaveAddress.addEventListener("readystatechange", function () {
     }
 })
 
-xhrSaveAddress.open("POST", this.props.baseUrl + "address"+"?"+dataAddress);
+xhrSaveAddress.open("POST", this.props.baseUrl + "address?"+dataAddress);
 xhrSaveAddress.setRequestHeader("authorization", "Bearer " + access_token);
 xhrSaveAddress.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 xhrSaveAddress.send (null);
@@ -340,7 +329,7 @@ addressChangeHandler = () => {
 //Placing order after entering all required values:Delivery and Payment details
 //Triggered from "Place Order" button
 checkoutHandler = () => {   
-let dataItem = [];
+
 if(sessionStorage.getItem("selAddress")==="null" || sessionStorage.getItem("selAddress")===null){
   this.setState({saveOrderResponse : "Please select Address"})        
   this.openMessageHandler();   
@@ -443,7 +432,7 @@ getStepContent= (step) => {
                       <Grid container spacing={5}>
                       <GridList cellHeight={"auto"} className="gridListMain">
                       {(this.state.dataAddress.addresses || []).map((exisAddress,index) => {
-                      return (<GridListTile className={exisAddress.id===this.state.selected?"selectedAddress":"gridListTile"} id={exisAddress.id} style={{padding: '5px'}}>
+                      return (<GridListTile className={exisAddress.id===this.state.selected?"selectedAddress":"gridListTile"} key={exisAddress.id} id={exisAddress.id} style={{padding: '5px'}}>
                        <div className="App">
       <Card className={this.props.card} key={exisAddress.id} >
         <CardContent className="addressCard">
@@ -634,11 +623,6 @@ tabChangeHandler = (event, value) => {
 this.setState({value})
 };
 
-//Search keyword value passed on from Header - Restaurant name search box
-searchRestaurantsByName = event => {        
-const searchValue = event.target.value;    
-};
-
 render(){
   const { classes } = this.props;
   const steps = getSteps();
@@ -718,7 +702,7 @@ render(){
                  <br/>
                  </Grid>                                           
                  </Grid>
-                    <Grid container item xs={15} >
+                    <Grid container item xs={12} >
                         <Grid item xs={5}>
                             <Typography style={{marginLeft:"14%",color:"grey",fontWeight:"bold"}} variant="h5">
                             Net Amount
