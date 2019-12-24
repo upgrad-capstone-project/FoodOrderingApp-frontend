@@ -179,7 +179,6 @@ checkOutCart = (e) => {
 }
 
 render(){
-  const { classes } = this.props;
 return(<div className="mainDiv">
 
    <Header logoutHandler={this.loginredirect} baseUrl= "http://localhost:8080/api/"/><div>
@@ -189,7 +188,7 @@ return(<div className="mainDiv">
   <Grid item xs={10} >
       <div >
       <ButtonBase className="image"disableRipple={true}> 
-      <img id="imageDisplay" src={this.state.resData.photo_URL}/>
+      <img id="imageDisplay" alt={this.state.resData.restaurant_name} src={this.state.resData.photo_URL}/>
       </ButtonBase>
       </div>
       </Grid>
@@ -295,7 +294,7 @@ return(<div className="mainDiv">
               ))}</div>
                 <Grid item xs container justify="space-between" style={{marginTop: 16}}>
             <Grid item >
-                <Typography style={{fontSize:"170%",fontWeight:"bold"}} stylegutterBottom className="bold">
+                <Typography style={{fontSize:"170%",fontWeight:"bold"}} gutterBottom className="bold">
                     Total Amount                                                                  
                 </Typography>
             </Grid>
