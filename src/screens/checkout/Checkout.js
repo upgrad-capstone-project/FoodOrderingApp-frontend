@@ -226,8 +226,6 @@ Utils.makeApiCall(
   )
 }
 
-
-
 onStateChange = (event) => {
   this.setState({selected:event.target.value})
 };
