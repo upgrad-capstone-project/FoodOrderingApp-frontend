@@ -359,6 +359,7 @@ let dataCheckout = JSON.stringify({
     "restaurant_id": JSON.parse(sessionStorage.getItem("restaurantDetails")).id     
 })       
 let that = this;
+let access_token = sessionStorage.getItem("access-token");
 let xhrCheckout = new XMLHttpRequest();
 xhrCheckout.addEventListener("readystatechange", function () {
     if (this.readyState === 4) {              
@@ -370,7 +371,7 @@ xhrCheckout.addEventListener("readystatechange", function () {
 })  
 
 xhrCheckout.open("POST", this.props.baseUrl + "order");
-xhrCheckout.setRequestHeader("Authorization", "Bearer " + access_token); //sessionStorage.getItem('access-token')
+xhrCheckout.setRequestHeader("Authorization", "Bearer " + access_token);
 xhrCheckout.setRequestHeader("Content-Type", "application/json");
 xhrCheckout.setRequestHeader("Cache-Control", "no-cache");
 xhrCheckout.setRequestHeader("Access-Control-Allow-Origin", "*");  

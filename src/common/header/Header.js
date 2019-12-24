@@ -87,8 +87,11 @@ class Header extends Component {
       mobileRequired: "dispNone",
       passwordRegRequired: "dispNone",
       registrationSuccess: false,
-      loginErrorMsg: "",
       signUpErrorMsg: "",
+      signUpErrCode:"",
+      loginInvalidContactNo:"",
+      loginErrCode:"",
+      loginErrorMsg: "",
       loggedIn: sessionStorage.getItem('access-token') == null ? false : true,
       showUserProfileDropDown: false,
       open: false,
@@ -127,12 +130,21 @@ class Header extends Component {
 
   //Login function
   loginClickHandler = () => {
+    //Clearing error texts during login
+    this.setState({loginInvalidContactNo:""})
+
     //Checking if any input fields are empty
     this.state.username === "" ? this.setState({ usernameRequired: "dispBlock" }) : this.setState({ usernameRequired: "dispNone" });
     this.state.password === "" ? this.setState({ passwordRequired: "dispBlock" }) : this.setState({ passwordRequired: "dispNone" });
     this.state.loginErrorMsg === "" ? this.setState({ loginError: "dispBlock" }) : this.setState({ loginError: "dispNone" });
 
     if (this.state.username === "" || this.state.password === "") { return }
+    let tempContactNo = this.state.username;
+    if(tempContactNo.length!=10){
+      this.setState({loginInvalidContactNo:"Invalid Contact"})
+      return;
+    }
+
     let that = this;
     let dataLogin = null
     let xhrLogin = new XMLHttpRequest();
@@ -141,6 +153,7 @@ class Header extends Component {
         let loginResponse = JSON.parse(xhrLogin.response);  
         if (loginResponse.code === 'ATH-001' || loginResponse.code === 'ATH-002') {
           that.setState({ loginError: "dispBlock" });
+          that.setState({loginErrCode:loginResponse.code});
           that.setState({ loginErrorMsg: loginResponse.message });
         } else {
           sessionStorage.setItem('uuid', JSON.parse(this.responseText).id);
@@ -174,6 +187,9 @@ class Header extends Component {
 
   //Sign up function
   signUpClickHandler = () => {
+    //clear error messages
+    this.setState({signUpErrorMsg:""});
+    this.setState({signUpErrCode:""});
     //Checking if any input fields are empty
     this.state.email === "" ? this.setState({ emailRequired: "dispBlock" }) : this.setState({ emailRequired: "dispNone" });
     this.state.firstname === "" ? this.setState({ firstnameRequired: "dispBlock" }) : this.setState({ firstnameRequired: "dispNone" });
@@ -199,11 +215,10 @@ class Header extends Component {
           || signupResponse.code === 'SGR-003'
           || signupResponse.code === 'SGR-004') {
           that.setState({ signupError: "dispBlock" });
-          if(signupResponse.code === 'SGR-004'){
-          that.setState({ "signUpErrorMsg": "Password must contain at least one capital letter, one small letter, one number, and one special character" });
-          } else {
-            that.setState({ "signUpErrorMsg": signupResponse.message });
-          }
+          
+            that.setState({ signUpErrCode: signupResponse.code});
+            that.setState({ signUpErrorMsg: signupResponse.message });
+          
         } else {
           that.setState({ registrationSuccess: true });
           that.setState({snackBarText:"Registered successfully! Please login now!"});
@@ -227,7 +242,22 @@ class Header extends Component {
 this.setState({ firstname:"" });
 this.setState({ lastname:"" });
 this.setState({ mobile:"" });
+this.setState({ signUpErrorMsg:"" });
+this.setState({ signUpErrCode:"" });
 this.setState({ passwordReg:"" });
+this.setState({ loginInvalidContactNo:"" });
+this.setState({ loginErrCode:"" });
+this.setState({ loginErrorMsg:"" });
+this.setState({ usernameRequired: "dispNone" });
+this.setState({ passwordRequired: "dispNone" });
+this.setState({ loginError: "dispNone"});
+this.setState({ signupError: "dispNone" });
+this.setState({ emailRequired: "dispNone"});
+this.setState({ firstnameRequired: "dispNone"});
+this.setState({ lastnameRequired: "dispNone" });
+this.setState({ mobileRequired: "dispNone"});
+this.setState({ passwordRegRequired: "dispNone" });
+this.setState({ loginErrorMsg:"" });
   }
 
   // Closing modal afer login
@@ -373,12 +403,20 @@ closeMenuHandler = () => {
                 <InputLabel htmlFor="username"> Contact No. </InputLabel>
                 <Input id="username" type="text" username={this.state.username} onChange={this.inputUsernameChangeHandler} />
                 <FormHelperText className={this.state.usernameRequired}><span className="red">required</span></FormHelperText>
+                <Typography variant="subtitle1" color="error" align="left">{this.state.loginInvalidContactNo}</Typography>
+                {this.state.loginErrCode === "ATH-001"?
+                <FormControl className={classes.formControl}>
+                  <Typography variant="subtitle1" color="error" className={this.state.loginError} align="left">{this.state.loginErrorMsg}</Typography>
+                </FormControl>:""}
               </FormControl><br /><br />
               <FormControl required className={classes.formControl}>
                 <InputLabel htmlFor="password"> Password </InputLabel>
                 <Input id="password" type="password" onChange={this.inputPasswordChangeHandler} />
                 <FormHelperText className={this.state.passwordRequired}><span className="red">required</span></FormHelperText>
-                <Typography variant="subtitle1" color="error" className={this.state.loginError} align="left">{this.state.loginErrorMsg}</Typography>
+                {this.state.loginErrCode === "ATH-002"?
+                <FormControl className={classes.formControl}>
+                  <Typography variant="subtitle1" color="error" className={this.state.loginError} align="left">{this.state.loginErrorMsg}</Typography>
+                </FormControl>:""}
               </FormControl><br /><br />
               <Button variant="contained" color="primary" onClick={this.loginClickHandler} className={classes.formControl}>LOGIN</Button>
             </TabContainer>}
@@ -398,25 +436,34 @@ closeMenuHandler = () => {
                 <InputLabel htmlFor="email">Email</InputLabel>
                 <Input id="email" type="email" onChange={this.inputEmailChangeHandler} value={this.state.email} />
                 <FormHelperText className={this.state.emailRequired}><span className="red">required valid email</span></FormHelperText>
-              </FormControl><br /><br />
-              <FormControl required className={classes.formControl}>
-                <InputLabel htmlFor="mobile">Mobile Number</InputLabel>
-                <Input id="mobile" type="number" onChange={this.inputMobileChangeHandler} value={this.state.mobile} />
-                <FormHelperText className={this.state.mobileRequired}><span className="red">required</span></FormHelperText>
+                {this.state.signUpErrCode === "SGR-002"?
+                <FormControl className={classes.formControl}>
+                  <Typography variant="subtitle1" color="error" className={this.state.signupError} align="left">Invalid Email</Typography>
+                </FormControl>:""}
               </FormControl><br /><br />
               <FormControl required aria-describedby="name-helper-text" className={classes.formControl}>
                 <InputLabel htmlFor="passwordReg">Password</InputLabel>
                 <Input type="password" id="passwordReg" onChange={this.inputPasswordRegChangeHandler} />
                 <FormHelperText className={this.state.passwordRegRequired}><span className="red">required strong password</span></FormHelperText>
+                {this.state.signUpErrCode === "SGR-004"?
+                <FormControl className={classes.formControl}>
+                  <Typography variant="subtitle1" color="error" className={this.state.signupError} align="left">Password must contain at least one capital letter, one small letter, one number, and one special character</Typography>
+                </FormControl>:""}
               </FormControl><br /><br />
-              {this.state.registrationSuccess === false &&
+              <FormControl required className={classes.formControl}>
+                <InputLabel htmlFor="mobile">Contact No.</InputLabel>
+                <Input id="mobile" type="number" onChange={this.inputMobileChangeHandler} value={this.state.mobile} />
+                <FormHelperText className={this.state.mobileRequired}><span className="red">required</span></FormHelperText>
+                {this.state.signUpErrCode === "SGR-003" ?
+                <FormControl className={classes.formControl}>
+                  <Typography variant="subtitle1" color="error" className={this.state.signupError} align="left">Contact No. must contain only numbers and must be 10 digits long</Typography>
+                </FormControl>:""}
+                {this.state.signUpErrCode === "SGR-001" ?
                 <FormControl className={classes.formControl}>
                   <Typography variant="subtitle1" color="error" className={this.state.signupError} align="left">{this.state.signUpErrorMsg}</Typography>
-                </FormControl>}<br /><br />
-              {/*this.state.registrationSuccess === true &&
-                            <FormControl className={classes.formControl}>
-                                <span className="successText"> Registration Successful. Please Login!</span>
-                            </FormControl><br /><br />*/}
+                </FormControl>:""}
+              </FormControl>
+                <br /><br /><br /><br />
               <Button variant="contained" color="primary" onClick={this.signUpClickHandler} className={classes.formControl}>
                 SIGNUP
                         </Button>
