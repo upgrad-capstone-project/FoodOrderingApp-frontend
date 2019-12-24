@@ -171,7 +171,7 @@ class Checkout extends Component {
 }
 
 //Getting all saved addresses for a customer
-getAddresses(baseURL, access_token){      
+getAddresses(baseURL, access_token){    
 let data = null;
 let xhrAddresses = new XMLHttpRequest();
 access_token = sessionStorage.getItem("access-token");
@@ -234,6 +234,7 @@ onStateChange = (event) => {
 
 //Invoke the follow GET calls once the component successfully loads
 componentDidMount(){
+  this.mounted = true;
 this.getAddresses(baseURL, access_token);
 this.getPaymentMethods();
 this.getStates();
@@ -241,9 +242,18 @@ this.getStates();
 
 //Set component state values from props passed from Details page
 componentWillMount(){
-this.setState({chcartItems:this.props.history.location.state.chcartItems});
-this.setState({totalCartItemsValue:this.props.history.location.state.totalCartItemsValue});
-this.setState({resDetails:JSON.parse(sessionStorage.getItem("restaurantDetails"))});
+  try{
+    let loggedstatuscheck = this.props.history.location.state.chcartItems.ItemList;
+    this.setState({chcartItems:this.props.history.location.state.chcartItems});
+    this.setState({totalCartItemsValue:this.props.history.location.state.totalCartItemsValue});
+    this.setState({resDetails:JSON.parse(sessionStorage.getItem("restaurantDetails"))});
+  } catch {
+    this.mounted = false;
+    this.props.history.push({
+      pathname: "/"
+    });
+  }
+
 }
 
 /*
@@ -632,8 +642,9 @@ const searchValue = event.target.value;
 render(){
   const { classes } = this.props;
   const steps = getSteps();
-  const { activeStep } = this.state;        
-  return (
+  const { activeStep } = this.state;   
+  return (this.mounted === true ?      
+
     <div>
       <Header logoutHandler={this.loginredirect} showSearch = {false} searchRestaurantsByName = {this.searchRestaurantsByName}/>
       <Grid container spacing={1}>
@@ -756,6 +767,8 @@ render(){
                 ]}
               />
     </div>
+    :
+    ""
   );
 }
 }

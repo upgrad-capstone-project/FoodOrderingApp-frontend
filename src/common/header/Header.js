@@ -349,7 +349,7 @@ closeMenuHandler = () => {
                       open={this.state.menuIsOpen}
                       onClose={this.closeMenuHandler}
                       anchorEl={this.state.anchorEl}>
-                        <MenuItem onClick={this.handleClose}><Link to="/profile" style={{ textDecoration: 'none', color: "black" }}>My Profile</Link></MenuItem><hr />
+                        <MenuItem onClick={this.handleClose}><Link to="/profile" loggedincheck={"logged"} style={{ textDecoration: 'none', color: "black" }}>My Profile</Link></MenuItem><hr />
                         <MenuItem onClick={this.props.logoutHandler}>Logout</MenuItem>
                       </Menu>
       
