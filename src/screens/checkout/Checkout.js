@@ -226,8 +226,6 @@ Utils.makeApiCall(
   )
 }
 
-
-
 onStateChange = (event) => {
   this.setState({selected:event.target.value})
 };
@@ -290,6 +288,7 @@ this.setState({pincode : e.target.value })
 //Called to save new address entered by user
 addressClickHandler = () =>    
 {
+
 this.setState({saveAddressError:"dispNone"})
   //Validating that no fields are empty
   //If empty, "required" text is displayed
@@ -309,13 +308,14 @@ let dataAddress =
     "&pincode="+this.state.pincode+
     "&stateUuid="+ this.state.selected;  
 let that = this;
+let access_token = sessionStorage.getItem("access-token");
 let xhrSaveAddress = new XMLHttpRequest();
 xhrSaveAddress.addEventListener("readystatechange", function () {
     if (this.readyState === 4) {              
         let saveAddressResponse = JSON.parse(this.response);
         if(saveAddressResponse.code === 'SAR-002' || saveAddressResponse.code === 'SAR-002'){
           that.setState({saveAddressError : "dispBlock"});
-          that.setState({saveAddressErrorMsg:saveAddressResponse.message});            
+          that.setState({saveAddressErrorMsg:"Pincode must contain only numbers and must be 6 digits long"});            
         }else{
           that.setState({ saveAddressSuccess: true });
           window.location.reload();       
@@ -341,7 +341,6 @@ addressChangeHandler = () => {
 //Triggered from "Place Order" button
 checkoutHandler = () => {   
 let dataItem = [];
-alert(sessionStorage.getItem("selAddress"));
 if(sessionStorage.getItem("selAddress")==="null" || sessionStorage.getItem("selAddress")===null){
   this.setState({saveOrderResponse : "Please select Address"})        
   this.openMessageHandler();   
@@ -370,6 +369,7 @@ let dataCheckout = JSON.stringify({
     "restaurant_id": JSON.parse(sessionStorage.getItem("restaurantDetails")).id     
 })       
 let that = this;
+let access_token = sessionStorage.getItem("access-token");
 let xhrCheckout = new XMLHttpRequest();
 xhrCheckout.addEventListener("readystatechange", function () {
     if (this.readyState === 4) {              
@@ -381,7 +381,7 @@ xhrCheckout.addEventListener("readystatechange", function () {
 })  
 
 xhrCheckout.open("POST", this.props.baseUrl + "order");
-xhrCheckout.setRequestHeader("Authorization", "Bearer " + access_token); //sessionStorage.getItem('access-token')
+xhrCheckout.setRequestHeader("Authorization", "Bearer " + access_token);
 xhrCheckout.setRequestHeader("Content-Type", "application/json");
 xhrCheckout.setRequestHeader("Cache-Control", "no-cache");
 xhrCheckout.setRequestHeader("Access-Control-Allow-Origin", "*");  
