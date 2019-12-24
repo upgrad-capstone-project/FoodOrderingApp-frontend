@@ -278,6 +278,7 @@ this.setState({pincode : e.target.value })
 //Called to save new address entered by user
 addressClickHandler = () =>    
 {
+
 this.setState({saveAddressError:"dispNone"})
   //Validating that no fields are empty
   //If empty, "required" text is displayed
@@ -297,6 +298,7 @@ let dataAddress =
     "&pincode="+this.state.pincode+
     "&stateUuid="+ this.state.selected;  
 let that = this;
+let access_token = sessionStorage.getItem("access-token");
 let xhrSaveAddress = new XMLHttpRequest();
 xhrSaveAddress.addEventListener("readystatechange", function () {
     if (this.readyState === 4) {              
@@ -329,7 +331,6 @@ addressChangeHandler = () => {
 //Triggered from "Place Order" button
 checkoutHandler = () => {   
 let dataItem = [];
-alert(sessionStorage.getItem("selAddress"));
 if(sessionStorage.getItem("selAddress")==="null" || sessionStorage.getItem("selAddress")===null){
   this.setState({saveOrderResponse : "Please select Address"})        
   this.openMessageHandler();   
