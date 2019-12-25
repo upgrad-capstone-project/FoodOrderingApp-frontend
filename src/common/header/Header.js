@@ -45,9 +45,6 @@ const styles = {
   },
   formControl: {
     width: "90%"
-  },
-  buttonControl: {
-    width: "40%"
   }
 }
 const TabContainer = function (props) {
@@ -77,7 +74,6 @@ class Header extends Component {
       passwordReg: "",
       usernameRequired: "dispNone",
       passwordRequired: "dispNone",
-      formValid: true,
       loginError: "dispNone",
       signupError: "dispNone",
       emailRequired: "dispNone",
@@ -109,9 +105,7 @@ class Header extends Component {
     this.setState({ password: e.target.value })
   }
   inputEmailChangeHandler = (e) => {
-    
     this.setState({ email: e.target.value })
-    
   }
   inputFirstnameChangeHandler = (e) => {
     this.setState({ firstname: e.target.value })
@@ -193,22 +187,11 @@ class Header extends Component {
     this.setState({signUpErrCode:""});
     //Checking if any input fields are empty
     this.state.email === "" ? this.setState({ emailRequired: "dispBlock" }) : this.setState({ emailRequired: "dispNone" });
-
-    {var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
-     var emailRegex = new RegExp(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-     emailRegex.test(this.state.email) === false ? this.setState({formValid:false, emailRequired: "dispBlock", emailMsg : "Invalid eMail"}) : this.setState({ emailRequired: "dispNone", formValid : true });
-     strongRegex.test(this.state.passwordReg) === false ? this.setState({formValid:false , passwordRegRequired: "dispBlock", passwordMsg : "Weak Password"}) : this.setState({ passwordRegRequired: "dispNone", formValid : true });  
-    }
-    
- 
-    /*this.state.email === "" ? this.setState({ emailRequired: "dispBlock" }) : this.setState({ emailRequired: "dispNone" });
     this.state.firstname === "" ? this.setState({ firstnameRequired: "dispBlock" }) : this.setState({ firstnameRequired: "dispNone" });
      this.state.mobile === "" ? this.setState({ mobileRequired: "dispBlock" }) : this.setState({ mobileRequired: "dispNone" });
     this.state.passwordReg === "" ? this.setState({ passwordRegRequired: "dispBlock" }) : this.setState({ passwordRegRequired: "dispNone" });
     if (this.state.email === "" || this.state.firstname === "" || this.state.mobile === "" || this.state.passwordReg === "") 
-    { return; }*/
-    this.checkForm();
-  
+    { return; }
     
     let that = this;
     let dataSignUp = 
@@ -251,7 +234,6 @@ class Header extends Component {
 
 //Clearing input field values and all error texts when freshly opening the modal
     this.setState({ modalIsOpen: true });
-
     this.setState({ value: 0 });
     this.setState({ email:"" });
     this.setState({ firstname:"" });
@@ -273,7 +255,6 @@ class Header extends Component {
     this.setState({ mobileRequired: "dispNone"});
     this.setState({ passwordRegRequired: "dispNone" });
     this.setState({ loginErrorMsg:"" });
-
   }
 
   // Closing modal afer login
@@ -428,7 +409,7 @@ closeMenuHandler = () => {
                   <Typography variant="subtitle1" color="error" className={this.state.loginError} align="left">{this.state.loginErrorMsg}</Typography>
                 </FormControl>:""}
               </FormControl><br /><br />
-              <Button variant="contained" color="primary" onClick={this.loginClickHandler} className={classes.buttonControl}>LOGIN</Button>
+              <Button variant="contained" color="primary" onClick={this.loginClickHandler} className={classes.formControl}>LOGIN</Button>
             </TabContainer>}
           {this.state.value === 1 && <TabContainer>
             <form>
@@ -471,14 +452,10 @@ closeMenuHandler = () => {
                 {this.state.signUpErrCode === "SGR-001" ?
                 <FormControl className={classes.formControl}>
                   <Typography variant="subtitle1" color="error" className={this.state.signupError} align="left">{this.state.signUpErrorMsg}</Typography>
-
-                </FormControl>}<br /><br />
-              {/*this.state.registrationSuccess === true &&
-                            <FormControl className={classes.formControl}>
-                                <span className="successText"> Registration Successful. Please Login!</span>
-                            </FormControl><br /><br />*/}
-              <Button variant="contained" color="primary" onClick={this.signUpClickHandler} className={classes.buttonControl}>
-
+                </FormControl>:""}
+              </FormControl>
+                <br /><br /><br /><br />
+              <Button variant="contained" color="primary" onClick={this.signUpClickHandler} className={classes.formControl}>
                 SIGNUP
                         </Button>
             </form>
