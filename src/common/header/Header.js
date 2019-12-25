@@ -15,11 +15,7 @@ import PropTypes from 'prop-types';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { Link } from 'react-router-dom';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
-import Popper from '@material-ui/core/Popper';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
@@ -91,8 +87,11 @@ class Header extends Component {
       mobileRequired: "dispNone",
       passwordRegRequired: "dispNone",
       registrationSuccess: false,
-      loginErrorMsg: "",
       signUpErrorMsg: "",
+      signUpErrCode:"",
+      loginInvalidContactNo:"",
+      loginErrCode:"",
+      loginErrorMsg: "",
       loggedIn: sessionStorage.getItem('access-token') == null ? false : true,
       showUserProfileDropDown: false,
       open: false,
@@ -103,49 +102,51 @@ class Header extends Component {
     }
   }
 
+  // Storing signup input field values in state for processing
   inputUsernameChangeHandler = (e) => {
     this.setState({ username: e.target.value })
   }
-
   inputPasswordChangeHandler = (e) => {
     this.setState({ password: e.target.value })
   }
-
   inputEmailChangeHandler = (e) => {
     
     this.setState({ email: e.target.value })
     
   }
-
   inputFirstnameChangeHandler = (e) => {
     this.setState({ firstname: e.target.value })
-
   }
-
   inputLastnameChangeHandler = (e) => {
     this.setState({ lastname: e.target.value })
-
   }
-
   inputMobileChangeHandler = (e) => {
     this.setState({ mobile: e.target.value })
-
   }
-
   inputPasswordRegChangeHandler = (e) => {
     this.setState({ passwordReg: e.target.value })
-
   }
 
   componentDidMount() {
-
   }
+
+  //Login function
   loginClickHandler = () => {
+    //Clearing error texts during login
+    this.setState({loginInvalidContactNo:""})
+
+    //Checking if any input fields are empty
     this.state.username === "" ? this.setState({ usernameRequired: "dispBlock" }) : this.setState({ usernameRequired: "dispNone" });
     this.state.password === "" ? this.setState({ passwordRequired: "dispBlock" }) : this.setState({ passwordRequired: "dispNone" });
     this.state.loginErrorMsg === "" ? this.setState({ loginError: "dispBlock" }) : this.setState({ loginError: "dispNone" });
 
     if (this.state.username === "" || this.state.password === "") { return }
+    let tempContactNo = this.state.username;
+    if(tempContactNo.length!==10){
+      this.setState({loginInvalidContactNo:"Invalid Contact"})
+      return;
+    }
+
     let that = this;
     let dataLogin = null
     let xhrLogin = new XMLHttpRequest();
@@ -154,6 +155,7 @@ class Header extends Component {
         let loginResponse = JSON.parse(xhrLogin.response);  
         if (loginResponse.code === 'ATH-001' || loginResponse.code === 'ATH-002') {
           that.setState({ loginError: "dispBlock" });
+          that.setState({loginErrCode:loginResponse.code});
           that.setState({ loginErrorMsg: loginResponse.message });
         } else {
           sessionStorage.setItem('uuid', JSON.parse(this.responseText).id);
@@ -175,6 +177,7 @@ class Header extends Component {
     xhrLogin.send(dataLogin);
 
   }
+  /*
   checkForm = () => {
     this.state.email === "" ? this.setState({ emailRequired: "dispBlock" }) : this.setState({ emailRequired: "dispNone" });
     this.state.firstname === "" ? this.setState({ firstnameRequired: "dispBlock" }) : this.setState({ firstnameRequired: "dispNone" });
@@ -182,25 +185,32 @@ class Header extends Component {
     this.state.mobile === "" ? this.setState({ mobileRequired: "dispBlock" }) : this.setState({ mobileRequired: "dispNone" });
     this.state.passwordReg === "" ? this.setState({ passwordRegRequired: "dispBlock" }) : this.setState({ passwordRegRequired: "dispNone" });
     if (this.state.email === "" || this.state.firstname === "" || this.state.lastname === "" || this.state.mobile === "" || this.state.passwordReg === "") { return; }
+  }*/
+
+  //Sign up function
+  signUpClickHandler = () => {
+    //clear error messages
+    this.setState({signUpErrorMsg:""});
+    this.setState({signUpErrCode:""});
+    //Checking if any input fields are empty
+    this.state.email === "" ? this.setState({ emailRequired: "dispBlock" }) : this.setState({ emailRequired: "dispNone" });
+
     {var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
      var emailRegex = new RegExp(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
      emailRegex.test(this.state.email) === false ? this.setState({formValid:false, emailRequired: "dispBlock", emailMsg : "Invalid eMail"}) : this.setState({ emailRequired: "dispNone", formValid : true });
      strongRegex.test(this.state.passwordReg) === false ? this.setState({formValid:false , passwordRegRequired: "dispBlock", passwordMsg : "Weak Password"}) : this.setState({ passwordRegRequired: "dispNone", formValid : true });  
     }
     
-  }
-  signUpClickHandler = () => {
+ 
     /*this.state.email === "" ? this.setState({ emailRequired: "dispBlock" }) : this.setState({ emailRequired: "dispNone" });
     this.state.firstname === "" ? this.setState({ firstnameRequired: "dispBlock" }) : this.setState({ firstnameRequired: "dispNone" });
-   // this.state.lastname === "" ? this.setState({ lastnameRequired: "dispBlock" }) : this.setState({ lastnameRequired: "dispNone" });
-    this.state.mobile === "" ? this.setState({ mobileRequired: "dispBlock" }) : this.setState({ mobileRequired: "dispNone" });
+     this.state.mobile === "" ? this.setState({ mobileRequired: "dispBlock" }) : this.setState({ mobileRequired: "dispNone" });
     this.state.passwordReg === "" ? this.setState({ passwordRegRequired: "dispBlock" }) : this.setState({ passwordRegRequired: "dispNone" });
     if (this.state.email === "" || this.state.firstname === "" || this.state.mobile === "" || this.state.passwordReg === "") 
     { return; }*/
     this.checkForm();
   
     
-  
     let that = this;
     let dataSignUp = 
     "firstName="+ this.state.firstname+
@@ -218,11 +228,10 @@ class Header extends Component {
           || signupResponse.code === 'SGR-003'
           || signupResponse.code === 'SGR-004') {
           that.setState({ signupError: "dispBlock" });
-          if(signupResponse.code === 'SGR-004'){
-          that.setState({ "signUpErrorMsg": "Password must contain at least one capital letter, one small letter, one number, and one special character" });
-          } else {
-            that.setState({ "signUpErrorMsg": signupResponse.message });
-          }
+          
+            that.setState({ signUpErrCode: signupResponse.code});
+            that.setState({ signUpErrorMsg: signupResponse.message });
+          
         } else {
           that.setState({ registrationSuccess: true });
           that.setState({snackBarText:"Registered successfully! Please login now!"});
@@ -231,54 +240,70 @@ class Header extends Component {
       }
     })
 
-    xhrSignup.open("POST", this.props.baseUrl + "customer/signup"+"?"+dataSignUp);
+    xhrSignup.open("POST",this.props.baseUrl+"customer/signup?"+dataSignUp);
     xhrSignup.setRequestHeader("Content-Type", "application/json");
     xhrSignup.setRequestHeader("Cache-Control", "no-cache");
     xhrSignup.setRequestHeader("Access-Control-Allow-Origin", "*");
     xhrSignup.send(null);
   }
 
+  
   openModalHandler = () => {
+
+//Clearing input field values and all error texts when freshly opening the modal
     this.setState({ modalIsOpen: true });
-    this.setState({
-      modalIsOpen: true,
-      value: 0,
-      usernameRequired: "dispNone",
-      username: "",
-      passwordRequired: "dispNone",
-      password: "",
-      email: "",
-      emailRequired: "dispNone",
-      firstname: "",
-      firstnameRequired: "dispNone",
-      lastname: "",
-      lastnameRequired: "dispNone",
-      mobile: "",
-      mobileRequired: "dispNone",
-      passwordReg: "",
-      passwordRegRequired: "dispNone"
-  });
+
+    this.setState({ value: 0 });
+    this.setState({ email:"" });
+    this.setState({ firstname:"" });
+    this.setState({ lastname:"" });
+    this.setState({ mobile:"" });
+    this.setState({ signUpErrorMsg:"" });
+    this.setState({ signUpErrCode:"" });
+    this.setState({ passwordReg:"" });
+    this.setState({ loginInvalidContactNo:"" });
+    this.setState({ loginErrCode:"" });
+    this.setState({ loginErrorMsg:"" });
+    this.setState({ usernameRequired: "dispNone" });
+    this.setState({ passwordRequired: "dispNone" });
+    this.setState({ loginError: "dispNone"});
+    this.setState({ signupError: "dispNone" });
+    this.setState({ emailRequired: "dispNone"});
+    this.setState({ firstnameRequired: "dispNone"});
+    this.setState({ lastnameRequired: "dispNone" });
+    this.setState({ mobileRequired: "dispNone"});
+    this.setState({ passwordRegRequired: "dispNone" });
+    this.setState({ loginErrorMsg:"" });
+
   }
 
+  // Closing modal afer login
+  // Opening snack bar with message
   closeModalHandler = () => {
     this.setState({ modalIsOpen: false });
     this.setState({snackBarOpen:true});
   }
 
+  // Closing modal due to click away
+  // This does trigger a snack bar
   closeModalHandlerClickAway = () => {
     this.setState({ modalIsOpen: false });
     this.setState({snackBarOpen:false});
   }
 
+  // For toggling between Login and Signup tab in the modal
   tabChangeHandler = (event, value) => {
     this.setState({ value });
   }
+
+  // Opening of snack bar and toggling to Login tab after successfull signup
   openMessageHandler = () => {
     this.setState({ snackBarOpen: true});
     this.setState({modalIsOpen: true});
     this.setState({value: 0});
   }
 
+  // Opening snack bar and closing modal after successful login
   openMessageHandlerPostLogin= () => {
     this.setState({ snackBarOpen: true});
     this.setState({modalIsOpen: false});
@@ -311,6 +336,7 @@ closeMenuHandler = () => {
     })
   }
 
+  //Snack bar close common handler
   handleSnackBarClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -318,6 +344,7 @@ closeMenuHandler = () => {
     this.setState({ snackBarOpen: false })
   }
 
+  // Logout function, redirects to Home page
   logoutClickHandler = () => {
     sessionStorage.clear();
     this.props.history.push({
@@ -332,10 +359,7 @@ closeMenuHandler = () => {
       <Fastfood className={classes.icon} />
     )
 
-    let logoutBtnToRender = null;
-
-
-    return (
+     return (
       <div className="topMain">
         <div className="header-main-container">
           <div className="header-logo-container">{logoToRender}</div>
@@ -347,21 +371,18 @@ closeMenuHandler = () => {
               <Input
                 onChange={this.props.searchRestaurantsByName.bind(this)}
                 className={classes.searchInput}
-                color='white'
                 placeholder="Search by Restaurant Name"
               />
             </div>
           }
           {!this.state.loggedIn ?
-            <div className="login-button">
+            <div>
               <Button variant="contained" color="default" onClick={this.openModalHandler}><AccountCircle />Login</Button>
             </div>
             :
-            <div className="login-button">
-              <Button  style={{background:" #263238",color:"white"}} onClick={this.openMenuHandler}><AccountCircle/><span style={{paddingLeft:"3%"}}>  {sessionStorage.getItem("firstName")}</span></Button>
+            <div>
+              <Button  style={{textTransform:"capitalize", fontSize:"120%",background:" #263238",color:"lightgrey"}} onClick={this.openMenuHandler}><AccountCircle/><span style={{paddingLeft:"3%"}}>  {sessionStorage.getItem("firstName")}</span></Button>
               <div>
-              
-                    
                       <Menu
                       className="menuDrop"
                       id="simple-menu"
@@ -369,7 +390,7 @@ closeMenuHandler = () => {
                       open={this.state.menuIsOpen}
                       onClose={this.closeMenuHandler}
                       anchorEl={this.state.anchorEl}>
-                        <MenuItem onClick={this.handleClose}><Link to="/profile" style={{ textDecoration: 'none', color: "black" }}>My Profile</Link></MenuItem><hr />
+                        <MenuItem onClick={this.handleClose}><Link to="/profile" style={{ textDecoration: 'none', color: "black" }}>My Profile</Link></MenuItem>
                         <MenuItem onClick={this.props.logoutHandler}>Logout</MenuItem>
                       </Menu>
       
@@ -393,12 +414,20 @@ closeMenuHandler = () => {
                 <InputLabel htmlFor="username"> Contact No. </InputLabel>
                 <Input id="username" type="text" username={this.state.username} onChange={this.inputUsernameChangeHandler} />
                 <FormHelperText className={this.state.usernameRequired}><span className="red">required</span></FormHelperText>
+                <Typography variant="subtitle1" color="error" align="left">{this.state.loginInvalidContactNo}</Typography>
+                {this.state.loginErrCode === "ATH-001"?
+                <FormControl className={classes.formControl}>
+                  <Typography variant="subtitle1" color="error" className={this.state.loginError} align="left">{this.state.loginErrorMsg}</Typography>
+                </FormControl>:""}
               </FormControl><br /><br />
               <FormControl required className={classes.formControl}>
                 <InputLabel htmlFor="password"> Password </InputLabel>
                 <Input id="password" type="password" onChange={this.inputPasswordChangeHandler} />
                 <FormHelperText className={this.state.passwordRequired}><span className="red">required</span></FormHelperText>
-                <Typography variant="subtitle1" color="error" className={this.state.loginError} align="left">{this.state.loginErrorMsg}</Typography>
+                {this.state.loginErrCode === "ATH-002"?
+                <FormControl className={classes.formControl}>
+                  <Typography variant="subtitle1" color="error" className={this.state.loginError} align="left">{this.state.loginErrorMsg}</Typography>
+                </FormControl>:""}
               </FormControl><br /><br />
               <Button variant="contained" color="primary" onClick={this.loginClickHandler} className={classes.buttonControl}>LOGIN</Button>
             </TabContainer>}
@@ -418,26 +447,39 @@ closeMenuHandler = () => {
                 <InputLabel htmlFor="email">Email</InputLabel>
                 <Input id="email" type="email" onChange={this.inputEmailChangeHandler} value={this.state.email} />
                 <FormHelperText className={this.state.emailRequired}><span className="red">required valid email</span></FormHelperText>
-              </FormControl><br /><br />
-              <FormControl required className={classes.formControl}>
-                <InputLabel htmlFor="mobile">Mobile Number</InputLabel>
-                <Input id="mobile" type="number" onChange={this.inputMobileChangeHandler} value={this.state.mobile} />
-                <FormHelperText className={this.state.mobileRequired}><span className="red">required</span></FormHelperText>
+                {this.state.signUpErrCode === "SGR-002"?
+                <FormControl className={classes.formControl}>
+                  <Typography variant="subtitle1" color="error" className={this.state.signupError} align="left">Invalid Email</Typography>
+                </FormControl>:""}
               </FormControl><br /><br />
               <FormControl required aria-describedby="name-helper-text" className={classes.formControl}>
                 <InputLabel htmlFor="passwordReg">Password</InputLabel>
                 <Input type="password" id="passwordReg" onChange={this.inputPasswordRegChangeHandler} />
                 <FormHelperText className={this.state.passwordRegRequired}><span className="red">required strong password</span></FormHelperText>
+                {this.state.signUpErrCode === "SGR-004"?
+                <FormControl className={classes.formControl}>
+                  <Typography variant="subtitle1" color="error" className={this.state.signupError} align="left">Password must contain at least one capital letter, one small letter, one number, and one special character</Typography>
+                </FormControl>:""}
               </FormControl><br /><br />
-              {this.state.registrationSuccess === false &&
+              <FormControl required className={classes.formControl}>
+                <InputLabel htmlFor="mobile">Contact No.</InputLabel>
+                <Input id="mobile" type="number" onChange={this.inputMobileChangeHandler} value={this.state.mobile} />
+                <FormHelperText className={this.state.mobileRequired}><span className="red">required</span></FormHelperText>
+                {this.state.signUpErrCode === "SGR-003" ?
+                <FormControl className={classes.formControl}>
+                  <Typography variant="subtitle1" color="error" className={this.state.signupError} align="left">Contact No. must contain only numbers and must be 10 digits long</Typography>
+                </FormControl>:""}
+                {this.state.signUpErrCode === "SGR-001" ?
                 <FormControl className={classes.formControl}>
                   <Typography variant="subtitle1" color="error" className={this.state.signupError} align="left">{this.state.signUpErrorMsg}</Typography>
+
                 </FormControl>}<br /><br />
               {/*this.state.registrationSuccess === true &&
                             <FormControl className={classes.formControl}>
                                 <span className="successText"> Registration Successful. Please Login!</span>
                             </FormControl><br /><br />*/}
               <Button variant="contained" color="primary" onClick={this.signUpClickHandler} className={classes.buttonControl}>
+
                 SIGNUP
                         </Button>
             </form>
