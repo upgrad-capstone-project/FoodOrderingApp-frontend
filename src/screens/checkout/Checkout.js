@@ -437,7 +437,7 @@ getStepContent= (step) => {
       <Card className={this.props.card} key={exisAddress.id} >
         <CardContent className="addressCard">
           <Typography
-          style={{width:"100%"}}
+          style={{width:"100%",textTransform:"capitalize"}}
                        variant={"h6"}
             gutterBottom
           >
