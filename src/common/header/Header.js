@@ -163,7 +163,7 @@ class Header extends Component {
       }
     })
     xhrLogin.open("POST", this.props.baseUrl + "customer/login");
-    xhrLogin.setRequestHeader("authentication", "Basic " + window.btoa(this.state.username + ":" + this.state.password));
+    xhrLogin.setRequestHeader("authorization", "Basic " + window.btoa(this.state.username + ":" + this.state.password));
     xhrLogin.setRequestHeader("Content-Type", "application/json");
     xhrLogin.setRequestHeader("Cache-Control", "no-cache");
     xhrLogin.setRequestHeader("Access-Control-Allow-Origin", "*");
