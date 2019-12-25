@@ -1,0 +1,24 @@
+.mainContainer{
+   display: flex;
+   flex-wrap: wrap;
+   margin-left: 1%;
+}
+
+.restaurantCard {
+   display:inline-block;
+   flex-grow: 1;
+   width:25%;
+}
+
+@media (max-width: 1000px){
+   .restaurantCard {
+      display:inline-block;
+      flex-grow: 1;
+      width:49%;
+   }
+}
+
+.gridCard{
+   height:40% !important;
+   width:100%;
+}
