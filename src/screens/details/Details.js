@@ -213,7 +213,7 @@ return(<div className="mainDiv">
             
               </Grid>
               <Grid item xs={5}>
-            <span style={{fontWeight:"bolder"}} className="cusRating"><i className="fa fa-inr"></i> {this.state.resData.average_price}</span>
+            <span style={{fontWeight:"bolder"}} className="cusRating"><i className="fa fa-inr"></i>{this.state.resData.average_price}</span>
               <span style={{display:"block",color:"grey",fontSize:20}}>AVERAGE COST FOR</span>
               <span style={{color:"grey",fontSize:20}}>TWO PEOPLE</span>
         
@@ -287,7 +287,7 @@ return(<div className="mainDiv">
                               </div>
                               <div >
                                   <span style={{fontWeight:"bold",fontSize:"120%"}}><i className="fa fa-inr"></i>
-                                  <span>{cartItem.totalItemPrice}</span>     </span>                                                               
+                                  <span>  {cartItem.totalItemPrice}</span></span>                                                               
                               </div>                                                        
                       
                   </div>
@@ -301,7 +301,7 @@ return(<div className="mainDiv">
             <Grid item >
                 <Typography style={{fontSize:"170%",fontWeight:"bold"}}  gutterBottom className="bold">
                       <i className="fa fa-inr"></i>
-                    {this.state.cartItems.totalPrice}                                                                  
+                   <span>  {this.state.cartItems.totalPrice}</span>                                                                 
                 </Typography>
             </Grid>
         </Grid>
