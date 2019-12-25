@@ -21,7 +21,6 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Menu from '@material-ui/core/Menu';
 
-
 const customStyles = {
   content: {
     top: '50%',
