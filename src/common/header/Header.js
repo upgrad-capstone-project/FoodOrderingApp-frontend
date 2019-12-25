@@ -194,13 +194,23 @@ class Header extends Component {
     { return; }
     
     let that = this;
-    let dataSignUp = 
+ /*
+    let dataSignUp = JSON.stringify({
     "firstName="+ this.state.firstname+
     "&lastName="+ this.state.lastname+
     "&emailAddress="+ this.state.email+
       "&contactNumber="+ this.state.mobile+
       "&password="+ this.state.passwordReg;
-    
+    });
+*/
+    let dataSignup = {
+      'first_name': this.state.firstname,
+      'last_name': this.state.lastname,
+      'email_address': this.state.email,
+      'password': this.state.passwordReg,
+      'contact_number': this.state.mobile,
+  };
+
     let xhrSignup = new XMLHttpRequest();
     xhrSignup.addEventListener("readystatechange", function () {
       if (this.readyState === 4) {
@@ -222,11 +232,11 @@ class Header extends Component {
       }
     })
 
-    xhrSignup.open("POST",this.props.baseUrl+"customer/signup?"+dataSignUp);
+    xhrSignup.open("POST",this.props.baseUrl+"customer/signup");
     xhrSignup.setRequestHeader("Content-Type", "application/json");
     xhrSignup.setRequestHeader("Cache-Control", "no-cache");
     xhrSignup.setRequestHeader("Access-Control-Allow-Origin", "*");
-    xhrSignup.send(null);
+    xhrSignup.send(JSON.stringify(dataSignup));
   }
 
   

@@ -290,12 +290,14 @@ this.state.selected === 0 ? this.setState({ stateRequired: "dispBlock" }) : this
 if(this.state.flatBldNo === "" || this.state.locality === "" || this.state.city === "" || this.state.pincode === ""  || this.state.selected === ""){return}
 
 //Forming parameters to pass in the API Url
-let dataAddress =             
-    "flatBuildingName="+ this.state.flatBldNo +
-    "&locality="+ this.state.locality+
-    "&city="+this.state.city+
-    "&pincode="+this.state.pincode+
-    "&stateUuid="+ this.state.selected;  
+let dataAddress = JSON.stringify({
+      "city": this.state.city,
+      "flat_building_name": this.state.flatBldNo,
+      "locality": this.state.locality,
+      "pincode": this.state.pincode,
+      "state_uuid": this.state.selected
+    })
+
 let that = this;
 let access_token = sessionStorage.getItem("access-token");
 let xhrSaveAddress = new XMLHttpRequest();
@@ -313,10 +315,10 @@ xhrSaveAddress.addEventListener("readystatechange", function () {
     }
 })
 
-xhrSaveAddress.open("POST", this.props.baseUrl + "address?"+dataAddress);
+xhrSaveAddress.open("POST", this.props.baseUrl + "address");
 xhrSaveAddress.setRequestHeader("authorization", "Bearer " + access_token);
 xhrSaveAddress.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-xhrSaveAddress.send (null);
+xhrSaveAddress.send (dataAddress);
 }
 
 //Called when user selects an address
