@@ -6,6 +6,7 @@ import * as Constants from "../../common/Constants";
 import RestaurantCard from './RestaurantCard';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from "@material-ui/core/styles";
+import './Home.css';
 
 
 const styles = {
@@ -87,12 +88,13 @@ class Home extends Component{
         return(
             <div>                
                 <Header logoutHandler={this.loginredirect} baseUrl={this.props.baseUrl} searchRestaurantsByName = {this.searchRestaurantsByName} showSearch={true} history={this.props.history} />
-					<Grid container spacing={3} style={{padding:"1% 2%"}}>
+					<div className="mainContainer">
                     {	
                      this.state.imageData===null ? <span style={{fontSize:"20px"}}>No restaurant with the given name</span>	
                      :	(		
                         (this.state.imageData || []).map((resItem,index) =>
-                            <Grid item xs={12} sm={3} key={index}>
+                            <div key={"div"+index} className="restaurantCard">
+                            <Grid className="gridCard" key={index}>
                                 <RestaurantCard
                                     resId = {resItem.id}
                                     resURL = {resItem.photo_URL}
@@ -105,10 +107,11 @@ class Home extends Component{
                                     index = {index}
                                 />
                             </Grid>
+                            </div>
                          )
                         )	
                     }
-					</Grid>
+					</div>
                     
             </div>
         )

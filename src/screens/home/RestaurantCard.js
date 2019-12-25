@@ -16,19 +16,19 @@ const RestaurantCard = function(props){
 	const classes = props.classes;	    	
 
     return (
-		<div onClick={() => {let detailsPageUrl = '/restaurant/'+ props.resId; return props.history.push(detailsPageUrl)}} key={index}>
-			<Card className={classes.resCard} key={index}>			
+		<div className="cardContainer" onClick={() => {let detailsPageUrl = '/restaurant/'+ props.resId; return props.history.push(detailsPageUrl)}} key={index}>
+			<Card style={{width:"95%"}} className={classes.resCard} key={index}>			
 					<CardMedia
 						component="img"
 						alt={props.resName}
 						height="160"
 						image={props.resURL}
 					/>
-					<CardContent>
+					<CardContent >
 						<Typography gutterBottom variant="h5" component="h2">
 							{props.resName}
 						</Typography>
-						<Typography variant="body2" color="textSecondary">
+						<Typography style={{height:"18px"}}variant="body2" color="textSecondary">
 							{props.resFoodCategories}
 						</Typography>
 						<br />
