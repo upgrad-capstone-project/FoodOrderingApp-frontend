@@ -213,7 +213,7 @@ return(<div className="mainDiv">
             
               </Grid>
               <Grid item xs={5}>
-            <span style={{fontWeight:"bolder"}} className="cusRating"><i className="fa fa-inr"></i> {this.state.resData.average_price}</span>
+            <span style={{fontWeight:"bolder"}} className="cusRating"><i className="fa fa-inr"></i>{this.state.resData.average_price}</span>
               <span style={{display:"block",color:"grey",fontSize:20}}>AVERAGE COST FOR</span>
               <span style={{color:"grey",fontSize:20}}>TWO PEOPLE</span>
         
@@ -271,23 +271,23 @@ return(<div className="mainDiv">
                   <i className="fa fa-stop-circle-o" style={{color:"red"}} aria-hidden="true"></i>
                   </span><span >{cartItem.item_name}</span></span>
                }
-                                  <span style={{marginLeft:8}} >{cartItem.item.item_name}</span>
+                                  <span style={{color:"grey", fontSize:20, marginLeft:8}} >{cartItem.item.item_name}</span>
                               </span>
                           </div> 
                               <div >
                                 <div  >
                                   <IconButton aria-label="Remove Item" onClick={this.removeAnItemFromCart.bind(this, cartItem, index)}>
-                                      <RemoveIcon  style={{fontSize: 20, fill: 'black'}} />
+                                      <RemoveIcon  style={{fontSize: 22, fontWeight:"bold", fill: 'black'}} />
                                   </IconButton>
-                                  <Typography variant="body" style={{fontSize: 20, fill: 'black'}}>{cartItem.quantity}</Typography> 
+                                  <Typography variant="body" style={{fontSize: 20, fill: 'grey'}}>{cartItem.quantity}</Typography> 
                                   <IconButton aria-label="Add Item"  onClick={this.addAnItemFromCart.bind(this, cartItem, index)}>
-                                      <AddIcon style={{fontSize: 20, fill: 'black'}}/>
+                                      <AddIcon style={{fontSize: 22, fontWeight:"bold", fill: 'black'}}/>
                                   </IconButton>     
                                   </div>                                                              
                               </div>
                               <div >
-                                  <span style={{fontWeight:"bold",fontSize:"120%"}}><i className="fa fa-inr"></i>
-                                  <span>{cartItem.totalItemPrice}</span>     </span>                                                               
+                                  <span style={{fontWeight:"bold", color:"grey", fontSize:"120%"}}><i className="fa fa-inr"></i>
+                                  <span>  {cartItem.totalItemPrice}</span></span>                                                               
                               </div>                                                        
                       
                   </div>
@@ -301,7 +301,7 @@ return(<div className="mainDiv">
             <Grid item >
                 <Typography style={{fontSize:"170%",fontWeight:"bold"}}  gutterBottom className="bold">
                       <i className="fa fa-inr"></i>
-                    {this.state.cartItems.totalPrice}                                                                  
+                   <span>  {this.state.cartItems.totalPrice}</span>                                                                 
                 </Typography>
             </Grid>
         </Grid>

@@ -221,19 +221,19 @@ onStateChange = (event) => {
 
 //Invoke the follow GET calls once the component successfully loads
 componentDidMount(){
-  this.mounted = true;
-this.getAddresses(baseURL, access_token);
-this.getPaymentMethods();
-this.getStates();
+this.mounted = true;
 }
 
 //Set component state values from props passed from Details page
 componentWillMount(){
   try{
-    let loggedstatuscheck = this.props.history.location.state.chcartItems.ItemList;
+    console.log(this.props.history.location.state.chcartItems.ItemList);
     this.setState({chcartItems:this.props.history.location.state.chcartItems});
     this.setState({totalCartItemsValue:this.props.history.location.state.totalCartItemsValue});
     this.setState({resDetails:JSON.parse(sessionStorage.getItem("restaurantDetails"))});
+    this.getAddresses(baseURL, access_token);
+this.getPaymentMethods();
+this.getStates();
   } catch {
     this.mounted = false;
     this.props.history.push({
@@ -678,12 +678,12 @@ render(){
     >
       {this.props.history.location.state.chcartItems.itemList.map((item, index) => {
         return(
-               <Grid style={{marginLeft:"3%", fontSize:"18px"}}container item xs={12} spacing={1} key={index}>
+               <Grid style={{marginLeft:"3%", color:"grey", fontSize:"18px"}}container item xs={12} spacing={1} key={index}>
                <Grid item xs={1}>
                    {item.item.item_type === 'VEG' ?  <FiberManualRecord style={{ color: "#008000" }}/> : <FiberManualRecord style={{ color: "#b20505" }}/>}
                </Grid>
                <Grid item xs={6}>
-                   {item.item.item_name}                        
+                   <span style={{color:"grey", fontSize:20, marginLeft:8}}>{item.item.item_name}</span>                        
                </Grid>
                <Grid item xs={1}>
                    {item.quantity}                      
@@ -691,7 +691,7 @@ render(){
                <Grid item xs={1}>               
                </Grid>
                <Grid  item xs={2}>
-                   {item.item.price}                            
+               <i className="fa fa-inr"></i><span>  {item.item.price}</span>                        
                </Grid>
                </Grid>);
                })
@@ -704,15 +704,15 @@ render(){
                  </Grid>
                     <Grid container item xs={12} >
                         <Grid item xs={5}>
-                            <Typography style={{marginLeft:"14%",color:"grey",fontWeight:"bold"}} variant="h5">
+                            <Typography style={{marginLeft:"14%",fontSize:"140%",fontWeight:"bold"}} >
                             Net Amount
                             </Typography>
                         </Grid>
                         <Grid item xs={4}>                            
                         </Grid>
                         <Grid item xs={3}>
-                        <Typography style={{marginLeft:"3%",color:"grey",fontWeight:"bold"}} variant="h5">                                                       
-                            {this.props.history.location.state.totalCartItemsValue}
+                        <Typography style={{marginLeft:"3%",fontSize:"140%",fontWeight:"bold"}}>                                                       
+                        <i style={{color:"grey"}}className="fa fa-inr"></i><span>  {this.props.history.location.state.totalCartItemsValue}</span>
                         </Typography>
                         </Grid>
                     </Grid>
