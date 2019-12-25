@@ -1,12 +1,10 @@
 import React, { Component } from "react";
-import ReactDOM from 'react-dom'
 import Header from "../../common/header/Header";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from 'prop-types';
 import * as Utils from '../../common/Utils';
 import * as Constants from '../../common/Constants';
 import { withStyles } from "@material-ui/core/styles";
-import { border } from '@material-ui/system';
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
@@ -75,7 +73,8 @@ const styles = muiBaseTheme => ({
     marginTop:"10px",
     marginBottom:"10px",
     marginLeft:"auto",
-    width:"15px"
+    width:"15px",
+    margin: `${muiBaseTheme.spacing(3)}px 0`
   },
   card: {
     maxWidth: 250,        
@@ -88,9 +87,6 @@ const styles = muiBaseTheme => ({
   content: {
     textAlign: "left",
     width:"10%"
-  },
-  divider: {
-    margin: `${muiBaseTheme.spacing.unit * 3}px 0`
   },
   heading: {
     fontWeight: "bold"
@@ -107,15 +103,12 @@ const styles = muiBaseTheme => ({
   } 
 });
 
+//Storing access token to a constant to use throughout the class
 const access_token =sessionStorage.getItem("access-token");
-const req_header = {
-  "Accept": "application/json;charset=UTF-8",
-  "authorization": "Bearer " +  access_token,
-  "Access-Control-Allow-Origin" : "*",
-  "Cache-Control":"no-cache"
-}
+//Declaring base API url
+const baseURL = "http://localhost:8080/api/";
 
-
+//Applying Tab display style
 function TabContainer(props) {
   return (
       <Typography component={'div'} variant={'body2'} style={{ padding: 8 * 3 }}>
@@ -128,10 +121,10 @@ TabContainer.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
+//To toggle between steps: Delivery and Payment
 function getSteps() {
 return ["Delivery", "Payment"];
 }
-const baseURL = "http://localhost:8080/api/";
 
 
 class Checkout extends Component {
@@ -159,7 +152,6 @@ class Checkout extends Component {
         saveAddressErrorMsg : '',
         checkOutAddressRequired : 'dispNone',
         selAddress : "",
-        paymentMethod:"",  
         chcartItems:[],
         totalCartItemsValue:"",
         resDetails:null,
@@ -168,17 +160,8 @@ class Checkout extends Component {
     };
 }
 
-renderOptions() {
-  return this.state.data.map((dt, i) => {         
-    return (
-        <MenuItem
-          label="Select a country"
-          value={dt.country_code}
-         key={i} name={dt.country_name}>{dt.country_name}</MenuItem>
-    );
-  });
-}
-getAddresses(baseURL, access_token){      
+//Getting all saved addresses for a customer
+getAddresses(baseURL, access_token){    
 let data = null;
 let xhrAddresses = new XMLHttpRequest();
 access_token = sessionStorage.getItem("access-token");
@@ -196,6 +179,7 @@ xhrAddresses.setRequestHeader("Cache-Control", "no-cache");
 xhrAddresses.send(data);
 }
 
+//Get all available payment methods
 getPaymentMethods(){
   let data = null;
   let xhrPayments= new XMLHttpRequest();
@@ -211,11 +195,12 @@ xhrPayments.setRequestHeader("Accept", "application/json;charset=UTF-8");
 xhrPayments.send(data);
   }
 
+//Get all available state values for the dropdown
 getStates(){
-  let data = null;
 const url = baseURL + 'states'
 const that = this;
 
+//API call function invoked from Utils.js
 Utils.makeApiCall(
   url, 
   null,
@@ -230,33 +215,52 @@ Utils.makeApiCall(
   )
 }
 
-
-
 onStateChange = (event) => {
   this.setState({selected:event.target.value})
 };
 
+//Invoke the follow GET calls once the component successfully loads
 componentDidMount(){
-this.getAddresses(baseURL, access_token);
+this.mounted = true;
+}
+
+//Set component state values from props passed from Details page
+componentWillMount(){
+  try{
+    console.log(this.props.history.location.state.chcartItems.ItemList);
+    this.setState({chcartItems:this.props.history.location.state.chcartItems});
+    this.setState({totalCartItemsValue:this.props.history.location.state.totalCartItemsValue});
+    this.setState({resDetails:JSON.parse(sessionStorage.getItem("restaurantDetails"))});
+    this.getAddresses(baseURL, access_token);
 this.getPaymentMethods();
 this.getStates();
+  } catch {
+    this.mounted = false;
+    this.props.history.push({
+      pathname: "/"
+    });
+  }
+
 }
-componentWillMount(){
-this.setState({chcartItems:this.props.history.location.state.chcartItems});
-this.setState({totalCartItemsValue:this.props.history.location.state.totalCartItemsValue});
-this.setState({resDetails:JSON.parse(sessionStorage.getItem("restaurantDetails"))});
-}
+
+/*
+Using this value of State to disable any action on "Next" buttong
+when the control is on the "New Address" tab
+*/
 onExistingAddressTab=()=>{
   this.setState({onNewAddress:false});
 }
 onNewAddressTab=()=>{
 this.setState({onNewAddress:true});
 }
+
+//Handling and storing change of payment method value
 handleChange = (event) => {
 this.setState({paymentMethod:event.target.value})
 sessionStorage.setItem("paymentMethod", event.target.value);
 }
 
+//Capturing input field values in state for processing
 flatBldNoChangeHandler = (e) => {
 this.setState({ flatBldNo: e.target.value })    
 }
@@ -273,6 +277,7 @@ this.setState({pincode : e.target.value })
 //Called to save new address entered by user
 addressClickHandler = () =>    
 {
+
 this.setState({saveAddressError:"dispNone"})
   //Validating that no fields are empty
   //If empty, "required" text is displayed
@@ -292,13 +297,14 @@ let dataAddress =
     "&pincode="+this.state.pincode+
     "&stateUuid="+ this.state.selected;  
 let that = this;
+let access_token = sessionStorage.getItem("access-token");
 let xhrSaveAddress = new XMLHttpRequest();
 xhrSaveAddress.addEventListener("readystatechange", function () {
     if (this.readyState === 4) {              
         let saveAddressResponse = JSON.parse(this.response);
         if(saveAddressResponse.code === 'SAR-002' || saveAddressResponse.code === 'SAR-002'){
           that.setState({saveAddressError : "dispBlock"});
-          that.setState({saveAddressErrorMsg:saveAddressResponse.message});            
+          that.setState({saveAddressErrorMsg:"Pincode must contain only numbers and must be 6 digits long"});            
         }else{
           that.setState({ saveAddressSuccess: true });
           window.location.reload();       
@@ -307,7 +313,7 @@ xhrSaveAddress.addEventListener("readystatechange", function () {
     }
 })
 
-xhrSaveAddress.open("POST", this.props.baseUrl + "address"+"?"+dataAddress);
+xhrSaveAddress.open("POST", this.props.baseUrl + "address?"+dataAddress);
 xhrSaveAddress.setRequestHeader("authorization", "Bearer " + access_token);
 xhrSaveAddress.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 xhrSaveAddress.send (null);
@@ -323,11 +329,11 @@ addressChangeHandler = () => {
 //Placing order after entering all required values:Delivery and Payment details
 //Triggered from "Place Order" button
 checkoutHandler = () => {   
-let dataItem = [];      
-if(sessionStorage.getItem("selAddress")==="null"){
+
+if(sessionStorage.getItem("selAddress")==="null" || sessionStorage.getItem("selAddress")===null){
   this.setState({saveOrderResponse : "Please select Address"})        
   this.openMessageHandler();   
-  return;                        
+  return;
 }else if(this.state.paymentMethod === ""){
   this.setState({saveOrderResponse : "Please select payment method"})        
   this.openMessageHandler();                   
@@ -352,6 +358,7 @@ let dataCheckout = JSON.stringify({
     "restaurant_id": JSON.parse(sessionStorage.getItem("restaurantDetails")).id     
 })       
 let that = this;
+let access_token = sessionStorage.getItem("access-token");
 let xhrCheckout = new XMLHttpRequest();
 xhrCheckout.addEventListener("readystatechange", function () {
     if (this.readyState === 4) {              
@@ -360,19 +367,21 @@ xhrCheckout.addEventListener("readystatechange", function () {
           that.setState({saveOrderResponse : response});
           that.openMessageHandler();                      
     }
-})
+})  
 
 xhrCheckout.open("POST", this.props.baseUrl + "order");
-xhrCheckout.setRequestHeader("Authorization", "Bearer " + access_token); //sessionStorage.getItem('access-token')
+xhrCheckout.setRequestHeader("Authorization", "Bearer " + access_token);
 xhrCheckout.setRequestHeader("Content-Type", "application/json");
 xhrCheckout.setRequestHeader("Cache-Control", "no-cache");
 xhrCheckout.setRequestHeader("Access-Control-Allow-Origin", "*");  
 xhrCheckout.send(dataCheckout);
 }
 
+//Opening snack bar
 openMessageHandler = () => {
 this.setState({snackBarOpen:true})  
 }
+//Closing snack bar
 handleClose = (event, reason) => {
 if (reason === 'clickaway') {
   return;
@@ -423,7 +432,7 @@ getStepContent= (step) => {
                       <Grid container spacing={5}>
                       <GridList cellHeight={"auto"} className="gridListMain">
                       {(this.state.dataAddress.addresses || []).map((exisAddress,index) => {
-                      return (<GridListTile className={exisAddress.id===this.state.selected?"selectedAddress":"gridListTile"} id={exisAddress.id} style={{padding: '5px'}}>
+                      return (<GridListTile className={exisAddress.id===this.state.selected?"selectedAddress":"gridListTile"} key={exisAddress.id} id={exisAddress.id} style={{padding: '5px'}}>
                        <div className="App">
       <Card className={this.props.card} key={exisAddress.id} >
         <CardContent className="addressCard">
@@ -614,16 +623,12 @@ tabChangeHandler = (event, value) => {
 this.setState({value})
 };
 
-//Search keyword value passed on from Header - Restaurant name search box
-searchRestaurantsByName = event => {        
-const searchValue = event.target.value;    
-};
-
 render(){
   const { classes } = this.props;
   const steps = getSteps();
-  const { activeStep } = this.state;        
-  return (
+  const { activeStep } = this.state;   
+  return (this.mounted === true ?      
+
     <div>
       <Header logoutHandler={this.loginredirect} showSearch = {false} searchRestaurantsByName = {this.searchRestaurantsByName}/>
       <Grid container spacing={1}>
@@ -673,12 +678,12 @@ render(){
     >
       {this.props.history.location.state.chcartItems.itemList.map((item, index) => {
         return(
-               <Grid style={{marginLeft:"3%", fontSize:"18px"}}container item xs={12} spacing={1} key={index}>
+               <Grid style={{marginLeft:"3%", color:"grey", fontSize:"18px"}}container item xs={12} spacing={1} key={index}>
                <Grid item xs={1}>
                    {item.item.item_type === 'VEG' ?  <FiberManualRecord style={{ color: "#008000" }}/> : <FiberManualRecord style={{ color: "#b20505" }}/>}
                </Grid>
                <Grid item xs={6}>
-                   {item.item.item_name}                        
+                   <span style={{color:"grey", fontSize:20, marginLeft:8}}>{item.item.item_name}</span>                        
                </Grid>
                <Grid item xs={1}>
                    {item.quantity}                      
@@ -686,7 +691,7 @@ render(){
                <Grid item xs={1}>               
                </Grid>
                <Grid  item xs={2}>
-                   {item.item.price}                            
+               <i className="fa fa-inr"></i><span>  {item.item.price}</span>                        
                </Grid>
                </Grid>);
                })
@@ -697,17 +702,17 @@ render(){
                  <br/>
                  </Grid>                                           
                  </Grid>
-                    <Grid container item xs={15} >
+                    <Grid container item xs={12} >
                         <Grid item xs={5}>
-                            <Typography style={{marginLeft:"14%",color:"grey",fontWeight:"bold"}} variant="h5">
+                            <Typography style={{marginLeft:"14%",fontSize:"140%",fontWeight:"bold"}} >
                             Net Amount
                             </Typography>
                         </Grid>
                         <Grid item xs={4}>                            
                         </Grid>
                         <Grid item xs={3}>
-                        <Typography style={{marginLeft:"3%",color:"grey",fontWeight:"bold"}} variant="h5">                                                       
-                            {this.props.history.location.state.totalCartItemsValue}
+                        <Typography style={{marginLeft:"3%",fontSize:"140%",fontWeight:"bold"}}>                                                       
+                        <i style={{color:"grey"}}className="fa fa-inr"></i><span>  {this.props.history.location.state.totalCartItemsValue}</span>
                         </Typography>
                         </Grid>
                     </Grid>
@@ -746,6 +751,8 @@ render(){
                 ]}
               />
     </div>
+    :
+    ""
   );
 }
 }
