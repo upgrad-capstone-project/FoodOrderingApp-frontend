@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Header from '../../common/header/Header';
-import { Card, CardContent,CardActions} from '@material-ui/core';
+import { Card, CardContent,CardActions, ClickAwayListener} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
@@ -62,7 +62,10 @@ class Details extends Component {
 //Add items to cart from the Category wise list
 
 addToCart = (item, category) => {
-  this.snackBarHandler("Item added to cart!");
+
+    //Calling snack bar to display message
+    this.snackBarHandler("Item added to cart!");
+  
   const myCartItem = this.state.cartItems || { restaurant : this.state.resData, itemList: [], totalPrice: 0, totalItemCount: 0};
   let findIndex = null;
   //If the item is new, not already added into the list, then insert newly
@@ -98,7 +101,9 @@ addToCart = (item, category) => {
   }       
   
   // Finally updating our myCartItem state 
-  this.setState({ cartItems: myCartItem});      
+  this.setState({ cartItems: myCartItem});
+
+
 }
 
 // Removing item from cart
@@ -150,9 +155,10 @@ addToCart = (item, category) => {
 
 //SnackBar handler both open and close function
 snackBarHandler = (message) => {
-  this.setState({ snackBarOpen: false});
+ this.setState({ snackBarOpen: false});
   this.setState({ snackBarMessage: message});
   this.setState({ snackBarOpen: true});
+  console.log(this.state.snackBarOpen);
 }
 
 //Checkout button
@@ -314,13 +320,14 @@ return(<div className="mainDiv">
 </div>
 <Snackbar 
   anchorOrigin={{vertical: 'bottom', horizontal: 'left'}} 
-  open={this.state.snackBarOpen} 
+  autoHideDuration={3000}
+  open={this.state.snackBarOpen}
   onClose={() => this.setState({ snackBarOpen: false })}
   message={<span id="message-id">{this.state.snackBarMessage}</span>}
   action={[
             <IconButton
             color="inherit"
-                onClick={() => this.setState({ snackBarOpen: false })}
+                
                 >
                 <CloseIcon/>
             </IconButton>
