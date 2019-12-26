@@ -188,6 +188,13 @@ padding-left: 5%;
     vertical-align:middle;
     margin-top: 2%;
     }
+
+    .myCart{
+      margin-top:2%;
+      width:60%;
+      margin-left:2%;
+      display: inline-block;
+    }
   
   .screenSize {
     text-align: center;
