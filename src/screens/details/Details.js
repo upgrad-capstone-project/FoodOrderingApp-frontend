@@ -213,14 +213,14 @@ return(<div className="mainDiv">
           <Grid item container spacing={5}>
               <Grid item xs={7}  >
               <span style={{fontWeight:"bolder"}} className="cusRating"><i className="fa fa-star"></i> {this.state.resData.customer_rating}</span>
-              <span style={{display:"block",color:"grey",fontSize:20}}>AVERAGE RATING BY</span>
-              <span style={{color:"grey",fontSize:20}}><span style={{fontWeight:"bolder",color:"grey",fontSize:20}}>{this.state.resData.number_customers_rated} </span>CUSTOMERS</span>
+              <span className="textResDetails" style={{display:"block",color:"grey",fontSize:20}}>AVERAGE RATING BY</span>
+              <span  className="textResDetails" style={{color:"grey",fontSize:20}}><span className="textResDetails" style={{fontWeight:"bolder",color:"grey",fontSize:20}}>{this.state.resData.number_customers_rated} </span>CUSTOMERS</span>
             
               </Grid>
               <Grid item xs={5}>
             <span style={{fontWeight:"bolder"}} className="cusRating"><i className="fa fa-inr"></i>{this.state.resData.average_price}</span>
-              <span style={{display:"block",color:"grey",fontSize:20}}>AVERAGE COST FOR</span>
-              <span style={{color:"grey",fontSize:20}}>TWO PEOPLE</span>
+              <span className="textResDetails" style={{display:"block",color:"grey",fontSize:20}}>AVERAGE COST FOR</span>
+              <span className="textResDetails" style={{color:"grey",fontSize:20}}>TWO PEOPLE</span>
         
             </Grid>
         </Grid>

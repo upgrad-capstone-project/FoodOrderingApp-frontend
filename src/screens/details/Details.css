@@ -164,6 +164,9 @@ padding-left: 5%;
     align-items: center;
     justify-items: center;
   }
+  .textResDetails{
+    font-size: 17px !important;
+  }
   
   .orderFunction{
     display: flex;
