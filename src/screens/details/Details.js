@@ -213,14 +213,14 @@ return(<div className="mainDiv">
           <Grid item container spacing={5}>
               <Grid item xs={7}  >
               <span style={{fontWeight:"bolder"}} className="cusRating"><i className="fa fa-star"></i> {this.state.resData.customer_rating}</span>
-              <span style={{display:"block",color:"grey",fontSize:20}}>AVERAGE RATING BY</span>
-              <span style={{color:"grey",fontSize:20}}><span style={{fontWeight:"bolder",color:"grey",fontSize:20}}>{this.state.resData.number_customers_rated} </span>CUSTOMERS</span>
+              <span className="textResDetails" style={{display:"block",color:"grey",fontSize:20}}>AVERAGE RATING BY</span>
+              <span  className="textResDetails" style={{color:"grey",fontSize:20}}><span className="textResDetails" style={{fontWeight:"bolder",color:"grey",fontSize:20}}>{this.state.resData.number_customers_rated} </span>CUSTOMERS</span>
             
               </Grid>
               <Grid item xs={5}>
             <span style={{fontWeight:"bolder"}} className="cusRating"><i className="fa fa-inr"></i>{this.state.resData.average_price}</span>
-              <span style={{display:"block",color:"grey",fontSize:20}}>AVERAGE COST FOR</span>
-              <span style={{color:"grey",fontSize:20}}>TWO PEOPLE</span>
+              <span className="textResDetails" style={{display:"block",color:"grey",fontSize:20}}>AVERAGE COST FOR</span>
+              <span className="textResDetails" style={{color:"grey",fontSize:20}}>TWO PEOPLE</span>
         
             </Grid>
         </Grid>
@@ -234,7 +234,7 @@ return(<div className="mainDiv">
 {
             return (<div key={"div"+category.id}><div key={"sub-div" + category.id}
             className="categoriesCart">{category.category_name} </div>
-            <Divider/>
+            <Divider/><br/>
             {
               category.item_list.map(item => {
               return(<div key={item.id}>
@@ -290,7 +290,7 @@ return(<div className="mainDiv">
                                   </IconButton>     
                                   </div>                                                              
                               </div>
-                              <div >
+                              <div style={{paddingTop:"2%"}}>
                                   <span style={{fontWeight:"bold", color:"grey", fontSize:"120%"}}><i className="fa fa-inr"></i>
                                   <span>  {cartItem.totalItemPrice}</span></span>                                                               
                               </div>                                                        
