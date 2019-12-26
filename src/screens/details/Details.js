@@ -281,11 +281,11 @@ return(<div className="mainDiv">
                               </span>
                           </div> 
                               <div >
-                                <div  >
+                                <div  className="addRemove">
                                   <IconButton aria-label="Remove Item" onClick={this.removeAnItemFromCart.bind(this, cartItem, index)}>
                                       <RemoveIcon  style={{fontSize: 22, fontWeight:"bold", fill: 'black'}} />
                                   </IconButton>
-                                  <Typography variant="body" style={{fontSize: 20, fill: 'grey'}}>{cartItem.quantity}</Typography> 
+                                  <Typography style={{marginTop:"8%", fontSize: 20, fill: 'grey'}}>{cartItem.quantity}</Typography> 
                                   <IconButton aria-label="Add Item"  onClick={this.addAnItemFromCart.bind(this, cartItem, index)}>
                                       <AddIcon style={{fontSize: 22, fontWeight:"bold", fill: 'black'}}/>
                                   </IconButton>     

@@ -168,3 +168,8 @@ color:green;
  .cardRoot{
 padding-left: 5%;
   }
+
+  .addRemove{
+    display:flex;
+    flex-direction: row;
+  }
