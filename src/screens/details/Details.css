@@ -135,6 +135,7 @@ display: flex;
   position: absolute;
   margin-right:10% !important;
   margin-top:2%;
+  font-size:18px;
 }
 .addIcon {
   display:inline-block;
@@ -146,6 +147,7 @@ display: flex;
   margin-left: 3%;
   margin-top:2%;
   text-transform:capitalize;
+  font-size:20px;
 }
 
 .green{

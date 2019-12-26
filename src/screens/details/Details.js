@@ -234,7 +234,7 @@ return(<div className="mainDiv">
 {
             return (<div key={"div"+category.id}><div key={"sub-div" + category.id}
             className="categoriesCart">{category.category_name} </div>
-            <Divider/>
+            <Divider/><br/>
             {
               category.item_list.map(item => {
               return(<div key={item.id}>
@@ -290,7 +290,7 @@ return(<div className="mainDiv">
                                   </IconButton>     
                                   </div>                                                              
                               </div>
-                              <div >
+                              <div style={{paddingTop:"2%"}}>
                                   <span style={{fontWeight:"bold", color:"grey", fontSize:"120%"}}><i className="fa fa-inr"></i>
                                   <span>  {cartItem.totalItemPrice}</span></span>                                                               
                               </div>                                                        
