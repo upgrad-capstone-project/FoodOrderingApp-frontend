@@ -6,7 +6,6 @@
 
 .restaurantCard {
    display:inline-block;
-   flex-grow: 1;
    width:25%;
 }
 
