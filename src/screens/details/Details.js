@@ -158,7 +158,6 @@ snackBarHandler = (message) => {
  this.setState({ snackBarOpen: false});
   this.setState({ snackBarMessage: message});
   this.setState({ snackBarOpen: true});
-  console.log(this.state.snackBarOpen);
 }
 
 //Checkout button
@@ -318,20 +317,19 @@ return(<div className="mainDiv">
             </CardActions>
 </Card></div>
 </div>
-<Snackbar 
+<Snackbar key={"snack"}
   anchorOrigin={{vertical: 'bottom', horizontal: 'left'}} 
   autoHideDuration={3000}
   open={this.state.snackBarOpen}
   onClose={() => this.setState({ snackBarOpen: false })}
   message={<span id="message-id">{this.state.snackBarMessage}</span>}
-  action={[
+  action={
             <IconButton
             color="inherit"
-                
                 >
                 <CloseIcon/>
             </IconButton>
-        ]}
+        }
   />
 </div>
 );
