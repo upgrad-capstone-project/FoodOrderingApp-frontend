@@ -444,7 +444,7 @@ closeMenuHandler = () => {
               </FormControl><br /><br />
               <FormControl required aria-describedby="name-helper-text" className={classes.formControl}>
                 <InputLabel htmlFor="passwordReg">Password</InputLabel>
-                <Input type="password" id="passwordReg" onChange={this.inputPasswordRegChangeHandler} />
+                <Input type="password" id="passwordReg" value={this.state.passwordReg} onChange={this.inputPasswordRegChangeHandler} />
                 <FormHelperText className={this.state.passwordRegRequired}><span className="red">required</span></FormHelperText>
                 {this.state.signUpErrCode === "SGR-004"?
                 <FormControl className={classes.formControl}>
