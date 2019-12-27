@@ -17,7 +17,7 @@ const RestaurantCard = function(props){
 
     return (
 		<div className="cardContainer" onClick={() => {let detailsPageUrl = '/restaurant/'+ props.resId; return props.history.push(detailsPageUrl)}} key={index}>
-			<Card style={{width:"95%"}} className={classes.resCard} key={index}>			
+			<Card style={{width:"95%",height:"95%"}} className={classes.resCard} key={index}>			
 					<CardMedia
 						component="img"
 						alt={props.resName}
@@ -25,25 +25,25 @@ const RestaurantCard = function(props){
 						image={props.resURL}
 					/>
 					<CardContent >
-						<Typography gutterBottom variant="h5" component="h2">
+						<Typography gutterBottom variant="h4" component="h2">
 							{props.resName}
 						</Typography>
-						<Typography style={{height:"18px"}}variant="body2" color="textSecondary">
+						<div><br/>
+						<Typography style={{height:"18px",display:"block"}}variant="h6" >
 							{props.resFoodCategories}
 						</Typography>
-						<br />
-						<Typography variant="body2" component="div">
-							<div className="rating-main-contnr">
+						</div>
+						<br /><br />
+					</CardContent>		
+					<div className="rating-main-contnr">
 								<div className="rating-bg-color">
 									<span><i className="fa fa-star"></i></span>
 									<span> {props.resCustRating} ({props.resNumberCustRated})</span>
 								</div>
 								<div className="avg-price">
-									<span><i className="fa fa-inr"></i> {props.avgPrice} for two</span>                            
+									<span><i className="fa fa-inr"></i><span style={{fontSize:"100%",fontWeight:"bold"}}>{props.avgPrice} for two </span></span>                            
 								</div>
-							</div>
-						</Typography>
-					</CardContent>						
+							</div>				
 			</Card>
 		</div>
     )
