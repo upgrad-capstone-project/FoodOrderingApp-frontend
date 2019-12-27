@@ -685,7 +685,7 @@ render(){
                    {item.item.item_type === 'VEG' ?  <FiberManualRecord style={{ color: "#008000" }}/> : <FiberManualRecord style={{ color: "#b20505" }}/>}
                </Grid>
                <Grid item xs={6}>
-                   <span style={{color:"grey", fontSize:20, marginLeft:8}}>{item.item.item_name}</span>                        
+                   <span style={{color:"grey", textTransform:"capitalize", fontSize:20, marginLeft:8}}>{item.item.item_name}</span>                        
                </Grid>
                <Grid item xs={1}>
                    {item.quantity}                      
