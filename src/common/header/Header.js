@@ -135,7 +135,8 @@ class Header extends Component {
 
     if (this.state.username === "" || this.state.password === "") { return }
     let tempContactNo = this.state.username;
-    if(tempContactNo.length!==10){
+    var reg = new RegExp('^[0-9]+$');
+    if(tempContactNo.length!==10 || !reg.test(tempContactNo)){
       this.setState({loginInvalidContactNo:"Invalid Contact"})
       return;
     }
@@ -367,7 +368,7 @@ closeMenuHandler = () => {
           }
           {!this.state.loggedIn ?
             <div>
-              <Button variant="contained" color="default" onClick={this.openModalHandler}><AccountCircle />Login</Button>
+              <Button style={{fontSize:"100%"}} variant="contained" color="default" onClick={this.openModalHandler}><AccountCircle /><span style={{marginLeft:"2%"}}>Login</span></Button>
             </div>
             :
             <div>
@@ -402,7 +403,7 @@ closeMenuHandler = () => {
 
               <FormControl required className={classes.formControl}>
                 <InputLabel htmlFor="username"> Contact No. </InputLabel>
-                <Input id="username" type="text" username={this.state.username} onChange={this.inputUsernameChangeHandler} />
+                <Input id="username" type="text" username={this.state.username} value={this.state.username} onChange={this.inputUsernameChangeHandler} />
                 <FormHelperText className={this.state.usernameRequired}><span className="red">required</span></FormHelperText>
                 <Typography variant="subtitle1" color="error" align="left">{this.state.loginInvalidContactNo}</Typography>
                 {this.state.loginErrCode === "ATH-001"?
@@ -412,7 +413,7 @@ closeMenuHandler = () => {
               </FormControl><br /><br />
               <FormControl required className={classes.formControl}>
                 <InputLabel htmlFor="password"> Password </InputLabel>
-                <Input id="password" type="password" onChange={this.inputPasswordChangeHandler} />
+                <Input id="password" type="password" value={this.state.password} onChange={this.inputPasswordChangeHandler} />
                 <FormHelperText className={this.state.passwordRequired}><span className="red">required</span></FormHelperText>
                 {this.state.loginErrCode === "ATH-002"?
                 <FormControl className={classes.formControl}>
@@ -436,7 +437,7 @@ closeMenuHandler = () => {
               <FormControl required className={classes.formControl}>
                 <InputLabel htmlFor="email">Email</InputLabel>
                 <Input id="email" type="email" onChange={this.inputEmailChangeHandler} value={this.state.email} />
-                <FormHelperText className={this.state.emailRequired}><span className="red">required valid email</span></FormHelperText>
+                <FormHelperText className={this.state.emailRequired}><span className="red">required</span></FormHelperText>
                 {this.state.signUpErrCode === "SGR-002"?
                 <FormControl className={classes.formControl}>
                   <Typography variant="subtitle1" color="error" className={this.state.signupError} align="left">Invalid Email</Typography>
@@ -444,8 +445,8 @@ closeMenuHandler = () => {
               </FormControl><br /><br />
               <FormControl required aria-describedby="name-helper-text" className={classes.formControl}>
                 <InputLabel htmlFor="passwordReg">Password</InputLabel>
-                <Input type="password" id="passwordReg" onChange={this.inputPasswordRegChangeHandler} />
-                <FormHelperText className={this.state.passwordRegRequired}><span className="red">required strong password</span></FormHelperText>
+                <Input type="password" id="passwordReg" value={this.state.passwordReg} onChange={this.inputPasswordRegChangeHandler} />
+                <FormHelperText className={this.state.passwordRegRequired}><span className="red">required</span></FormHelperText>
                 {this.state.signUpErrCode === "SGR-004"?
                 <FormControl className={classes.formControl}>
                   <Typography variant="subtitle1" color="error" className={this.state.signupError} align="left">Password must contain at least one capital letter, one small letter, one number, and one special character</Typography>
