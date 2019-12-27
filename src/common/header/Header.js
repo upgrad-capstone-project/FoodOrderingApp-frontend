@@ -367,7 +367,7 @@ closeMenuHandler = () => {
           }
           {!this.state.loggedIn ?
             <div>
-              <Button variant="contained" color="default" onClick={this.openModalHandler}><AccountCircle />Login</Button>
+              <Button style={{fontSize:"100%"}} variant="contained" color="default" onClick={this.openModalHandler}><AccountCircle /><span style={{marginLeft:"2%"}}>Login</span></Button>
             </div>
             :
             <div>
