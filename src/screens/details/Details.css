@@ -143,9 +143,14 @@ color:green;
 padding-left: 5%;
   }
 
+  /*For + and - buttons in My Cart*/
   .addRemove{
     display:flex;
     flex-direction: row;
+  }
+
+  .hideBadgeonModal{
+    z-index: 0;
   }
 
   /*Redefining style for all elements that need adjustment for smaller screen size*/

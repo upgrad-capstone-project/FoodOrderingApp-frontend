@@ -135,7 +135,8 @@ class Header extends Component {
 
     if (this.state.username === "" || this.state.password === "") { return }
     let tempContactNo = this.state.username;
-    if(tempContactNo.length!==10){
+    var reg = new RegExp('^[0-9]+$');
+    if(tempContactNo.length!==10 || !reg.test(tempContactNo)){
       this.setState({loginInvalidContactNo:"Invalid Contact"})
       return;
     }
