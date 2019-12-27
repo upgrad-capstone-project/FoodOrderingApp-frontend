@@ -402,7 +402,7 @@ closeMenuHandler = () => {
 
               <FormControl required className={classes.formControl}>
                 <InputLabel htmlFor="username"> Contact No. </InputLabel>
-                <Input id="username" type="text" username={this.state.username} onChange={this.inputUsernameChangeHandler} />
+                <Input id="username" type="text" username={this.state.username} value={this.state.username} onChange={this.inputUsernameChangeHandler} />
                 <FormHelperText className={this.state.usernameRequired}><span className="red">required</span></FormHelperText>
                 <Typography variant="subtitle1" color="error" align="left">{this.state.loginInvalidContactNo}</Typography>
                 {this.state.loginErrCode === "ATH-001"?
@@ -412,7 +412,7 @@ closeMenuHandler = () => {
               </FormControl><br /><br />
               <FormControl required className={classes.formControl}>
                 <InputLabel htmlFor="password"> Password </InputLabel>
-                <Input id="password" type="password" onChange={this.inputPasswordChangeHandler} />
+                <Input id="password" type="password" value={this.state.password} onChange={this.inputPasswordChangeHandler} />
                 <FormHelperText className={this.state.passwordRequired}><span className="red">required</span></FormHelperText>
                 {this.state.loginErrCode === "ATH-002"?
                 <FormControl className={classes.formControl}>
