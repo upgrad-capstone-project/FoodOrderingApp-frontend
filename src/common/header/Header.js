@@ -436,7 +436,7 @@ closeMenuHandler = () => {
               <FormControl required className={classes.formControl}>
                 <InputLabel htmlFor="email">Email</InputLabel>
                 <Input id="email" type="email" onChange={this.inputEmailChangeHandler} value={this.state.email} />
-                <FormHelperText className={this.state.emailRequired}><span className="red">required valid email</span></FormHelperText>
+                <FormHelperText className={this.state.emailRequired}><span className="red">required</span></FormHelperText>
                 {this.state.signUpErrCode === "SGR-002"?
                 <FormControl className={classes.formControl}>
                   <Typography variant="subtitle1" color="error" className={this.state.signupError} align="left">Invalid Email</Typography>
@@ -445,7 +445,7 @@ closeMenuHandler = () => {
               <FormControl required aria-describedby="name-helper-text" className={classes.formControl}>
                 <InputLabel htmlFor="passwordReg">Password</InputLabel>
                 <Input type="password" id="passwordReg" onChange={this.inputPasswordRegChangeHandler} />
-                <FormHelperText className={this.state.passwordRegRequired}><span className="red">required strong password</span></FormHelperText>
+                <FormHelperText className={this.state.passwordRegRequired}><span className="red">required</span></FormHelperText>
                 {this.state.signUpErrCode === "SGR-004"?
                 <FormControl className={classes.formControl}>
                   <Typography variant="subtitle1" color="error" className={this.state.signupError} align="left">Password must contain at least one capital letter, one small letter, one number, and one special character</Typography>
