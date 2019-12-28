@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Header from "../../common/header/Header";
+import './Checkout.css';
+//Material-ui Components
 import Grid from "@material-ui/core/Grid";
 import PropTypes from 'prop-types';
 import * as Utils from '../../common/Utils';
@@ -32,7 +34,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import CheckCircle from '@material-ui/icons/CheckCircle'
-import './Checkout.css';
+
 
 const styles = muiBaseTheme => ({
   root: {
@@ -193,7 +195,7 @@ getPaymentMethods(){
 xhrPayments.open("GET", baseURL + "payment");
 xhrPayments.setRequestHeader("Accept", "application/json;charset=UTF-8");
 xhrPayments.send(data);
-  }
+}
 
 //Get all available state values for the dropdown
 getStates(){
@@ -211,9 +213,10 @@ Utils.makeApiCall(
     that.setState({
       dataStates : JSON.parse(responseText).states
     })
-    }
-  )
+  }
+)
 }
+
 
 onStateChange = (event) => {
   this.setState({selected:event.target.value})
@@ -232,19 +235,18 @@ componentWillMount(){
     this.setState({totalCartItemsValue:this.props.history.location.state.totalCartItemsValue});
     this.setState({resDetails:JSON.parse(sessionStorage.getItem("restaurantDetails"))});
     this.getAddresses(baseURL, access_token);
-this.getPaymentMethods();
-this.getStates();
+    this.getPaymentMethods();
+    this.getStates();
   } catch {
     this.mounted = false;
     this.props.history.push({
       pathname: "/"
-    });
+     });
   }
-
 }
 
 /*
-Using this value of State to disable any action on "Next" buttong
+Using this value of State to disable any action on "Next" button
 when the control is on the "New Address" tab
 */
 onExistingAddressTab=()=>{
@@ -262,16 +264,19 @@ sessionStorage.setItem("paymentMethod", event.target.value);
 
 //Capturing input field values in state for processing
 flatBldNoChangeHandler = (e) => {
-this.setState({ flatBldNo: e.target.value })    
+   this.setState({ flatBldNo: e.target.value })    
 }
+
 localityChangeHandler = (e) => {
-this.setState({locality : e.target.value })
+   this.setState({locality : e.target.value })
 }
+
 cityChangeHandler = (e) => { 
-this.setState({city : e.target.value })
+   this.setState({city : e.target.value })
 }
+
 pinCodeChangeHandler = (e) => {
-this.setState({pincode : e.target.value })
+   this.setState({pincode : e.target.value })
 }
 
 //Called to save new address entered by user
@@ -311,7 +316,6 @@ xhrSaveAddress.addEventListener("readystatechange", function () {
           that.setState({ saveAddressSuccess: true });
           window.location.reload();       
         }
-        
     }
 })
 
@@ -342,6 +346,7 @@ if(sessionStorage.getItem("selAddress")==="null" || sessionStorage.getItem("selA
   return;
 }
 
+//When order is placed,  checkout with order id 
 let orders = this.state.chcartItems.itemList;      
 let dataCheckout = JSON.stringify({                  
     "address_id": sessionStorage.getItem("selected"),
@@ -414,17 +419,16 @@ getStepContent= (step) => {
                     className={this.props.root}
                     >
                       <Grid container spacing={5}>
-                      <GridList cellHeight={"auto"} className="gridListMain">
-                  <GridListTile style={{width:"100%",marginTop:"4%"}} >
-                    <span style={{fontSize:"20px"}}>There are no saved addresses! You can save an address using the "New Address" tab or using your "Profile" Menu</span>
-                      </GridListTile>
-           
-                      </GridList>  
+                        <GridList cellHeight={"auto"} className="gridListMain">
+                           <GridListTile style={{width:"100%",marginTop:"4%"}} >
+                              <span style={{fontSize:"20px"}}>There are no saved addresses! You can save an address using the "New Address" tab or using your "Profile" Menu</span>
+                           </GridListTile>
+                        </GridList>  
+                       </Grid>
                     </Grid>
-                  </Grid>
                     
                     :
-                  <Grid
+                   <Grid
                     container
                     direction="row"
                     justify="space-between"
@@ -436,33 +440,33 @@ getStepContent= (step) => {
                       {(this.state.dataAddress.addresses || []).map((exisAddress,index) => {
                       return (<GridListTile className={exisAddress.id===this.state.selected?"selectedAddress":"gridListTile"} key={exisAddress.id} id={exisAddress.id} style={{padding: '5px'}}>
                        <div className="App">
-      <Card className={this.props.card} key={exisAddress.id} >
-        <CardContent className="addressCard">
-          <Typography
-          style={{width:"100%",textTransform:"capitalize"}}
-                       variant={"h6"}
-            gutterBottom
-          >
-            {exisAddress.flat_building_name} <br /> {exisAddress.locality} <br />
-            {exisAddress.city} <br />
-            {exisAddress.state.state_name} <br />
-            {exisAddress.pincode} <br />
-          </Typography>          
-          <IconButton className="selectAddresscircle" aria-label="Select Address" onClick={()=>this.onAddressClick(exisAddress)}>            
-                      {exisAddress.id===this.state.selected ? <CheckCircle style={{color:"green"}} />:<CheckCircle style={{color:"#999999"}} />}      
-          </IconButton>          
-        </CardContent>
-      </Card>
-    </div>
-                      </GridListTile>
-            );
+                       <Card className={this.props.card} key={exisAddress.id} >
+                          <CardContent className="addressCard">
+                            <Typography
+                               style={{width:"100%",textTransform:"capitalize"}}
+                               variant={"h6"}
+                               gutterBottom
+                            >
+                          {exisAddress.flat_building_name} <br /> {exisAddress.locality} <br />
+                          {exisAddress.city} <br />
+                          {exisAddress.state.state_name} <br />
+                          {exisAddress.pincode} <br />
+                           </Typography>          
+                          <IconButton className="selectAddresscircle" aria-label="Select Address" onClick={()=>this.onAddressClick(exisAddress)}>            
+                          {exisAddress.id===this.state.selected ? <CheckCircle style={{color:"green"}} />:<CheckCircle style={{color:"#999999"}} />}      
+                          </IconButton>          
+                          </CardContent>
+               </Card>
+            </div>
+           </GridListTile>
+          );
           })}
-                      </GridList>  
-                    </Grid>
-                  </Grid>}
-                  </TabContainer>
-              },
-              {this.state.value === 1 && 
+                  </GridList>  
+                </Grid>
+               </Grid>}
+              </TabContainer>
+          },
+               {this.state.value === 1 && 
                   <TabContainer>
                       <div className="login">                            
                           <FormControl required className={this.props.formControl}>
@@ -511,7 +515,7 @@ getStepContent= (step) => {
                                       ))}
                                   </Select>
                                   <FormHelperText className={this.state.stateRequired}><span className="red">required</span></FormHelperText>
-                          </FormControl><br/><br/>
+                            </FormControl><br/><br/>
                           <FormControl required className={this.props.formControl}>
                               <InputLabel htmlFor="Pincode">Pin Code</InputLabel>
                               <Input 
@@ -612,12 +616,12 @@ activeStep: 0
 });
 };
 
-    //Logout action from drop down menu on profile icon
-    loginredirect = () => {
-      sessionStorage.clear();
-      this.props.history.push({
-        pathname: "/"
-      });
+ //Logout action from drop down menu on profile icon
+ loginredirect = () => {
+    sessionStorage.clear();
+    this.props.history.push({
+    pathname: "/"
+    });
   }
 
 //To toggle between "Existing Address" and "New Address" tabs
@@ -677,8 +681,8 @@ render(){
                 direction="row"
                 justify="space-between"
                 alignItems="center"
-    >
-      {this.props.history.location.state.chcartItems.itemList.map((item, index) => {
+             >
+        {this.props.history.location.state.chcartItems.itemList.map((item, index) => {
         return(
                <Grid style={{marginLeft:"3%", color:"grey", fontSize:"18px"}}container item xs={12} spacing={1} key={index}>
                <Grid item xs={1}>
