@@ -1,3 +1,4 @@
+/*CSS properties being defined for Header*/
 .header-main-container {
   background-color: #263238;
   padding: 16px;
@@ -6,7 +7,7 @@
 justify-content: space-between;
 flex-wrap: wrap;
 }
-
+/*Styling for display on smaller screen*/
 @media only screen and (max-width: 1000px) {
   .header-main-container {
   background-color: #263238;
@@ -96,3 +97,5 @@ width:8px !important;
 .tabs{
   margin-bottom: 20px;
 }
+
+/*Css styling for Header ends here*/
