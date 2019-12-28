@@ -123,7 +123,7 @@ addToCart = (item, category) => {
           this.snackBarHandler("Item removed from cart!");
       }else{
           myCartItem.itemList[index] = findItem;
-          this.snackBarHandler("Item quantity descreased by 1!");
+          this.snackBarHandler("Item quantity decreased by 1!");
       }
       this.setState({ cartItems: myCartItem});  
 
