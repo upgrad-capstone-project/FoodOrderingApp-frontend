@@ -721,7 +721,7 @@ render(){
                 </Grid>                
             </CardContent>
             <CardActions >
-                <Button style={{marginLeft:"7%"}} variant="contained" color="primary" className={this.props.classes.orderButton} onClick={this.checkoutHandler}>
+                <Button style={{fontSize:"120%", width:"90%", height:"40px", marginLeft:"5%"}} variant="contained" color="primary" className={this.props.classes.orderButton} onClick={this.checkoutHandler}>
                     Place Order
                 </Button>
             </CardActions>
