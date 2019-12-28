@@ -117,16 +117,3 @@ export const makeApiCall = (
   });
 };
 
-/**
- * Function to format date
- * @param time time in seconds
- * @returns formatted date
- * @memberof Profile
- */
-export const formatDate = time => {
-  return (
-    new Date(time * 1000).toLocaleDateString() +
-    " " +
-    new Date(time * 1000).toLocaleTimeString()
-  );
-};
