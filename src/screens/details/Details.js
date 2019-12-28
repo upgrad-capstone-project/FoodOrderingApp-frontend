@@ -37,11 +37,12 @@ class Details extends Component {
 
 
   componentWillMount() {
+    //API call to get restaurant details by restaurant ID
     let xhr_resDetails = new XMLHttpRequest();
     let dataRes = null;
+    // Getting and splitting current url to get restaurant ID
     let temp = this.props.location.pathname;
     let resId = temp.split("/")[2];
- //   alert(resId);
     let that = this;
     xhr_resDetails.addEventListener("readystatechange", function () {
       if (this.readyState === 4) {
@@ -52,7 +53,6 @@ class Details extends Component {
               city:data.address.city
             });
       }
-   //   alert(that.state.resData.address.locality)
   });
   xhr_resDetails.open("GET", this.apiURL+"restaurant/"+resId);
   xhr_resDetails.setRequestHeader("Cache-Control", "no-cache");
@@ -60,12 +60,9 @@ class Details extends Component {
   }
 
 //Add items to cart from the Category wise list
-
 addToCart = (item, category) => {
-
     //Calling snack bar to display message
     this.snackBarHandler("Item added to cart!");
-  
   const myCartItem = this.state.cartItems || { restaurant : this.state.resData, itemList: [], totalPrice: 0, totalItemCount: 0};
   let findIndex = null;
   //If the item is new, not already added into the list, then insert newly
@@ -76,7 +73,6 @@ addToCart = (item, category) => {
        }
        return undefined;
    });
-
    // If item already exists, only increment item quantiyt and price
    if(findItem !== undefined){
       findItem.quantity =  findItem.quantity + 1;
